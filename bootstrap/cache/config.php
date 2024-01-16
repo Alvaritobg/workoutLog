@@ -7,10 +7,10 @@
     'url' => 'http://localhost',
     'asset_url' => NULL,
     'timezone' => 'UTC',
-    'locale' => 'en',
-    'fallback_locale' => 'en',
+    'locale' => 'es',
+    'fallback_locale' => 'es',
     'faker_locale' => 'en_US',
-    'key' => 'base64:Jre5IfwXlF+flLJLJRMU4f59VbXLaZkutXpPcsAEAGQ=',
+    'key' => 'base64:KMBAxBmlWH7qdYheesJXnUlx9CJIdIK8s6+5NOL0HTo=',
     'cipher' => 'AES-256-CBC',
     'maintenance' => 
     array (
@@ -199,8 +199,8 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\Users\\Álvaro B.G\\Documents\\DAW\\4\\proyecto\\U3\\workoutLog\\storage\\framework/cache/data',
-        'lock_path' => 'C:\\Users\\Álvaro B.G\\Documents\\DAW\\4\\proyecto\\U3\\workoutLog\\storage\\framework/cache/data',
+        'path' => '/var/www/html/workoutLog/storage/framework/cache/data',
+        'lock_path' => '/var/www/html/workoutLog/storage/framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -283,7 +283,7 @@
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'workoutlog',
+        'database' => 'workoutLog',
         'prefix' => '',
         'foreign_key_constraints' => true,
       ),
@@ -293,7 +293,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'workoutlog',
+        'database' => 'workoutLog',
         'username' => 'developer',
         'password' => 'developer',
         'unix_socket' => '',
@@ -313,7 +313,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'workoutlog',
+        'database' => 'workoutLog',
         'username' => 'developer',
         'password' => 'developer',
         'charset' => 'utf8',
@@ -328,7 +328,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'workoutlog',
+        'database' => 'workoutLog',
         'username' => 'developer',
         'password' => 'developer',
         'charset' => 'utf8',
@@ -373,13 +373,13 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\Álvaro B.G\\Documents\\DAW\\4\\proyecto\\U3\\workoutLog\\storage\\app',
+        'root' => '/var/www/html/workoutLog/storage/app',
         'throw' => false,
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\Álvaro B.G\\Documents\\DAW\\4\\proyecto\\U3\\workoutLog\\storage\\app/public',
+        'root' => '/var/www/html/workoutLog/storage/app/public',
         'url' => 'http://localhost/storage',
         'visibility' => 'public',
         'throw' => false,
@@ -399,7 +399,7 @@
     ),
     'links' => 
     array (
-      'C:\\Users\\Álvaro B.G\\Documents\\DAW\\4\\proyecto\\U3\\workoutLog\\public\\storage' => 'C:\\Users\\Álvaro B.G\\Documents\\DAW\\4\\proyecto\\U3\\workoutLog\\storage\\app/public',
+      '/var/www/html/workoutLog/public/storage' => '/var/www/html/workoutLog/storage/app/public',
     ),
   ),
   'hashing' => 
@@ -440,14 +440,14 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\Users\\Álvaro B.G\\Documents\\DAW\\4\\proyecto\\U3\\workoutLog\\storage\\logs/laravel.log',
+        'path' => '/var/www/html/workoutLog/storage/logs/laravel.log',
         'level' => 'debug',
         'replace_placeholders' => true,
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\Users\\Álvaro B.G\\Documents\\DAW\\4\\proyecto\\U3\\workoutLog\\storage\\logs/laravel.log',
+        'path' => '/var/www/html/workoutLog/storage/logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
         'replace_placeholders' => true,
@@ -512,7 +512,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'C:\\Users\\Álvaro B.G\\Documents\\DAW\\4\\proyecto\\U3\\workoutLog\\storage\\logs/laravel.log',
+        'path' => '/var/www/html/workoutLog/storage/logs/laravel.log',
       ),
     ),
   ),
@@ -525,11 +525,11 @@
       array (
         'transport' => 'smtp',
         'url' => NULL,
-        'host' => 'mailpit',
-        'port' => '1025',
+        'host' => 'sandbox.smtp.mailtrap.io',
+        'port' => '2525',
         'encryption' => NULL,
-        'username' => NULL,
-        'password' => NULL,
+        'username' => '33c5ac165b88ee',
+        'password' => 'df20f3268c9f3f',
         'timeout' => NULL,
         'local_domain' => NULL,
       ),
@@ -588,7 +588,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\Users\\Álvaro B.G\\Documents\\DAW\\4\\proyecto\\U3\\workoutLog\\resources\\views/vendor/mail',
+        0 => '/var/www/html/workoutLog/resources/views/vendor/mail',
       ),
     ),
   ),
@@ -741,7 +741,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\Users\\Álvaro B.G\\Documents\\DAW\\4\\proyecto\\U3\\workoutLog\\storage\\framework/sessions',
+    'files' => '/var/www/html/workoutLog/storage/framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -762,9 +762,9 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\Users\\Álvaro B.G\\Documents\\DAW\\4\\proyecto\\U3\\workoutLog\\resources\\views',
+      0 => '/var/www/html/workoutLog/resources/views',
     ),
-    'compiled' => 'C:\\Users\\Álvaro B.G\\Documents\\DAW\\4\\proyecto\\U3\\workoutLog\\storage\\framework\\views',
+    'compiled' => '/var/www/html/workoutLog/storage/framework/views',
   ),
   'flare' => 
   array (
@@ -841,7 +841,7 @@
     array (
     ),
     'enable_runnable_solutions' => NULL,
-    'remote_sites_path' => 'C:\\Users\\Álvaro B.G\\Documents\\DAW\\4\\proyecto\\U3\\workoutLog',
+    'remote_sites_path' => '/var/www/html/workoutLog',
     'local_sites_path' => '',
     'housekeeping_endpoint_prefix' => '_ignition',
     'settings_file_path' => '',
