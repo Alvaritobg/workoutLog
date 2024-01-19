@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('email')->unique(); // Columna para el email del usuario, debe ser único
             $table->timestamp('email_verified_at')->nullable(); // Columna para la fecha de verificación del email, puede ser nula
             $table->string('password'); // Columna para la contraseña del usuario
-            $table->unsignedBigInteger('routine_id'); // Columna para id de rutina
+            $table->unsignedBigInteger('routine_id')->nullable(); // Columna para id de rutina, puede ser nula
             // Los roles van a ser gestionados por spatie
             // $table->enum('role', ['admin', 'user', 'trainer'])->default('user');
             $table->rememberToken(); // Columna para el token de "recordar usuario" de la autenticación

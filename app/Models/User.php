@@ -19,6 +19,38 @@ class User extends Authenticatable implements MustVerifyEmail // Con este implem
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
+
+    /**
+     * Define la relación 'one-to-many' con Routine.
+     *
+     * Cada usuario puede tener muchas rutinas.
+     */
+    public function routines()
+    {
+        return $this->hasMany(Routine::class)->withDefault(); // withDefault proporciona un valor por defecto para evitar valores nulos.
+    }
+
+    /**
+     * Define la relación 'one-to-many' con Workout.
+     *
+     * Cada usuario puede tener muchos entrenamientos (workouts).
+     */
+    public function workouts()
+    {
+        return $this->hasMany(Workout::class);
+    }
+
+    /**
+     * Define la relación 'one-to-many' con Series.
+     *
+     * Cada usuario puede tener muchas series de ejercicios.
+     */
+    public function series()
+    {
+        return $this->hasMany(Series::class);
+    }
+
+
     /**
      * Los atributos que se pueden asignar en masa.
      *
@@ -29,9 +61,9 @@ class User extends Authenticatable implements MustVerifyEmail // Con este implem
         'surname',
         'date_of_birth',
         'weight',
-        /* 'role', */
         'email',
         'password',
+       'routine_id',
     ];
 
     /**

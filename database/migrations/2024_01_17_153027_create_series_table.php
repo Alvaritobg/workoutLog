@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('series', function (Blueprint $table) {
             // Número de serie, autoincremental y único
-            $table->unsignedBigInteger('number');
+            //$table->unsignedBigInteger('number') (Da error, debo sacar number de la clave primaria y declarar una clave unica compuesta)
+            $table->BigInteger('number');
 
             // ID del entrenamiento asociado
             $table->unsignedBigInteger('workout_id');
@@ -30,13 +31,14 @@ return new class extends Migration
             $table->dateTime('date');
 
             // Peso usado en el ejercicio
-            $table->integer('used_wight');
+            $table->integer('used_weight');
 
             // Repeticiones obtenidas en el ejercicio
             $table->integer('repetitions');
 
             // Clave primaria compuesta
-            $table->primary(['number','workout_id', 'user_id', 'exercise_id', 'date']);
+            //$table->primary(['number','workout_id', 'user_id', 'exercise_id', 'date']);// (Da error, debo sacar number de la clave primaria y declarar una clave unica compuesta)
+            $table->unique(['number','workout_id', 'user_id', 'exercise_id', 'date']);
         });
     }
 

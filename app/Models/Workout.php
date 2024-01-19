@@ -1,0 +1,68 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * Modelo Workout.
+ *
+ * Representa un entrenamiento en la aplicación. Cada entrenamiento está asociado a un usuario y 
+ * puede incluir múltiples ejercicios.
+ */
+class Workout extends Model
+{
+    use HasFactory;
+
+    /**
+     * Relación 'belongsTo' con el modelo User.
+     *
+     * Indica que cada Workout (entrenamiento) pertenece a un User (usuario).
+     * Esto establece una relación inversa de uno a muchos.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Relación 'belongsToMany' con el modelo Exercise.
+     *
+     * Representa la relación muchos a muchos entre Workout y Exercise.
+     * Utiliza la tabla 'series' como tabla intermedia (pivot) para esta relación.
+     */
+    public function exercises()
+    {
+        return $this->belongsToMany(Exercise::class, 'series');
+    }
+
+    /**
+     * Relación 'hasMany' con el modelo Series.
+     *
+     * Indica que cada Workout puede tener múltiples instancias de Series.
+     * Esta relación ayuda a manejar los detalles de cada ejercicio dentro de un entrenamiento.
+     */
+    public function series()
+    {
+        return $this->hasMany(Series::class);
+    }
+
+    /**
+     * Los atributos que se pueden asignar en masa.
+     *
+     * Estos son los campos que se pueden llenar a través de la asignación masiva para evitar
+     * asignaciones accidentales o no deseadas de atributos.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        // Añade aquí los campos que son seguros para la asignación masiva.
+        'routine_id',
+        'name',
+        'order',
+    ];
+
+
+}
+

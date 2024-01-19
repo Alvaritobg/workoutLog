@@ -20,7 +20,10 @@ return new class extends Migration
             $table->foreign('routine_id', 'fk_users')
                   ->references('id')
                   ->on('routines')
-                  ->onDelete('cascade');
+                  ->onDelete('cascade')
+                  ->nullable()
+                  ->default(null)
+                  ->change();
         });
     }
 
