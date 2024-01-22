@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * Representa una serie de ejercicios dentro de un entrenamiento. Cada serie está asociada a un
  * Workout específico, un User y un Exercise.
  */
-class Series extends Model
+class Serie extends Model
 {
     use HasFactory;
     /**

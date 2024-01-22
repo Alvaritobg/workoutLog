@@ -21,20 +21,20 @@ class Workout extends Model
      * Indica que cada Workout (entrenamiento) pertenece a un User (usuario).
      * Esto establece una relación inversa de uno a muchos.
      */
-    public function user()
+    public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(User::class, 'users_workouts', 'workout_id', 'user_id');
     }
 
     /**
      * Relación 'belongsToMany' con el modelo Exercise.
      *
      * Representa la relación muchos a muchos entre Workout y Exercise.
-     * Utiliza la tabla 'series' como tabla intermedia (pivot) para esta relación.
+     * Utiliza la tabla 'exercises_workouts' como tabla intermedia (pivot) para esta relación.
      */
     public function exercises()
     {
-        return $this->belongsToMany(Exercise::class, 'series');
+        return $this->belongsToMany(Exercise::class, 'exercises_workouts', 'exercise_id', 'workout_id');
     }
 
     /**

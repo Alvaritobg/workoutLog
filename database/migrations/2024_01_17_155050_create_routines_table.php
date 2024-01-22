@@ -26,6 +26,8 @@ return new class extends Migration
 
             // Descripción de la rutina
             $table->string('description', 2000)->nullable();
+
+            $table->string('img')->nullable();
         });
     }
 
