@@ -36,9 +36,12 @@ class RoutineController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Routine $routine)
+    public function show($id)
     {
-        //
+        /* $routine = Routine::findOrFail($id);
+        return view('routines.detail', compact('routine')); */
+        $routine = Routine::with(['workouts.exercises'])->findOrFail($id);
+        return view('routines.detail', compact('routine'));
     }
 
     /**

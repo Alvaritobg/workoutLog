@@ -15,6 +15,11 @@ class Workout extends Model
 {
     use HasFactory;
 
+    public function routine()
+    {
+        return $this->belongsTo(Routine::class);
+    }
+
     /**
      * Relación 'belongsTo' con el modelo User.
      *
