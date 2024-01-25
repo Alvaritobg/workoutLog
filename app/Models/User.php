@@ -63,7 +63,7 @@ class User extends Authenticatable implements MustVerifyEmail // Con este implem
         'weight',
         'email',
         'password',
-       'routine_id',
+        'routine_id',
     ];
 
     /**
@@ -78,7 +78,7 @@ class User extends Authenticatable implements MustVerifyEmail // Con este implem
         'remember_token',
     ];
 
-    
+
     /**
      * Los atributos que deben ser convertidos a tipos nativos.
      *

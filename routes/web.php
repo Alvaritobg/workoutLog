@@ -2,6 +2,11 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+//Spatie
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RolController;
+use App\Http\Controllers\UserController;
+//Fin spatie
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +33,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
+// Spatie
+Route::group(['middleware' => ['auth']], function () {
+    Route::resource('roles', RolController::class);
+    Route::resource('users', UserController::class);
+    //Route::resource('roles', HomeController::class);
+});
+//-----
 
 require __DIR__ . '/auth.php';
