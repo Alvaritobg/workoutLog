@@ -2,11 +2,17 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+<<<<<<< HEAD
 //Spatie
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UserController;
 //Fin spatie
+=======
+/* use App\Http\Controllers\ExerciseController;
+use App\Http\Controllers\WorkoutController; */
+use App\Http\Controllers\RoutineController;
+>>>>>>> 1e4366d4ccba0a7b662e3b63073c2ad998fe4c71
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +27,13 @@ use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+
+Route::middleware('auth','verified')->group(function () {
+    Route::get('/rutinas', [RoutineController::class, 'index']);
+    Route::get('/rutina/{id}', [RoutineController::class, 'show']);
+ 
 });
 
 Route::get('/dashboard', function () {
@@ -40,5 +53,6 @@ Route::group(['middleware' => ['auth']], function () {
     //Route::resource('roles', HomeController::class);
 });
 //-----
+
 
 require __DIR__ . '/auth.php';

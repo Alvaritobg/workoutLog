@@ -26,6 +26,7 @@ class Routine extends Model
         'user_id',
         'name',
         'description',
+        'img',
     ];
 
 
@@ -37,6 +38,11 @@ class Routine extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function workouts()
+    {
+        return $this->hasMany(Workout::class);
     }
 
     // Otros métodos y propiedades del modelo.
