@@ -50,7 +50,7 @@ class Workout extends Model
      */
     public function series()
     {
-        return $this->hasMany(Series::class);
+        return $this->hasMany(Serie::class);
     }
 
     /**
@@ -67,7 +67,4 @@ class Workout extends Model
         'name',
         'order',
     ];
-
-
 }
-
