@@ -26,6 +26,12 @@ return new class extends Migration
 
             // Descripción de la rutina
             $table->string('description', 2000)->nullable();
+            
+            // Días de entrenamiento por semana
+            $table->integer('days')->nullable();
+
+            // Duración en semanas
+            $table->integer('duration')->nullable();
 
             $table->string('img')->nullable();
         });

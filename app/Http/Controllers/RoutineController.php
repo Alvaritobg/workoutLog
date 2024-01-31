@@ -38,10 +38,42 @@ class RoutineController extends Controller
      */
     public function show($id)
     {
-        /* $routine = Routine::findOrFail($id);
-        return view('routines.detail', compact('routine')); */
-        $routine = Routine::with(['workouts.exercises'])->findOrFail($id);
-        return view('routines.detail', compact('routine'));
+        // Buscar la rutina por su ID
+    $routine = Routine::find($id);
+        $ret;
+    // Verificar si la rutina existe
+    if (!$routine) {
+        // Si no se encuentra la rutina, puede devolver una respuesta de error o redirigir
+        //return response()->json(['message' => 'Routine not found'], 404);
+        // O alternativamente: 
+        $ret = redirect()->route('routines.index');
+    } else {
+        // Si la rutina existe, devolver una vista con los datos de la rutina
+        $ret = view('routines.detail', compact('routine'));
+    }
+        return  $ret;
+    }
+
+
+    /**
+     * Display the specified resource.
+     */
+    public function showDetails($id)
+    {
+        // Buscar la rutina por su ID
+        $routine = Routine::with('user')->find($id);
+        $ret;
+    // Verificar si la rutina existe
+    if (!$routine) {
+        // Si no se encuentra la rutina, puede devolver una respuesta de error o redirigir
+        //return response()->json(['message' => 'Routine not found'], 404);
+        // O alternativamente: 
+        $ret = redirect()->route('routines.index');
+    } else {
+        // Si la rutina existe, devolver una vista con los datos de la rutina
+        $ret = view('routines.detail', compact('routine'));
+    }
+        return  $ret;
     }
 
     /**

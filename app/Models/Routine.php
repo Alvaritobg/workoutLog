@@ -26,6 +26,8 @@ class Routine extends Model
         'user_id',
         'name',
         'description',
+        'days',
+        'duration',
         'img',
     ];
 
