@@ -29,7 +29,7 @@ Route::get('/', function () {
 
 Route::middleware('auth', 'verified')->group(function () {
     Route::get('/rutinas', [RoutineController::class, 'index']);
-    Route::get('/rutina/{id}', [RoutineController::class, 'show']);
+    Route::get('/rutina/{id}', [RoutineController::class, 'show'])->name('routine.show');
 });
 
 Route::get('/dashboard', function () {

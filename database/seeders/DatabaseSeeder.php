@@ -21,12 +21,5 @@ class DatabaseSeeder extends Seeder
         $this->call(UsersWorkoutsSeeder::class); // Llama a las seeders de la tabla "users_workouts"
         $this->call(SubscriptionsSeeder::class); // Llama a las seeders de la tabla "subscriptions"
         $this->call(SetUsersRoutinesSeeder::class); // Llama a las seeders para asignar rutinas a usuarios en la tabla users
-
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
     }
 }

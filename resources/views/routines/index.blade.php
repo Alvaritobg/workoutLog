@@ -24,8 +24,8 @@
                         $routineImg = $routine->img;
                     @endphp
 
-                    {{-- Enlace para cada rutina (debe ser sustituido por la URL correspondiente) --}}
-                    <a href="#">
+                    {{-- Enlace para cada rutina --}}
+                    <a href="{{ route('routine.show', ['id' => $routine->id]) }}">
                         {{-- Contenedor de la rutina --}}
                         {{-- <div class="py-2 px-0 md:px-5 lg:px-10 xl:px-20"> --}}
                         <div class="max-w-7xl mx-auto ">
