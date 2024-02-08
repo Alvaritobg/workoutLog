@@ -3,10 +3,9 @@
     {{-- Verifica si hay rutinas disponibles --}}
     @if ($routine)
         <div class="flex flex-col py-2 px-2 md:px-5 my-4 gap-4 justify-center">
-            <div
-                class="flex flex-col text-end text-white p-6 max-h-60 overflow-hidden shadow-md rounded-sm 
-                    bg-[url(https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)]
-                    h-screen bg-cover bg-center">
+            <div class="flex flex-col text-end text-white p-6 max-h-60 overflow-hidden shadow-md rounded-sm 
+                    h-screen bg-cover bg-center"
+                style="background-image: url('{{ $routine->img }}')">
 
             </div>
 

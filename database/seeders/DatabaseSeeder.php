@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(RoleSeeder::class); // Crea los Roles de usuarios (spatie)
         $this->call(ExerciseSeeder::class); // Llama a las seeders de la tabla "exercises"
         $this->call(UsersSeeder::class); // Llama a las seeders de la tabla "users"
         $this->call(RoutinesSeeder::class); // Llama a las seeders de la tabla "routines"
