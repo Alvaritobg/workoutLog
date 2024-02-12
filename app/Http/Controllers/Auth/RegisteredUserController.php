@@ -30,13 +30,15 @@ class RegisteredUserController extends Controller
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): RedirectResponse
-    {
+    {   
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'surname' => ['string', 'max:255'],
-            'weight' => ['required', 'numeric', 'min:0', 'max:1000'],
+            //'weight' => ['required', 'numeric', 'min:0', 'max:1000'],
+            'weight' => ['nullable','numeric', 'min:0', 'max:1000'],
             'date_of_birth' => ['required', 'date'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'trainer' => ['required','in:true,false'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -48,8 +50,15 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        // Hace que los usuarios que se registren se les de el rol user en spatie
+
+         // Asignar rol basado en el valor del campo 'entrenador'
+        if ($request->trainer === 'true') {
+        $user->assignRole('trainer');
+        } else {
         $user->assignRole('user');
+        }
+        // Hace que los usuarios que se registren se les de el rol user en spatie
+        //$user->assignRole('user');
 
         event(new Registered($user));
 

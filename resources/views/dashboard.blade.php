@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="flex flex-col lg:flex-row flex-wrap py-2 px-2 md:px-5 my-4 gap-4 justify-around">
                     @auth
-                        @if (auth()->user()->hasRole('user|admin'))
+                        @if (auth()->user()->hasRole('user'))
                             {{-- PRIMERA OPCIÓN (SI SE TIENE UNA RUTINA ASIGNADA) --}}
                             <div class="basis-0 md:basis-5/12 grow">
                                 {{-- Asignación de la imagen de la rutina a una variable PHP --}}

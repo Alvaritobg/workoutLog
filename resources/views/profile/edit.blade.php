@@ -14,6 +14,16 @@
                     @include('profile.partials.update-profile-information-form')
                 </div>
             </div>
+            {{--  Pagar subscripcion si eres entrenador --}}
+            @auth
+                @if (auth()->user()->hasRole('admin'))
+                    <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                        <div class="max-w-xl">
+                            @include('profile.partials.trainer-subscription')
+                        </div>
+                    </div>
+                @endif
+            @endauth
 
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl">

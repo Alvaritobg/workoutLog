@@ -27,8 +27,10 @@ class User extends Authenticatable implements MustVerifyEmail // Con este implem
      */
     public function routines()
     {
-        return $this->hasMany(Routine::class)->withDefault(); // withDefault proporciona un valor por defecto para evitar valores nulos.
+        //return $this->hasMany(Routine::class)->withDefault(); // withDefault proporciona un valor por defecto para evitar valores nulos.
+        return $this->hasMany(Routine::class, 'user_id');
     }
+
 
     /**
      * Define la relación 'one-to-many' con Workout.

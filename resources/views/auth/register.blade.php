@@ -3,7 +3,7 @@
         @csrf
 
         <!-- Name -->
-        <div>
+        <div class="mt-4">
             <x-input-label for="name" :value="__('Nombre')" />
             <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required
                 autofocus autocomplete="name" />
@@ -11,23 +11,34 @@
         </div>
 
         <!-- Surname -->
-        <div>
+        <div class="mt-4">
             <x-input-label for="surname" :value="__('Apellidos')" />
             <x-text-input id="surname" class="block mt-1 w-full" type="text" name="surname" :value="old('surname')"
                 required autofocus autocomplete="surname" />
             <x-input-error :messages="$errors->get('surname')" class="mt-2" />
         </div>
 
+        <!-- Role -->
+        <div class="mt-4">
+            <x-input-label for="trainer" :value="__('Tipo de cuenta:')" />
+            <select name="trainer" id="trainer"
+                class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                <option value="false" selected>Cuenta de usuario</option>
+                <option value="true">Cuenta de entrenador</option>
+            </select>
+            <x-input-error :messages="$errors->get('trainer')" class="mt-2" />
+        </div>
+
         <!-- Weight -->
-        <div>
+        <div class="mt-4" id="cont_weight">
             <x-input-label for="weight" :value="__('Peso (Kg)')" />
             <x-text-input id="weight" class="block mt-1 w-full" type="number" name="weight" :value="old('weight')"
-                required autofocus autocomplete="weight" />
+                autocomplete="weight" />
             <x-input-error :messages="$errors->get('weight')" class="mt-2" />
         </div>
 
         <!-- Date of birth -->
-        <div>
+        <div class="mt-4">
             <x-input-label for="date_of_birth" :value="__('Fecha de nacimiento')" />
             <x-text-input id="date_of_birth" class="block mt-1 w-full" type="date" name="date_of_birth"
                 :value="old('date_of_birth')" required autofocus autocomplete="date_of_birth" />

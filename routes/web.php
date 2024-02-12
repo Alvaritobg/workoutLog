@@ -30,7 +30,18 @@ Route::get('/', function () {
 Route::middleware('auth', 'verified')->group(function () {
     Route::get('/rutinas', [RoutineController::class, 'index']);
     Route::get('/rutina/{id}', [RoutineController::class, 'show'])->name('routine.show');
+    /*Route::get('/prueba/{id}',[UserController::class,'getUserRoutine'])->name('index');  */
 });
+
+Route::middleware('auth', 'verified')->group(function () {
+    Route::get('/trainer/{id}', [UserController::class, 'obtainCreatedRoutines'])->name('users.trainerRoutines');
+    
+});
+
+/* Route::get('/prueba/{id}', function($id) {
+    // Aquí puedes hacer cualquier lógica adicional que necesites con $id
+    return view('users.index');
+}); */
 
 Route::get('/dashboard', function () {
     return view('dashboard');
