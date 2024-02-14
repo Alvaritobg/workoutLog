@@ -1,49 +1,52 @@
-<!-- Vista para elimnar la cuenta de usuario -->
+<!-- Vista para pagar la suscripción de entrenador -->
 <section class="space-y-6">
     <header>
         <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Pagar la subscipción de entrenador') }}
+            {{ __('Pagar la subscripción de entrenador') }}
         </h2>
-
-        <p class="mt-1 text-sm text-gray-600">
-            {{ __('Introduzca su contraseña y pulse en pagar subscripción. Una vez pagada tendrá un més de servicio.') }}
-        </p>
+        <p>Subscripción es mensual con posibilidad de autorenovarse.</p>
     </header>
-    <!-- Botón para eliminar cuenta -->
-    <x-primary-button x-data=""
-        x-on:click.prevent="$dispatch('open-modal', 'confirm-pay-subscription')">{{ __('Pagar subscripción') }}</x-primary-button>
-    <!--  Modal con advertencias al pulsar en eliminar -->
-    <x-modal name="confirm-pay-subscription" focusable>
-        <form method="post" action="" class="p-6">
+    @php
+        $latestSubscription = auth()->user()->subscriptions()->latest('end_date')->first();
+    @endphp
+
+    @if (auth()->user()->subscriptions()->latest('end_date')->first() 
+    //&& auth()->user()->subscriptions()->latest('end_date')->first()->renew
+    )
+        <p class="italic p-3 border-dashed rounded-lg border-2 border-green-600 bg-green-50 text-center w-72">Su subscripción está activa hasta el:
+            <b>{{ \Carbon\Carbon::parse($latestSubscription->end_date)->format('d-m-Y') }}</b>
+        </p>
+        @if(auth()->user()->subscriptions()->latest('end_date')->first()->renew)
+        <form action="{{ route('subscription.disableRenew') }}"method="POST">
             @csrf
-            @method('delete')
-
-            <h2 class="text-lg font-medium text-gray-900">
-                {{ __('Pagar la subscripción') }}
-            </h2>
-
-            <p class="mt-1 text-sm text-gray-600">
-                {{ __('Una vez aceptado se realizara el cargo') }}
-            </p>
-            <!-- Input para pedir la contraseña antes de pagar-->
-            <div class="mt-6">
-                <x-input-label for="password" value="{{ __('Password') }}" class="sr-only" />
-
-                <x-text-input id="password" name="password" type="password" class="mt-1 block w-3/4"
-                    placeholder="{{ __('Contraseña') }}" />
-                <!-- Muestra un posible error -->
-                <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
+            {{-- $latestSubscription --}}
+            <button type="submit" onclick="return confirm('¿Estás seguro de querer cancelar la renovación automática?');"
+                class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:outline-none focus:border-red-700 focus:ring focus:ring-red-200 active:bg-red-600 transition ease-in-out duration-150">
+                Cancelar renovación automática
+            </button>
+        </form>
+        @endif
+    @else
+        <form action="{{ route('subscriptions.store') }}" method="POST" class="flex gap-4 flex-wrap">
+            @csrf
+            @method('post')
+            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+            <div class="mr-2">
+                <button type="submit" onclick="return confirm('¿Estás seguro de querer pagar la subscripción?');"
+                    class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    Pagar subscripción
+                </button>
             </div>
-            <!-- Boton para confirmar o cancelar la eliminación de la cuenta -->
-            <div class="mt-6 flex justify-end">
-                <x-secondary-button x-on:click="$dispatch('close')">
-                    {{ __('Cancelar') }}
-                </x-secondary-button>
 
-                <x-danger-button class="ms-3">
-                    {{ __('Pagar subscripción.') }}
-                </x-danger-button>
+            <div class="pt-2">
+                <input type="checkbox" name="auto_renew" id="auto_renew" value="1" class="mr-1">
+                <label for="auto_renew"><i>Renovar automáticamente:</i></label>
             </div>
         </form>
-    </x-modal>
+    @endif
+    @if (session('success'))
+        <div class="italic text-green-600">{{ session('success') }}</div>
+    @elseif(session('error'))
+        <div class="italic text-red-600">{{ session('error') }}</div>
+    @endif
 </section>

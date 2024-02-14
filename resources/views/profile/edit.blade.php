@@ -16,7 +16,7 @@
             </div>
             {{--  Pagar subscripcion si eres entrenador --}}
             @auth
-                @if (auth()->user()->hasRole('admin'))
+                @if (auth()->user()->hasRole('admin|trainer'))
                     <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                         <div class="max-w-xl">
                             @include('profile.partials.trainer-subscription')

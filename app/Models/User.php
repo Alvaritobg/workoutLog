@@ -20,6 +20,8 @@ class User extends Authenticatable implements MustVerifyEmail // Con este implem
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
 
+    
+    
     /**
      * Define la relación 'one-to-many' con Routine.
      *
@@ -31,6 +33,20 @@ class User extends Authenticatable implements MustVerifyEmail // Con este implem
         return $this->hasMany(Routine::class, 'user_id');
     }
 
+    public function subscriptions()
+    {
+        //dd($this->hasMany(Subscription::class)->orderByDesc('end_date'));
+        //return $this->hasMany(Subscription::class)->orderByDesc('end_date');
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function hasPaidSubscription()
+    {
+        return $this->subscriptions()->where('paid', true)
+                                      ->where('start_date', '<=', now())
+                                      ->where('end_date', '>=', now())
+                                      ->exists();
+    }
 
     /**
      * Define la relación 'one-to-many' con Workout.
