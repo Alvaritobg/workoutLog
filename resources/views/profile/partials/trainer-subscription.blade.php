@@ -4,27 +4,30 @@
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('Pagar la subscripción de entrenador') }}
         </h2>
-        <p>Subscripción es mensual con posibilidad de autorenovarse.</p>
+        <p>La subscripción es mensual con posibilidad de autorenovarse.</p>
     </header>
     @php
         $latestSubscription = auth()->user()->subscriptions()->latest('end_date')->first();
     @endphp
 
-    @if (auth()->user()->subscriptions()->latest('end_date')->first() 
-    //&& auth()->user()->subscriptions()->latest('end_date')->first()->renew
-    )
-        <p class="italic p-3 border-dashed rounded-lg border-2 border-green-600 bg-green-50 text-center w-72">Su subscripción está activa hasta el:
-            <b>{{ \Carbon\Carbon::parse($latestSubscription->end_date)->format('d-m-Y') }}</b>
+    @if (auth()->user()->subscriptions()->latest('end_date')->first())
+        <p class="italic p-3 border-dashed rounded-lg border-2 border-green-600 bg-green-50 text-center w-72">Su
+            subscripción está activa hasta el:
+            <b>
+                {{ \Carbon\Carbon::parse($latestSubscription->end_date)->format('d-m-Y') }}.<br>
+                {{ auth()->user()->subscriptions()->latest('end_date')->first()->renew == 1 ? 'Se renovara automaticamente.' : '' }}
+                </br>
         </p>
-        @if(auth()->user()->subscriptions()->latest('end_date')->first()->renew)
-        <form action="{{ route('subscription.disableRenew') }}"method="POST">
-            @csrf
-            {{-- $latestSubscription --}}
-            <button type="submit" onclick="return confirm('¿Estás seguro de querer cancelar la renovación automática?');"
-                class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:outline-none focus:border-red-700 focus:ring focus:ring-red-200 active:bg-red-600 transition ease-in-out duration-150">
-                Cancelar renovación automática
-            </button>
-        </form>
+        @if (auth()->user()->subscriptions()->latest('end_date')->first()->renew)
+            <form action="{{ route('subscription.disableRenew') }}"method="POST">
+                @csrf
+                {{-- $latestSubscription --}}
+                <button type="submit"
+                    onclick="return confirm('¿Estás seguro de querer cancelar la renovación automática?');"
+                    class="mt-4 inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:outline-none focus:border-red-700 focus:ring focus:ring-red-200 active:bg-red-600 transition ease-in-out duration-150">
+                    Cancelar renovación automática
+                </button>
+            </form>
         @endif
     @else
         <form action="{{ route('subscriptions.store') }}" method="POST" class="flex gap-4 flex-wrap">

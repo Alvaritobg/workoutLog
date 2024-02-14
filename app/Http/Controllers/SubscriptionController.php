@@ -52,8 +52,23 @@ class SubscriptionController extends Controller
     
     public function disableRenew()
     {
-
         try {
+            DB::beginTransaction();
+            $subscription = Auth::user()->subscriptions()->first();
+            Subscription::where('user_id', Auth::id())
+            ->where('end_date', '=', $subscription->end_date)
+            ->where('start_date', '=', $subscription->start_date)->update(['renew' => 0]);
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Renovación auntomática dada de baja con éxito.');
+        } catch(e) {
+            // Si algo sale mal, revierte la transacción
+            DB::rollBack();
+
+            // Redirige con un mensaje de error
+            return redirect()->back()->with('error', 'Hubo un problema al cancelar la renovación automatica de la subscripción.');
+        } 
+      /*   try {
             // Inicia una transacción de base de datos
             DB::beginTransaction();
             $subscription = Auth::user()->subscriptions()->first();
@@ -73,7 +88,7 @@ class SubscriptionController extends Controller
 
             // Redirige con un mensaje de error
             return redirect()->back()->with('error', 'Hubo un problema al cancelar la renovación automatica de la subscripción.');
-        }
+        } */
     }
 
 }
