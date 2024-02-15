@@ -10,13 +10,13 @@
         $latestSubscription = auth()->user()->subscriptions()->latest('end_date')->first();
     @endphp
 
-    @if (auth()->user()->subscriptions()->latest('end_date')->first())
+    @if (auth()->user()->hasActivePaidSubscription())
         <p class="italic p-3 border-dashed rounded-lg border-2 border-green-600 bg-green-50 text-center w-72">Su
             subscripción está activa hasta el:
             <b>
                 {{ \Carbon\Carbon::parse($latestSubscription->end_date)->format('d-m-Y') }}.<br>
                 {{ auth()->user()->subscriptions()->latest('end_date')->first()->renew == 1 ? 'Se renovara automaticamente.' : '' }}
-                </br>
+
         </p>
         @if (auth()->user()->subscriptions()->latest('end_date')->first()->renew)
             <form action="{{ route('subscription.disableRenew') }}"method="POST">
