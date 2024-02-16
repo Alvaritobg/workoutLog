@@ -1,13 +1,15 @@
 <x-app-layout>
-    {{-- <x-slot name="header">
+    {{--    <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard') }}
         </h2>
     </x-slot> --}}
-
-    <div class="py-3">
+    <div class="py-3 ">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight py-2 px-2 md:px-5 my-4">
+                    {{ __('Dashboard de ' . auth()->user()->getRoleName()) }}
+                </h2>
                 <div class="flex flex-col lg:flex-row flex-wrap py-2 px-2 md:px-5 my-4 gap-4 justify-around">
                     @auth
                         @if (auth()->user()->hasRole('user') && auth()->user()->routine_id !== null)
@@ -82,33 +84,37 @@
                         @endif
                     @endauth
                     {{-- TERCERA OPCION --}}
-                    <div class="basis-0 md:basis-5/12 grow">
+                    @auth
+                        @if (auth()->user()->hasRole('user'))
+                            <div class="basis-0 md:basis-5/12 grow">
 
-                        {{-- Enlace para cada rutina --}}
-                        <a href="#">
-                            {{-- Contenedor de la rutina --}}
+                                {{-- Enlace para cada rutina --}}
+                                <a href="#">
+                                    {{-- Contenedor de la rutina --}}
 
-                            <div class="max-w-7xl mx-auto ">
-                                {{-- Tarjeta de rutina con imagen de fondo y texto --}}
-                                <div class="flex flex-col text-end text-white p-6 max-h-60 overflow-hidden shadow-md rounded-sm   
+                                    <div class="max-w-7xl mx-auto ">
+                                        {{-- Tarjeta de rutina con imagen de fondo y texto --}}
+                                        <div class="flex flex-col text-end text-white p-6 max-h-60 overflow-hidden shadow-md rounded-sm   
                                         h-screen bg-cover bg-center hover:grayscale"
-                                    style="background-image: url('{{ asset('img/estadisticas.jpg') }}')">
-                                    {{-- Información de la rutina --}}
-                                    <div class="flex flex-col justify-end flex-grow">
-                                        {{-- Nombre de la rutina --}}
-                                        <h3
-                                            class="font-bold text-4xl drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] border-black">
-                                            Estadísticas</h3>
-                                        {{-- Descripción de la rutina --}}
-                                        <p
-                                            class="font-extralightdrop-shadow-lg drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-                                            Consulte sus progresiones</p>
+                                            style="background-image: url('{{ asset('img/estadisticas.jpg') }}')">
+                                            {{-- Información de la rutina --}}
+                                            <div class="flex flex-col justify-end flex-grow">
+                                                {{-- Nombre de la rutina --}}
+                                                <h3
+                                                    class="font-bold text-4xl drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] border-black">
+                                                    Estadísticas</h3>
+                                                {{-- Descripción de la rutina --}}
+                                                <p
+                                                    class="font-extralightdrop-shadow-lg drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                                                    Consulte sus progresiones</p>
 
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
+                        @endif
+                    @endauth
                     {{-- CUARTA OPCION --}}
                     <div class="basis-0 md:basis-5/12 grow">
                         {{-- Asignación de la imagen de la rutina a una variable PHP --}}
@@ -183,7 +189,7 @@
                             <div class="basis-0 md:basis-5/12 grow">
 
                                 {{-- Enlace para cada rutina --}}
-                                <a href="{{ url('/administrar-usuarios/') }}">
+                                <a href="{{ url('administrar-usuarios/') }}">
                                     {{-- Contenedor de la rutina --}}
 
                                     <div class="max-w-7xl mx-auto ">
@@ -201,6 +207,38 @@
                                                 <p
                                                     class="font-extralightdrop-shadow-lg drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
                                                     Permite gestionar las cuentas de usuarios</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        @endif
+                    @endauth
+                    @auth
+                        @if (auth()->user()->hasRole('trainer'))
+                            <!-- Elemento visible solo para administradores -->
+                            {{-- SEXTA OPCION --}}
+                            <div class="basis-0 md:basis-5/12 grow">
+
+                                {{-- Enlace para cada rutina --}}
+                                <a href="{{ url('administrar-usuarios/') }}">
+                                    {{-- Contenedor de la rutina --}}
+
+                                    <div class="max-w-7xl mx-auto ">
+                                        {{-- Tarjeta de rutina con imagen de fondo y texto --}}
+                                        <div class="flex flex-col text-end text-white p-6 max-h-60 overflow-hidden shadow-md rounded-sm   
+                                    h-screen bg-cover bg-center hover:grayscale"
+                                            style="background-image: url('{{ asset('img/gestion.jpg') }}')">
+                                            {{-- Información de la rutina --}}
+                                            <div class="flex flex-col justify-end flex-grow">
+                                                {{-- Nombre de la rutina --}}
+                                                <h3
+                                                    class="font-bold text-4xl drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] border-black">
+                                                    Gestión de clientes</h3>
+                                                {{-- Descripción de la rutina --}}
+                                                <p
+                                                    class="font-extralightdrop-shadow-lg drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                                                    Permite hacer seguimiento de clientes</p>
                                             </div>
                                         </div>
                                     </div>

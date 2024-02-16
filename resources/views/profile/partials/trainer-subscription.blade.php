@@ -48,8 +48,8 @@
         </form>
     @endif
     @if (session('success'))
-        <div class="italic text-green-600">{{ session('success') }}</div>
+        <div class="italic text-green-600 mt-4">{{ session('success') }}</div>
     @elseif(session('error'))
-        <div class="italic text-red-600">{{ session('error') }}</div>
+        <div class="italic text-red-600 mt-4">{{ session('error') }}</div>
     @endif
 </section>

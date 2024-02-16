@@ -70,6 +70,29 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Obtiene el nombre del rol del usuario.
+     *
+     * @return string Nombre del rol del usuario.
+     */
+    public function getRoleName()
+    {
+        // Obtiene el primer rol asignado al usuario
+        $role = $this->roles->first();
+        
+        // Verifica el nombre del rol y retorna el nombre correspondiente
+        switch ($role->name) {
+            case 'admin':
+                return 'Administrador';
+            case 'user':
+                return 'Usuario';
+            case 'trainer':
+                return 'Entrenador';
+            default:
+                return 'Sin rol';
+        }
+    }
+
+    /**
      * Atributos asignables en masa.
      *
      * @var array Lista de atributos que se pueden asignar masivamente.
