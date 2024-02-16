@@ -66,9 +66,9 @@
 
                 </tbody>
             </table>
-            {{-- Mostrar enlaces de paginación --}}
-            {{ $users->links('vendor.pagination.tailwind') }}
         </div>
+        {{-- Mostrar enlaces de paginación --}}
+        {{ $users->links('vendor.pagination.tailwind') }}
     @else
         {{-- Mensaje si no hay rutinas disponibles --}}
         <p>No hay usuarios</p>

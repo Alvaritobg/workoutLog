@@ -26,12 +26,11 @@
                                 {{-- Enlace para cada rutina --}}
                                 <a href="{{ route('routine.show', ['id' => $routine->id]) }}">
                                     {{-- Contenedor de la rutina --}}
-                                    {{-- <div class="py-2 px-0 md:px-5 lg:px-10 xl:px-20"> --}}
+
                                     <div class="max-w-7xl mx-auto ">
                                         {{-- Tarjeta de rutina con imagen de fondo y texto --}}
                                         <div class="flex flex-col text-end text-white p-6 max-h-60 overflow-hidden shadow-md rounded-sm 
-                    
-                    h-screen bg-cover bg-center hover:grayscale"
+                                            h-screen bg-cover bg-center hover:grayscale"
                                             style="background-image: url('{{ $routine->img }}')">
                                             {{-- Información de la rutina --}}
                                             <div class="flex flex-col justify-end flex-grow">
@@ -51,7 +50,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {{-- </div> --}}
+
                                 </a>
                             </div>
                         @endforeach

@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable; // Extiende de la clase 
 use Spatie\Permission\Traits\HasRoles; // Importa el trait HasRoles para manejar roles y permisos con el paquete spatie/laravel-permission.
 use Illuminate\Notifications\Notifiable; // Habilita las notificaciones para el modelo User.
 use Laravel\Sanctum\HasApiTokens; // Habilita el uso de API Tokens con Sanctum para autenticación API.
+use Carbon\Carbon; // Biblioteca para fechas
+
 
 /**
  * Clase User que representa el modelo de usuario en la aplicación.
@@ -26,7 +28,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function routines()
     {
-        return $this->hasMany(Routine::class, 'user_id'); // Especifica la relación y la clave foránea 'user_id'.
+        //return $this->hasMany(Routine::class, 'user_id'); // Especifica la relación y la clave foránea 'user_id'.
+        return $this->belongsTo(Routine::class, 'routine_id');
     }
 
     /**
@@ -91,6 +94,18 @@ class User extends Authenticatable implements MustVerifyEmail
                 return 'Sin rol';
         }
     }
+
+    /**
+     * Calcula y retorna la edad del usuario.
+     *
+     * @return int Edad del usuario.
+     */
+        public function getAge()
+        {
+            return Carbon::parse($this->attributes['date_of_birth'])->age;
+        }
+
+
 
     /**
      * Atributos asignables en masa.

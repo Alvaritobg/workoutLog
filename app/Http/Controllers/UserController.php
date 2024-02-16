@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
-use Illuminate\Support\Facades\BD;
 use App\Models\User;
 use App\Models\Routine;
 use App\Models\Subscription;
 use Spatie\Permission\Models\Role;
+
 
 
 class UserController extends Controller
@@ -104,48 +107,6 @@ class UserController extends Controller
         return back()->with('success', 'Ya no está suscrito a esta rutina.');
     }
 
-    
-    
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
 
     /**
      * Elimina el usuario con el id especificado
@@ -158,4 +119,31 @@ class UserController extends Controller
         // Redirigir de vuelta a la vista con un mensaje de éxito
         return back()->with('success', 'Usuario eliminado correctamente.');
     }
+
+
+    /**
+     * Obtiene y muestra los usuarios que tienen asignada una rutina creada por el usuario autenticado.
+     *
+     * Este método recupera los identificadores de las rutinas creadas por el usuario autenticado,
+     * luego, busca a los usuarios que tienen alguna de estas rutinas asignadas como su rutina actual.
+     * Los resultados se paginan, mostrando un determinado número de usuarios por página para facilitar
+     * la visualización. Finalmente, pasa estos usuarios a la vista correspondiente para su visualización.
+     *
+     * @return \Illuminate\View\View Vista con los usuarios que tienen asignadas las rutinas creadas por el usuario autenticado.
+     */
+    public function getUsersWithTheirRoutines()
+    {
+        // Obtener los IDs de rutinas creadas por el usuario
+        $routineIdsCreatedByUser = Routine::where('user_id', Auth::id())->pluck('id');
+
+        // Obtener usuarios que tienen una rutina creada por este usuario con paginación
+        $users = User::whereIn('routine_id', $routineIdsCreatedByUser)->paginate(10); // cantidad de items que deseas por página
+
+        // Enviar el listado de usuarios a la vista
+        return view('users.trainerClients', compact('users'));
+    }
+   
 }
+
+
+

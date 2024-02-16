@@ -47,6 +47,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
          ->middleware('role:admin'); // Asegúrate de que el rol sea exactamente 'admin'
     // Ruta para eliminar usuarios
     Route::delete('/administrar-usuarios/eliminar/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy')->middleware('role:admin');
+    Route::get('administrar-clientes/', [UserController::class, 'getUsersWithTheirRoutines'])->name('users.trainerClients')->middleware('role:trainer');
 });
 // SUBSCRIPCIONES
 Route::post('/subscripcion/guardar', [SubscriptionController::class, 'store'])->name('subscriptions.store')->middleware(['role:admin|trainer','auth','verified']);
