@@ -60,7 +60,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function workouts()
     {
-        return $this->belongsToMany(Workout::class, 'users_workouts', 'user_id', 'workout_id'); // Define la relación y especifica las claves foráneas.
+        return $this->belongsToMany(Workout::class, 'users_workouts', 'user_id', 'workout_id')->withPivot('execution_date');
+        //->withTimestamps();; // Define la relación y especifica las claves foráneas.
     }
 
     /**

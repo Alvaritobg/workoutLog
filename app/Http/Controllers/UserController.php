@@ -137,11 +137,27 @@ class UserController extends Controller
         $routineIdsCreatedByUser = Routine::where('user_id', Auth::id())->pluck('id');
 
         // Obtener usuarios que tienen una rutina creada por este usuario con paginación
-        $users = User::whereIn('routine_id', $routineIdsCreatedByUser)->paginate(10); // cantidad de items que deseas por página
+        $users = User::whereIn('routine_id', $routineIdsCreatedByUser)->paginate(10); // cantidad de items que deseas por página ()
 
         // Enviar el listado de usuarios a la vista
         return view('users.trainerClients', compact('users'));
     }
+
+    public function listUserWorkouts($userId)
+{
+    $trainings = User::with(['workouts.exercises' => function ($query) {
+        // Aquí puedes añadir condiciones adicionales, como ordenar los ejercicios si es necesario
+        $query->orderBy('order', 'asc');
+    }])->find($userId);
+
+    if (!$trainings) {
+        // Redirige a una ruta o vista con un mensaje de error si el usuario no se encuentra
+        return redirect()->route('users.listUserTrainings')->withErrors('Usuario no encontrado');
+    }
+
+    // Pasa el usuario y sus entrenamientos a la vista
+    return view('users.listUserTrainings', compact('trainings'));
+}
    
 }
 

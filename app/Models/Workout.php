@@ -28,7 +28,9 @@ class Workout extends Model
      */
     public function users()
     {
-        return $this->belongsToMany(User::class, 'users_workouts', 'workout_id', 'user_id');
+        return $this->belongsToMany(User::class, 'users_workouts', 'workout_id', 'user_id')
+                ->withPivot('execution_date');
+                //->withTimestamps();
     }
 
     /**
@@ -39,7 +41,9 @@ class Workout extends Model
      */
     public function exercises()
     {
-        return $this->belongsToMany(Exercise::class, 'exercises_workouts', 'exercise_id', 'workout_id');
+       // return $this->belongsToMany(Exercise::class, 'exercises_workouts', 'exercise_id', 'workout_id');
+       return $this->belongsToMany(Exercise::class, 'exercises_workouts', 'workout_id', 'exercise_id')
+                ->withPivot('order')->orderBy('pivot_order'); // Si tienes una columna 'order' en la tabla pivot
     }
 
     /**
