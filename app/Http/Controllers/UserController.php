@@ -145,9 +145,12 @@ class UserController extends Controller
 
     public function listUserWorkouts($userId)
 {
-    $trainings = User::with(['workouts.exercises' => function ($query) {
-        // Aquí puedes añadir condiciones adicionales, como ordenar los ejercicios si es necesario
-        $query->orderBy('order', 'asc');
+    //$trainings = User::with(['workouts.exercises' => function ($query) {
+    //    // Aquí puedes añadir condiciones adicionales, como ordenar los ejercicios si es necesario
+    //    $query->orderBy('order', 'asc');
+    //}])->find($userId);
+    $trainings = User::with(['workouts.exercises.series' => function ($query) use ($userId) {
+        $query->where('user_id', $userId); 
     }])->find($userId);
 
     if (!$trainings) {

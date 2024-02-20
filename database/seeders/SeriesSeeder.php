@@ -14,6 +14,7 @@ class SeriesSeeder extends Seeder
     public function run(): void
     {
         DB::table('series')->insert([
+            // Entrenamiento 1- Ejercicio 1
             [
                 'number'=>1,
                 'workout_id' => 1,
@@ -89,8 +90,7 @@ class SeriesSeeder extends Seeder
                 'date' => '2023-01-01 08:40:00',
                 'used_weight' => 30,
                 'repetitions' => 20
-            ],[ // AQUII!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                /// ---------------------------------
+            ],[ 
                 'number'=>2,
                 'workout_id' => 1,
                 'user_id' => 3,
@@ -181,7 +181,7 @@ class SeriesSeeder extends Seeder
                 'used_weight' => 100,
                 'repetitions' => 8
             ],
-            [//
+            [
                 'number'=>1,
                 'workout_id' => 4,
                 'user_id' => 4,

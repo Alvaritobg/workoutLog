@@ -10,8 +10,9 @@
     </x-slot>
 
     @if (!$trainings->workouts->isEmpty())
-        <div class="overflow-x-auto my-7 mx-5 rounded-lg border border-gray-200 ">
-            @foreach ($trainings->workouts as $wo)
+
+        @foreach ($trainings->workouts as $wo)
+            <div class="overflow-x-auto my-7 mx-5 rounded-lg border border-gray-200 ">
                 <h3 class="divide-y-2 divide-gray-200 p-5 text-xl">Entrenamiento {{ $wo->order }}</h3>
                 <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
                     <thead class="ltr:text-left rtl:text-right">
@@ -19,12 +20,13 @@
                             <th class="whitespace-nowrap px-4 py-4 font-medium text-gray-900 text-left">Nª</th>
                             <th class="whitespace-nowrap px-4 py-4 font-medium text-gray-900 text-left">Ejercicio</th>
                             <th class="whitespace-nowrap px-4 py-4 font-medium text-gray-900 text-left">Desc</th>
-                            <th class="whitespace-nowrap px-4 py-4 font-medium text-gray-900 text-left">Repeticiones a
-                                realizar min/max
+                            <th class="whitespace-nowrap px-4 py-4 font-medium text-gray-900 text-left">Rep objetivo
+                                min/max
                             </th>
-                            <th class="whitespace-nowrap px-4 py-4 font-medium text-gray-900 text-left">Repeticiones
-                                obtenidas
+                            <th class="whitespace-nowrap px-4 py-4 font-medium text-gray-900 text-left">NºSerie/Rep
+                                conseguidas/Peso usado
                             </th>
+
 
                         </tr>
                     </thead>
@@ -41,19 +43,47 @@
                                 <td class="whitespace-nowrap px-4 py-2 text-gray-700">
                                     Entre {{ $ex->min_reps_desired }} / {{ $ex->max_reps_desired }} repeticiones</td>
                                 <td class="whitespace-nowrap px-4 py-2 text-gray-700">
-
+                                    @foreach ($ex->series as $serie)
+                                        <ul>
+                                            <li
+                                                class="my-2 p-2 rounded-sm border border-b-1 border-solid border-gray-200 text-center bg-gray-100 cursor-pointer">
+                                                <b>{{ $serie->number }}ª</b> :
+                                                {{ $serie->repetitions }}
+                                                repeticiones con
+                                                {{ $serie->used_weight }} kg
+                                            </li>
+                                        </ul>
+                                    @endforeach
                                 </td>
+                                {{--  <td class="whitespace-nowrap px-4 py-2 text-gray-700">
+                                    @foreach ($ex->series as $serie)
+                                        {{ $serie->number }}ª<br />
+                                    @endforeach
+                                </td>
+                                <td class="whitespace-nowrap px-4 py-2 text-gray-700">
+                                    @foreach ($ex->series as $serie)
+                                        {{ $serie->used_weight }}<br>
+                                    @endforeach
+                                </td>
+                                <td class="whitespace-nowrap px-4 py-2 text-gray-700">
+                                    @foreach ($ex->series as $serie)
+                                        {{ $serie->used_weight }}kg<br>
+                                    @endforeach
+                                </td> --}}
 
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
-            @endforeach
+            </div>
+        @endforeach
         </div>
         {{-- Mostrar enlaces de paginación --}}
         {{-- $users->links('vendor.pagination.tailwind') --}}
     @else
-        <p>Este usuario no tiene entrenamientos registrados</p>
+        <div class="overflow-x-auto my-7 mx-5 rounded-lg border border-gray-200 p-4 text-center">
+            <p>Este usuario no tiene entrenamientos registrados</p>
+        </div>
     @endif
 
 

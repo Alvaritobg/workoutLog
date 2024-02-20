@@ -41,6 +41,11 @@ class Exercise extends Model
         return $this->belongsToMany(Workout::class, 'exercises_workouts', 'exercise_id', 'workout_id');
     }
 
+    public function series()
+{
+    return $this->hasMany(Serie::class, 'exercise_id');
+}
+
     // Otros métodos y propiedades del modelo.
 }
 
