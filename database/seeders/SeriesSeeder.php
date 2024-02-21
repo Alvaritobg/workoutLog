@@ -14,7 +14,8 @@ class SeriesSeeder extends Seeder
     public function run(): void
     {
         DB::table('series')->insert([
-            // Entrenamiento 1- Ejercicio 1
+            // usuario 3
+            // Entrenamiento 1- Ejercicio 1 press banca
             [
                 'number'=>1,
                 'workout_id' => 1,
@@ -42,180 +43,230 @@ class SeriesSeeder extends Seeder
                 'used_weight' => 80,
                 'repetitions' => 6
             ],
+            // Entrenamiento 1- Ejercicio 2 peso muerto 
             [
-                'number'=>4,
+                'number'=>1,
                 'workout_id' => 1,
                 'user_id' => 3,
-                'exercise_id' => 1,
+                'exercise_id' => 4,
                 'date' => '2023-01-01 08:15:00',
-                'used_weight' => 80,
-                'repetitions' => 5
-            ],[
-                'number'=>1,
+                'used_weight' => 120,
+                'repetitions' => 8
+            ],
+            [
+                'number'=>2,
                 'workout_id' => 1,
                 'user_id' => 3,
                 'exercise_id' => 4,
                 'date' => '2023-01-01 08:20:00',
                 'used_weight' => 120,
-                'repetitions' => 10
-            ],[
-                'number'=>2,
+                'repetitions' => 7
+            ], 
+            [
+                'number'=>3,
                 'workout_id' => 1,
                 'user_id' => 3,
                 'exercise_id' => 4,
                 'date' => '2023-01-01 08:25:00',
                 'used_weight' => 120,
-                'repetitions' => 9
-            ],[
-                'number'=>3,
-                'workout_id' => 1,
-                'user_id' => 3,
-                'exercise_id' => 4,
-                'date' => '2023-01-01 08:30:00',
-                'used_weight' => 120,
-                'repetitions' => 8
-            ],[
-                'number'=>4,
-                'workout_id' => 1,
-                'user_id' => 3,
-                'exercise_id' => 4,
-                'date' => '2023-01-01 08:35:00',
-                'used_weight' => 120,
                 'repetitions' => 6
-            ],[
-                'number'=>1,
-                'workout_id' => 1,
-                'user_id' => 3,
-                'exercise_id' => 7,
-                'date' => '2023-01-01 08:40:00',
-                'used_weight' => 30,
-                'repetitions' => 20
-            ],[ 
-                'number'=>2,
-                'workout_id' => 1,
-                'user_id' => 3,
-                'exercise_id' => 7,
-                'date' => '2023-01-01 08:44:00',
-                'used_weight' => 30,
-                'repetitions' => 19
-            ],[
-                'number'=>3,
-                'workout_id' => 1,
-                'user_id' => 3,
-                'exercise_id' => 7,
-                'date' => '2023-01-01 08:50:00',
-                'used_weight' => 30,
-                'repetitions' => 18
-            ],[
-                'number'=>4,
-                'workout_id' => 1,
-                'user_id' => 3,
-                'exercise_id' => 7,
-                'date' => '2023-01-01 08:55:00',
-                'used_weight' => 30,
-                'repetitions' => 17
             ],
+            // Entrenamiento 1- Ejercicio 3 abdominales 
             [
                 'number'=>1,
-                'workout_id' => 4,
-                'user_id' => 4,
-                'exercise_id' => 1,
-                'date' => '2023-02-02 08:00:00',
-                'used_weight' => 70,
-                'repetitions' => 10
-            ],[
-                'number'=>2,
-                'workout_id' => 4,
-                'user_id' => 4,
-                'exercise_id' => 1,
-                'date' => '2023-02-02 08:05:00',
-                'used_weight' => 70,
+                'workout_id' => 1,
+                'user_id' => 3,
+                'exercise_id' => 7,
+                'date' => '2023-01-01 08:15:00',
+                'used_weight' => 120,
                 'repetitions' => 8
-            ],[
-                'number'=>3,
-                'workout_id' => 4,
-                'user_id' => 4,
-                'exercise_id' => 1,
-                'date' => '2023-02-02 08:10:00',
-                'used_weight' => 70,
+            ],
+            [
+                'number'=>2,
+                'workout_id' => 1,
+                'user_id' => 3,
+                'exercise_id' => 7,
+                'date' => '2023-01-01 08:20:00',
+                'used_weight' => 120,
                 'repetitions' => 7
-            ],[
-                'number'=>4,
-                'workout_id' => 4,
-                'user_id' => 4,
-                'exercise_id' => 1,
-                'date' => '2023-02-02 08:15:00',
-                'used_weight' => 70,
+            ], 
+            [
+                'number'=>3,
+                'workout_id' => 1,
+                'user_id' => 3,
+                'exercise_id' => 7,
+                'date' => '2023-01-01 08:25:00',
+                'used_weight' => 120,
                 'repetitions' => 6
             ],
+            // Entrenamiento 2- Ejercicio 1 sentadilla
             [
                 'number'=>1,
-                'workout_id' => 4,
-                'user_id' => 4,
-                'exercise_id' => 4,
-                'date' => '2023-02-02 08:20:00',
-                'used_weight' => 100,
-                'repetitions' => 15
-            ],[
-                'number'=>2,
-                'workout_id' => 4,
-                'user_id' => 4,
-                'exercise_id' => 4,
-                'date' => '2023-02-02 08:25:00',
-                'used_weight' => 100,
-                'repetitions' => 13
-            ],[
-                'number'=>3,
-                'workout_id' => 4,
-                'user_id' => 4,
-                'exercise_id' => 4,
-                'date' => '2023-02-02 08:30:00',
-                'used_weight' => 100,
-                'repetitions' => 10
-            ],[
-                'number'=>4,
-                'workout_id' => 4,
-                'user_id' => 4,
-                'exercise_id' => 4,
-                'date' => '2023-02-02 08:35:00',
-                'used_weight' => 100,
+                'workout_id' => 2,
+                'user_id' => 3,
+                'exercise_id' => 2,
+                'date' => '2023-01-02 08:00:00',
+                'used_weight' => 140,
                 'repetitions' => 8
             ],
             [
+                'number'=>2,
+                'workout_id' => 2,
+                'user_id' => 3,
+                'exercise_id' => 2,
+                'date' => '2023-01-02 08:05:00',
+                'used_weight' => 140,
+                'repetitions' => 7
+            ], 
+            [
+                'number'=>3,
+                'workout_id' => 2,
+                'user_id' => 3,
+                'exercise_id' => 2,
+                'date' => '2023-01-02 08:10:00',
+                'used_weight' => 140,
+                'repetitions' => 6
+            ],
+            // Entrenamiento 2- Ejercicio 2 prensa
+            [
                 'number'=>1,
-                'workout_id' => 4,
-                'user_id' => 4,
-                'exercise_id' => 7,
-                'date' => '2023-02-02 08:40:00',
-                'used_weight' => 25,
-                'repetitions' => 22
+                'workout_id' => 2,
+                'user_id' => 3,
+                'exercise_id' => 6,
+                'date' => '2023-01-02 08:15:00',
+                'used_weight' => 120,
+                'repetitions' => 8
             ],
             [
                 'number'=>2,
-                'workout_id' => 4,
-                'user_id' => 4,
-                'exercise_id' => 7,
-                'date' => '2023-02-02 08:44:00',
-                'used_weight' => 25,
-                'repetitions' => 19
+                'workout_id' => 2,
+                'user_id' => 3,
+                'exercise_id' => 6,
+                'date' => '2023-01-02 08:20:00',
+                'used_weight' => 120,
+                'repetitions' => 7
+            ], 
+            [
+                'number'=>3,
+                'workout_id' => 2,
+                'user_id' => 3,
+                'exercise_id' => 6,
+                'date' => '2023-01-02 08:25:00',
+                'used_weight' => 120,
+                'repetitions' => 6
             ],
+            // Entrenamiento 2- Ejercicio 3 zancadas 
+            [
+                'number'=>1,
+                'workout_id' => 2,
+                'user_id' => 3,
+                'exercise_id' => 8,
+                'date' => '2023-01-02 08:15:00',
+                'used_weight' => 40,
+                'repetitions' => 18
+            ],
+            [
+                'number'=>2,
+                'workout_id' => 2,
+                'user_id' => 3,
+                'exercise_id' => 8,
+                'date' => '2023-01-02 08:20:00',
+                'used_weight' => 40,
+                'repetitions' => 15
+            ], 
+            [
+                'number'=>3,
+                'workout_id' => 2,
+                'user_id' => 3,
+                'exercise_id' => 8,
+                'date' => '2023-01-02 08:25:00',
+                'used_weight' => 40,
+                'repetitions' => 12
+            ],
+            // usuario 4
+            // entrenamiento 3 ejercicio dominadas
+            [
+                'number'=>1,
+                'workout_id' => 3,
+                'user_id' => 4,
+                'exercise_id' => 3,
+                'date' => '2023-01-03 09:15:00',
+                'used_weight' => 80,
+                'repetitions' => 8
+            ],
+            [
+                'number'=>2,
+                'workout_id' => 3,
+                'user_id' => 4,
+                'exercise_id' => 3,
+                'date' => '2023-01-03 09:20:00',
+                'used_weight' => 80,
+                'repetitions' => 7
+            ], 
+            [
+                'number'=>3,
+                'workout_id' => 3,
+                'user_id' => 4,
+                'exercise_id' => 3,
+                'date' => '2023-01-03 09:25:00',
+                'used_weight' => 80,
+                'repetitions' => 6
+            ],
+            // entrenamiento 3 ejercicio remo mancuerna
+            [
+                'number'=>1,
+                'workout_id' => 3,
+                'user_id' => 4,
+                'exercise_id' => 5,
+                'date' => '2023-01-03 09:30:00',
+                'used_weight' => 30,
+                'repetitions' => 8
+            ],
+            [
+                'number'=>2,
+                'workout_id' => 3,
+                'user_id' => 4,
+                'exercise_id' => 5,
+                'date' => '2023-01-03 09:35:00',
+                'used_weight' => 30,
+                'repetitions' => 7
+            ], 
             [
                 'number'=>3,
                 'workout_id' => 4,
                 'user_id' => 4,
-                'exercise_id' => 7,
-                'date' => '2023-02-02 08:50:00',
-                'used_weight' => 25,
-                'repetitions' => 18
+                'exercise_id' => 5,
+                'date' => '2023-01-03 09:40:00',
+                'used_weight' => 30,
+                'repetitions' => 6
+            ],
+            // entrenamiento 3 ejercicio peso muerto
+            [
+                'number'=>1,
+                'workout_id' => 3,
+                'user_id' => 4,
+                'exercise_id' => 4,
+                'date' => '2023-01-03 09:45:00',
+                'used_weight' => 130,
+                'repetitions' => 8
             ],
             [
-                'number'=>4,
-                'workout_id' => 4,
+                'number'=>2,
+                'workout_id' => 3,
+                'user_id' =>4,
+                'exercise_id' => 4,
+                'date' => '2023-01-03 09:50:00',
+                'used_weight' => 130,
+                'repetitions' => 7
+            ], 
+            [
+                'number'=>3,
+                'workout_id' => 3,
                 'user_id' => 4,
-                'exercise_id' => 7,
-                'date' => '2023-02-02 08:55:00',
-                'used_weight' => 25,
-                'repetitions' => 16
+                'exercise_id' => 4,
+                'date' => '2023-01-03 09:55:00',
+                'used_weight' => 130,
+                'repetitions' => 6
             ],
         ]);
     }

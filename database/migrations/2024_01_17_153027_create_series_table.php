@@ -17,6 +17,7 @@ return new class extends Migration
             // Número de serie, autoincremental y único
             //$table->unsignedBigInteger('number') (Da error, debo sacar number de la clave primaria y declarar una clave unica compuesta)
             $table->BigInteger('number');
+            /* $table->bigIncrements('number'); */
 
             // ID del entrenamiento asociado
             $table->unsignedBigInteger('workout_id');

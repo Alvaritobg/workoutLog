@@ -30,6 +30,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         //return $this->hasMany(Routine::class, 'user_id'); // Especifica la relación y la clave foránea 'user_id'.
         return $this->belongsTo(Routine::class, 'routine_id');
+
     }
 
     /**
@@ -62,6 +63,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(Workout::class, 'users_workouts', 'user_id', 'workout_id')->withPivot('execution_date');
         //->withTimestamps();; // Define la relación y especifica las claves foráneas.
+        
+        //return $this->belongsToMany(Workout::class, 'users_workouts')->withPivot('execution_date');
     }
 
     /**
