@@ -31,13 +31,15 @@ Route::get('/', function () {
 Route::middleware('auth', 'verified')->group(function () {
     Route::get('/rutinas', [RoutineController::class, 'index']);
     Route::get('/rutina/{id}', [RoutineController::class, 'show'])->name('routine.show');
-    Route::get('/rutina/{id}/editar', [RoutineController::class, 'edit'])->name('routine.edit');
+    /* Route::get('/mis-rutinas/{userId}',[RoutineController::class, 'listTrainerRoutines'])->name('routine.listTrainerRoutines')->middleware('role:trainer'); */
+    //Route::get('/rutina/{id}/editar', [RoutineController::class, 'edit'])->name('routine.edit');
     /*Route::get('/prueba/{id}',[UserController::class,'getUserRoutine'])->name('index');  */
+    Route::delete('/rutinas/eliminar/{id}', [RoutineController::class, 'destroy'])->name('routines.destroy')->middleware('role:trainer');
 });
 
 // Rutas usuario
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/trainer/{id}', [UserController::class, 'obtainCreatedRoutines'])->name('users.trainerRoutines');
+    Route::get('/entrenador/{id}/rutinas', [UserController::class, 'obtainCreatedRoutines'])->name('users.trainerRoutines');
     Route::post('/suscribir-usuario/{user_id}/rutina/{routine_id}', [UserController::Class, 'subscribeUserToRoutine']);
     Route::post('/des-suscribir-usuario/{user_id}/rutina/{routine_id}', [UserController::Class, 'unSubscribeUserFromRoutine']);
     

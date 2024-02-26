@@ -40,10 +40,9 @@ class UserController extends Controller
      */
     public function obtainCreatedRoutines($userId)
     {
-        $userRoutine = User::where('id',$userId)->with('routines')->first();
-        $userRoutine = $userRoutine ? $userRoutine->routines : collect([]);
+        $userRoutines = Routine::where('user_id', $userId)->paginate(10);
 
-        return view('users.trainerRoutines', compact('userRoutine'));     
+        return view('users.trainerRoutines', compact('userRoutines'));     
     }
 
     /**

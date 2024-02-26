@@ -13,7 +13,7 @@
 
         @foreach ($trainings->workouts as $wo)
             <div class="overflow-x-auto my-7 mx-5 rounded-lg border border-gray-200 ">
-                <h3 class="divide-y-2 divide-gray-200 p-5 text-xl">Entrenamiento {{ $wo->order }}</h3>
+                <h3 class="divide-y-2 divide-gray-200 p-5 text-xl">{{ $wo->name }}</h3>
                 <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
                     <thead class="ltr:text-left rtl:text-right">
                         <tr class="bg-gray-100">

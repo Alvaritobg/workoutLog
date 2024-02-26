@@ -36,17 +36,19 @@
                                 {{ $user->routines->name }}
                             </td>
                             <td class="whitespace-nowrap px-4 py-2 flex gap-3 justify-center items-center">
-                                <button type="submit"
-                                    onclick="return confirm('¿Estás seguro de querer eliminar este usuario?');"
-                                    class=" rounded  px-4 text-xs font-medium text-white  bg-green-700 hover:bg-green-700/80 focus:ring-4 focus:outline-none  py-2.5 text-center inline-flex items-centerme-2 ">
+                                <a href="/administrar-clientes/ver-entrenamientos/{{ $user->id }}">
+                                    <div
+                                        class="cursor-pointer rounded  px-4 text-xs font-medium text-white  bg-green-700 hover:bg-green-700/80 focus:ring-4 focus:outline-none  py-2.5 text-center inline-flex items-centerme-2 ">
 
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 fill-white"
-                                        viewBox="0 0 512 512" class="max-w-5">
-                                        <path
-                                            d="M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64V400c0 44.2 35.8 80 80 80H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H80c-8.8 0-16-7.2-16-16V64zm406.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L320 210.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L240 221.3l57.4 57.4c12.5 12.5 32.8 12.5 45.3 0l128-128z" />
-                                    </svg>
-                                    Ver entrenamientos
-                                </button>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 fill-white"
+                                            viewBox="0 0 512 512" class="max-w-5">
+                                            <path
+                                                d="M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64V400c0 44.2 35.8 80 80 80H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H80c-8.8 0-16-7.2-16-16V64zm406.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L320 210.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L240 221.3l57.4 57.4c12.5 12.5 32.8 12.5 45.3 0l128-128z" />
+                                        </svg>
+                                        Ver entrenamientos
+                                    </div>
+                                </a>
+
                                 <a href="mailto:{{ $user->email }}" target="_blank">
                                     <button type="submit "
                                         class=" rounded  px-4 text-xs font-medium text-white  bg-[#3b5998] hover:bg-[#3b5998]/90 focus:ring-4 focus:outline-none  py-2.5 text-center inline-flex items-center  me-2 ">

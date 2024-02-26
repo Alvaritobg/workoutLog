@@ -57,7 +57,7 @@
                     </div>
                 @else
                     {{-- Mensaje si no hay rutinas disponibles --}}
-                    <p>No se encontraron ejercicios para este entrenamiento.</p>
+                    <p>No se encontraron rutinas.</p>
                 @endif
             </div>
         </div>

@@ -25,14 +25,14 @@ class WorkoutsSeeder extends Seeder
                 'order' => 2
             ],
             [
-                'name' => 'Entrenamiento 3',
-                'routine_id' => 1,
-                'order' => 3
-            ],
-            [
                 'name' => 'Entrenamiento 1',
                 'routine_id' => 1,
                 'order' => 1
+            ],
+            [
+                'name' => 'Entrenamiento 2',
+                'routine_id' => 1,
+                'order' => 2
             ],
             
         ]);

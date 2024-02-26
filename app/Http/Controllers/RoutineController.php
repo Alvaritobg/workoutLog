@@ -95,8 +95,16 @@ class RoutineController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Routine $routine)
-    {
-        //
-    }
+   
+        public function destroy(string $id)
+        {
+            $routine = Routine::findOrFail($id);
+            $routine->delete();
+        
+            // Redirigir de vuelta a la vista con un mensaje de éxito
+            return back()->with('success', 'Rutina eliminada correctamente.');
+        }
+
+    
+  
 }
