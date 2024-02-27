@@ -5,7 +5,7 @@
         <div class="flex flex-col py-2 px-2 md:px-5 my-4 gap-4 justify-center">
             <div class="flex flex-col text-end text-white p-6 max-h-60 overflow-hidden shadow-md rounded-sm 
                     h-screen bg-cover bg-center"
-                style="background-image: url('{{ $routine->img }}')">
+                style="background-image: url('/images/{{ $routine->img }}')">
 
             </div>
 
@@ -63,7 +63,7 @@
             </div>
             {{-- Mensajes de error o de confirmación --}}
             {{-- **Crear un modulo para esto con un popup que se pueda cerrar o se cierre a los x segundos --}}
-            <div class="flex justify-end">
+            {{--  <div class="flex justify-end">
                 @if (session('success'))
                     <div class="text-green-600  text-center flex basis-4/12 gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="max-w-5">
@@ -81,7 +81,7 @@
                         {{ session('error') }}
                     </div>
                 @endif
-            </div>
+            </div> --}}
             {{-- Fin Mensajes de error o de confirmación --}}
 
             <div class="flex gap-2 justify-end">
@@ -90,7 +90,7 @@
                     @if (auth()->user()->hasRole('user|admin'))
                         @if (auth()->user()->routine_id === $routine->id)
                             <form method="post"
-                                action="{{ url('/des-suscribir-usuario/' . Auth::user()->id . '/rutina/' . $routine->id) }}">
+                                action="{{ url('des-suscribir-usuario/' . Auth::user()->id . 'rutina/' . $routine->id) }}">
                                 @csrf
                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                                 <!-- Asumiendo que estos valores se generan dinámicamente -->
@@ -104,7 +104,7 @@
                             </form>
                         @elseif(auth()->user()->routine_id === null)
                             <form method="post"
-                                action="{{ url('/suscribir-usuario/' . Auth::user()->id . '/rutina/' . $routine->id) }}">
+                                action="{{ url('suscribir-usuario/' . Auth::user()->id . 'rutina/' . $routine->id) }}">
                                 @csrf
                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                                 <!-- Asumiendo que estos valores se generan dinámicamente -->
@@ -125,7 +125,7 @@
                     @if (auth()->user()->hasRole('admin') ||
                             (auth()->user()->hasRole('trainer') && auth()->user()->id === $routine->user_id))
                         <a class="text-center inline-block rounded border border-blue-600 px-12 py-3 text-sm font-medium text-blue-600 hover:bg-blue-600 hover:text-white focus:outline-none focus:ring active:bg-blue-500"
-                            href="">
+                            href="{{ route('rutinas.edit', ['id' => $routine->id]) }}">
                             Editar @isset($routine->name)
                                 {{ strtolower($routine->name) }}
                             @endisset

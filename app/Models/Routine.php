@@ -15,7 +15,7 @@ use App\Models\User;
 class Routine extends Model
 {
     use HasFactory;
-
+    public $timestamps = false;
     /**
      * Los atributos que se pueden asignar en masa.
      *

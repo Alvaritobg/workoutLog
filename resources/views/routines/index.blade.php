@@ -31,20 +31,20 @@
                                         {{-- Tarjeta de rutina con imagen de fondo y texto --}}
                                         <div class="flex flex-col text-end text-white p-6 max-h-60 overflow-hidden shadow-md rounded-sm 
                                             h-screen bg-cover bg-center hover:grayscale"
-                                            style="background-image: url('{{ $routine->img }}')">
+                                            style="background-image: url('images/{{ $routine->img }}')">
                                             {{-- Información de la rutina --}}
                                             <div class="flex flex-col justify-end flex-grow">
                                                 {{-- Nombre de la rutina --}}
                                                 <h3
-                                                    class="font-bold text-4xl drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] border-black">
+                                                    class="font-bold text-4xl drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] border-black truncate">
                                                     {{ $routine->name }}</h3>
                                                 {{-- Descripción de la rutina --}}
                                                 <p
-                                                    class="font-extralightdrop-shadow-lg drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                                                    class="font-extralightdrop-shadow-lg drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] truncate">
                                                     {{ $routine->description }}</p>
                                                 {{-- Información del entrenador de la rutina --}}
                                                 <p
-                                                    class="font-thin text-xs drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                                                    class="font-thin text-xs drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] truncate">
                                                     Trainer:
                                                     {{ $routine->user->name }} {{ $routine->user->surname }}</p>
                                             </div>

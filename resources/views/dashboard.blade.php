@@ -120,7 +120,7 @@
                         @if (auth()->user()->hasRole('trainer'))
                             {{-- QUINTA OPCION --}}
                             <div class="basis-0 md:basis-5/12 grow">
-                                <a href="#">
+                                <a href="{{ 'entrenador/' . auth()->user()->id . '/rutinas' }}">
                                     {{-- Contenedor  --}}
                                     <div class="max-w-7xl mx-auto ">
                                         {{-- Tarjeta de rutina con imagen de fondo y texto --}}

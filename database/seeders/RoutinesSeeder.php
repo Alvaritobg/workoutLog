@@ -22,7 +22,7 @@ class RoutinesSeeder extends Seeder
                 'description' => 'Rutina para desarrollar fuerza muscular.',
                 'days' => 5,
                 'duration'=>8,
-                'img'=>'https://cdn.pixabay.com/photo/2016/03/27/07/08/man-1282232_1280.jpg',
+                'img'=>'fuerza.jpg',
             ],
             [
                 'user_id' => 2,
@@ -30,7 +30,7 @@ class RoutinesSeeder extends Seeder
                 'description' => 'Rutina para mejorar la resistencia cardiovascular.',
                 'days' => 3,
                 'duration'=>6,
-                'img'=>'https://cdn.pixabay.com/photo/2017/04/27/08/29/man-2264825_1280.jpg',
+                'img'=>'cardio.jpg',
             ],
             [
                 'user_id' => 2,

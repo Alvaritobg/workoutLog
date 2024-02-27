@@ -29,12 +29,17 @@ Route::get('/', function () {
 
 // Rutas rutina
 Route::middleware('auth', 'verified')->group(function () {
-    Route::get('/rutinas', [RoutineController::class, 'index']);
+    Route::get('/rutinas', [RoutineController::class, 'index'])->name('routine.index');
     Route::get('/rutina/{id}', [RoutineController::class, 'show'])->name('routine.show');
-    /* Route::get('/mis-rutinas/{userId}',[RoutineController::class, 'listTrainerRoutines'])->name('routine.listTrainerRoutines')->middleware('role:trainer'); */
-    //Route::get('/rutina/{id}/editar', [RoutineController::class, 'edit'])->name('routine.edit');
     /*Route::get('/prueba/{id}',[UserController::class,'getUserRoutine'])->name('index');  */
     Route::delete('/rutinas/eliminar/{id}', [RoutineController::class, 'destroy'])->name('routines.destroy')->middleware('role:trainer');
+    // Ruta para el metodo que muestra la vista para crear una rutina nueva, solo pueden acceder usuarios autenticados con rol trainer
+    Route::get('/rutinas/crear-rutina', [RoutineController::class, 'create'])->middleware('role:trainer')->name('rutinas.create');
+    // Ruta para guardar una nueva rutina
+    Route::post('/rutinas', [RoutineController::class, 'store'])->middleware('role:triner')->name('rutinas.store');
+    // ruta para update de rutinas
+    Route::get('/rutinas/editar/{id}', [RoutineController::class, 'edit'])->name('rutinas.edit');
+    Route::put('/rutinas/editar/{id}', [RoutineController::class, 'update'])->middleware('role:trainer|admin')->name('rutinas.update');
 });
 
 // Rutas usuario
@@ -50,7 +55,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Ruta para eliminar usuarios
     Route::delete('/administrar-usuarios/eliminar/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy')->middleware('role:admin');
     // Administracion de clientes y sus entrenamientos
-    Route::get('administrar-clientes/', [UserController::class, 'getUsersWithTheirRoutines'])->name('users.trainerClients')->middleware('role:trainer');
+    Route::get('administrar-clientes/', [UserController::class, 'getUsersWithTheirRoutines'])->name('users.trainerClients')->middleware(['role:trainer','auth','verified']);
     Route::get('administrar-clientes/ver-entrenamientos/{userId}', [UserController::class, 'listUserWorkouts'])->name('users.listUserTrainigs')->middleware('role:trainer');
 });
 // SUBSCRIPCIONES

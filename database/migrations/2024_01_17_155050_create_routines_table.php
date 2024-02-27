@@ -33,7 +33,7 @@ return new class extends Migration
             // Duración en semanas
             $table->integer('duration')->nullable();
 
-            $table->string('img')->nullable();
+            $table->string('img')->nullable();   
         });
     }
 
@@ -45,6 +45,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('routines');
+
     }
 };
 
