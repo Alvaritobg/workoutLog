@@ -62,7 +62,7 @@
                                 <td class="whitespace-nowrap px-4 py-2 text-gray-700">
                                     {{ $routine->days }} días</td>
                                 <td class="whitespace-nowrap px-4 py-2 text-gray-700 justify-center flex gap-2">
-                                    <a href="/editar-rutina/{{ $routine->id }}">
+                                    <a href="{{ route('rutinas.edit', ['id' => $routine->id]) }}">
                                         <div type="submit"
                                             class="inline-block rounded bg-green-600 px-2 py-2 text-xs font-medium text-white hover:bg-green-500 delete-routine-btn"
                                             data-routine-id="{{ $routine->id }}">
