@@ -9,7 +9,7 @@ use Spatie\Permission\Traits\HasRoles; // Importa el trait HasRoles para manejar
 use Illuminate\Notifications\Notifiable; // Habilita las notificaciones para el modelo User.
 use Laravel\Sanctum\HasApiTokens; // Habilita el uso de API Tokens con Sanctum para autenticación API.
 use Carbon\Carbon; // Biblioteca para fechas
-
+use App\Models\Subscription;
 
 /**
  * Clase User que representa el modelo de usuario en la aplicación.
@@ -30,7 +30,6 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         //return $this->hasMany(Routine::class, 'user_id'); // Especifica la relación y la clave foránea 'user_id'.
         return $this->belongsTo(Routine::class, 'routine_id');
-
     }
 
     /**
@@ -50,9 +49,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function hasActivePaidSubscription()
     {
         return $this->subscriptions()->where('paid', true)
-                                     ->where('start_date', '<=', now())
-                                     ->where('end_date', '>=', now())
-                                     ->exists(); // Utiliza condiciones para filtrar suscripciones activas y pagadas.
+            ->where('start_date', '<=', now())
+            ->where('end_date', '>=', now())
+            ->exists(); // Utiliza condiciones para filtrar suscripciones activas y pagadas.
     }
 
     /**
@@ -63,7 +62,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(Workout::class, 'users_workouts', 'user_id', 'workout_id')->withPivot('execution_date');
         //->withTimestamps();; // Define la relación y especifica las claves foráneas.
-        
+
         //return $this->belongsToMany(Workout::class, 'users_workouts')->withPivot('execution_date');
     }
 
@@ -85,7 +84,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         // Obtiene el primer rol asignado al usuario
         $role = $this->roles->first();
-        
+
         // Verifica el nombre del rol y retorna el nombre correspondiente
         switch ($role->name) {
             case 'admin':
@@ -104,10 +103,10 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @return int Edad del usuario.
      */
-        public function getAge()
-        {
-            return Carbon::parse($this->attributes['date_of_birth'])->age;
-        }
+    public function getAge()
+    {
+        return Carbon::parse($this->attributes['date_of_birth'])->age;
+    }
 
 
 

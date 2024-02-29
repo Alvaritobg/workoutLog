@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Subscription;
-
 
 /**
  * Modelo Subscription.
@@ -37,16 +35,16 @@ class Subscription extends Model
         return $this->belongsTo(User::class);
     }
 
-   /**
- * Desactiva la renovación automática para una suscripción específica.
- *
- * @param  stdClass  $subscriptionData  Datos de la suscripción.
- * @return bool  Indica si la operación fue exitosa.
- */
+    /**
+     * Desactiva la renovación automática para una suscripción específica.
+     *
+     * @param  stdClass  $subscriptionData  Datos de la suscripción.
+     * @return bool  Indica si la operación fue exitosa.
+     */
     public function disableAutoRenew()
     {
         $this->renew = 0;
-        return $this;                    
+        return $this;
     }
 
 
@@ -81,8 +79,7 @@ class Subscription extends Model
      * @var array<string, string>
      */
     protected $casts = [
-       'start_date' => 'datetime',
+        'start_date' => 'datetime',
         'end_date' => 'datetime',
     ];
 }
-
