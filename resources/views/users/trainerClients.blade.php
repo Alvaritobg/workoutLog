@@ -8,7 +8,10 @@
             Panel de seguimiento para los usuarios de tus rutinas
         </h2>
     </x-slot>
-
+    <div class="flex w-full">
+        {{-- Modulo para mostrar mensajes de error y confirmación --}}
+        <x-notification :status="session()"></x-notification>
+    </div>
 
     @if ($users)
 

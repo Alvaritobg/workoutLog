@@ -8,7 +8,10 @@
             Entrenamientos del usuario
         </h2>
     </x-slot>
-
+    <div class="flex w-full">
+        {{-- Modulo para mostrar mensajes de error y confirmación --}}
+        <x-notification :status="session()"></x-notification>
+    </div>
     @if (!$trainings->workouts->isEmpty())
 
         @foreach ($trainings->workouts as $wo)

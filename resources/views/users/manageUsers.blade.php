@@ -9,7 +9,11 @@
         </h2>
     </x-slot>
 
-    {{-- Contenedor principal --}}
+
+    <div class="flex w-full">
+        {{-- Modulo para mostrar mensajes de error y confirmación --}}
+        <x-notification :status="session()"></x-notification>
+    </div>
     {{-- Verifica si hay rutinas disponibles --}}
     @if ($users)
 

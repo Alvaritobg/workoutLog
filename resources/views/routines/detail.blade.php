@@ -1,5 +1,9 @@
 {{-- Vista Blade para mostrar las rutinas disponibles --}}
 <x-app-layout>
+    <div class="flex w-full">
+        {{-- Modulo para mostrar mensajes de error y confirmación --}}
+        <x-notification :status="session()"></x-notification>
+    </div>
     {{-- Verifica si hay rutinas disponibles --}}
     @if ($routine)
         <div class="flex flex-col py-2 px-2 md:px-5 my-4 gap-4 justify-center">
@@ -61,28 +65,6 @@
                     </dl>
                 </div>
             </div>
-            {{-- Mensajes de error o de confirmación --}}
-            {{-- **Crear un modulo para esto con un popup que se pueda cerrar o se cierre a los x segundos --}}
-            {{--  <div class="flex justify-end">
-                @if (session('success'))
-                    <div class="text-green-600  text-center flex basis-4/12 gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="max-w-5">
-                            <path class="fill-green-600"
-                                d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z" />
-                        </svg>{{ session('success') }}
-                    </div>
-                @endif
-                @if (session('error'))
-                    <div class="text-red-600  text-center flex basis-4/12 gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="max-w-5">
-                            <path class="fill-red-600"
-                                d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z" />
-                        </svg>
-                        {{ session('error') }}
-                    </div>
-                @endif
-            </div> --}}
-            {{-- Fin Mensajes de error o de confirmación --}}
 
             <div class="flex gap-2 justify-end">
                 {{-- Si eres un usuario | admin se muestra el boton para suscribirte a una rutina --}}
@@ -120,7 +102,7 @@
                     @endif
                 @endauth
                 {{--  --}}
-                {{-- Si eres un admin o un trainer se muestra el boton para editar una rutina --}}
+                {{-- Si eres un admin o el trainer que creo esa rutina se muestra el boton para editar una rutina --}}
                 @auth
                     @if (auth()->user()->hasRole('admin') ||
                             (auth()->user()->hasRole('trainer') && auth()->user()->id === $routine->user_id))

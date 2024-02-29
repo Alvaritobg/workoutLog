@@ -10,7 +10,10 @@
         <p>Aqui puede crear, editar y eliminar las rutinas para sus clientes.</p>
 
     </x-slot>
-
+    <div class="flex w-full">
+        {{-- Modulo para mostrar mensajes de error y confirmación --}}
+        <x-notification :status="session()"></x-notification>
+    </div>
     {{-- Contenedor principal --}}
     <div class="flex">
         <div class="overflow-x-auto mt-2 -mb-5 mx-5">
