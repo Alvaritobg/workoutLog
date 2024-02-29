@@ -58,7 +58,7 @@
                             <dt class="font-medium text-gray-900">Creada por:</dt>
                             <dd class="text-gray-700 sm:col-span-2">
                                 @isset($routine->user->name)
-                                    <p>{{ $routine->user->name }}</p> {{-- poner enlace al perfil del entrenador --}}
+                                    <p>{{ $routine->user->name }}</p>
                                 @endisset
                             </dd>
                         </div>
@@ -67,12 +67,12 @@
             </div>
 
             <div class="flex gap-2 justify-end">
-                {{-- Si eres un usuario | admin se muestra el boton para suscribirte a una rutina --}}
+                {{-- Si eres un usuario | admin se muestra el boton para dessuscribirte a una rutina --}}
                 @auth
                     @if (auth()->user()->hasRole('user|admin'))
                         @if (auth()->user()->routine_id === $routine->id)
                             <form method="post"
-                                action="{{ url('des-suscribir-usuario/' . Auth::user()->id . 'rutina/' . $routine->id) }}">
+                                action="{{ url('des-suscribir-usuario/' . Auth::user()->id . '/rutina/' . $routine->id) }}">
                                 @csrf
                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                                 <!-- Asumiendo que estos valores se generan dinámicamente -->
@@ -86,7 +86,7 @@
                             </form>
                         @elseif(auth()->user()->routine_id === null)
                             <form method="post"
-                                action="{{ url('suscribir-usuario/' . Auth::user()->id . 'rutina/' . $routine->id) }}">
+                                action="{{ url('suscribir-usuario/' . Auth::user()->id . '/rutina/' . $routine->id) }}">
                                 @csrf
                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                                 <!-- Asumiendo que estos valores se generan dinámicamente -->

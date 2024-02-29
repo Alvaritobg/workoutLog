@@ -8,17 +8,31 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Controlador para gestionar rutinas.
+ * Controlador RoutineController
  * 
- * Este controlador maneja las vistas, creación, actualización,
- * y eliminación de rutinas en la aplicación.
+ * Este controlador gestiona las operaciones CRUD para las rutinas en la aplicación.
+ * Permite a los usuarios crear, visualizar, actualizar y eliminar rutinas, así como
+ * ver un listado de todas las rutinas disponibles. Cada método dentro de este controlador
+ * está diseñado para manejar una operación específica relacionada con las rutinas.
+ *
+ * @package App\Http\Controllers
  */
 class RoutineController extends Controller
 {
     /**
-     * Muestra una lista de todas las rutinas existentes junto con los datos del entrenador que la hizo.
+     * Muestra un listado de todas las rutinas disponibles.
      *
-     * @return \Illuminate\Http\Response
+     * Este método responde a una solicitud GET y se encarga de recuperar todas las rutinas
+     * almacenadas en la base de datos, incluyendo información relacional importante como
+     * los datos del entrenador (usuario) que creó cada rutina.
+     * 
+     * Si la operación se realiza con éxito, se devuelve una vista con un listado de las rutinas.
+     * En caso de que ocurra un error inesperado durante la operación, se captura la excepción
+     * y se redirige al usuario a una ruta segura, mostrando un mensaje de error para informar
+     * al usuario sobre el problema.
+     *
+     * @return \Illuminate\Http\Response Devuelve una vista con todas las rutinas si la operación
+     * es exitosa, o redirige al usuario con un mensaje de error si se produce una excepción.
      */
     public function index()
     {
@@ -36,9 +50,13 @@ class RoutineController extends Controller
     }
 
     /**
-     * Muestra la vista con el formulario para crear una nueva rutina.
+     * Muestra el formulario para crear una nueva rutina.
      *
-     * @return \Illuminate\Http\Response
+     * Este método responde a una solicitud GET y devuelve la vista que contiene
+     * el formulario necesario para capturar la información de una nueva rutina.
+     *
+     * @return \Illuminate\View\View Retorna la vista `routines.create` que contiene
+     * el formulario para introducir los datos de la nueva rutina.
      */
     public function create()
     {
@@ -48,8 +66,15 @@ class RoutineController extends Controller
     /**
      * Almacena una nueva rutina en la base de datos.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Este método valida primero los datos enviados a través del formulario utilizando reglas específicas,
+     * incluyendo una validación de formato para algunos campos como 'name' y 'description', y luego intenta crear
+     * y guardar una nueva instancia de Rutina en la base de datos con esos datos. También maneja la carga de imágenes,
+     * asegurando que el archivo se mueva al directorio público y que su nombre se asigne correctamente a la nueva rutina.
+     * Si todo es exitoso, redirige al usuario a una ruta especificada con un mensaje de éxito. En caso de error,
+     * redirige al usuario de vuelta al formulario de creación con un mensaje de error.
+     *
+     * @param  \Illuminate\Http\Request  $request  Datos enviados desde el formulario.
+     * @return \Illuminate\Http\Response  Redirige al usuario a una ruta específica dependiendo del resultado de la operación.
      */
     public function store(Request $request)
     {
@@ -86,9 +111,18 @@ class RoutineController extends Controller
 
     /**
      * Muestra los detalles de una rutina específica.
-     *
-     * @param  string  $id
-     * @return \Illuminate\Http\Response
+     * 
+     * Este método intenta recuperar una rutina específica por su ID. Si la rutina
+     * se encuentra, muestra una vista con los detalles de dicha rutina. En caso
+     * contrario, si la rutina no existe, redirige al usuario a la lista general
+     * de rutinas con un mensaje de error indicando que la rutina solicitada
+     * no fue encontrada. Además, este método está preparado para manejar
+     * excepciones inesperadas que puedan ocurrir durante la búsqueda de la rutina,
+     * asegurando que el usuario sea redirigido de forma segura con un mensaje
+     * de error adecuado.
+     * 
+     * @param  string  $id  El ID de la rutina que se desea mostrar.
+     * @return \Illuminate\Http\Response  Redirige a una vista con los detalles de la rutina o con un mensaje de error.
      */
     public function show($id)
     {
@@ -115,12 +149,23 @@ class RoutineController extends Controller
 
 
     /**
+     * 
+     * Este metodo no es necesario, BORRAR!!
+     * 
      * Muestra los detalles de una rutina específica.
-     *
-     * @param  string  $id
-     * @return \Illuminate\Http\Response
+     * 
+     * Intenta recuperar los detalles de una rutina específica por su ID, incluyendo información
+     * del usuario (entrenador) asociado. Si la rutina no se encuentra, redirige al usuario
+     * a la lista general de rutinas con un mensaje indicando que la rutina especificada
+     * no fue encontrada. En caso de éxito, muestra una vista con los detalles de la rutina.
+     * Este método también maneja cualquier excepción general que pueda ocurrir durante
+     * el proceso de búsqueda y muestra, redirigiendo al usuario con un mensaje de error
+     * genérico en caso de un error inesperado.
+     * 
+     * @param  string  $id  El ID de la rutina que se desea mostrar.
+     * @return \Illuminate\Http\Response  Redirige a una vista con los detalles de la rutina o con un mensaje de error.
      */
-    public function showDetails($id)
+    /*   public function showDetails($id)
     {
         try {
             // Intenta buscar la rutina por su ID, incluyendo los datos del usuario (entrenador) que la crea.
@@ -140,14 +185,22 @@ class RoutineController extends Controller
             // con un mensaje de error general.
             return redirect()->route('routines.index')->with('error', 'Ocurrió un error al intentar mostrar los detalles de la rutina.');
         }
-    }
+    } */
 
 
     /**
      * Elimina una rutina específica de la base de datos.
-     *
-     * @param  string  $id
-     * @return \Illuminate\Http\Response
+     * 
+     * Este método intenta encontrar la rutina especificada por el ID proporcionado utilizando el método `findOrFail`.
+     * Si la rutina se encuentra, se elimina. Si la eliminación es exitosa, redirige al usuario
+     * a la vista anterior con un mensaje indicando que la rutina ha sido eliminada correctamente.
+     * 
+     * Si la rutina no se encuentra (es decir, `findOrFail` lanza una `ModelNotFoundException`), o si ocurre algún otro error
+     * durante el proceso de eliminación (capturado por el bloque `catch` general para `\Exception`), se captura la excepción
+     * y se redirige al usuario a la vista anterior con un mensaje de error.
+     * 
+     * @param  string  $id  El ID de la rutina que se desea eliminar.
+     * @return \Illuminate\Http\Response  Redirige a la vista anterior con un mensaje de éxito o error.
      */
     public function destroy(string $id)
     {
@@ -166,8 +219,14 @@ class RoutineController extends Controller
     /**
      * Muestra el formulario de edición para una rutina específica.
      * 
+     * Intenta buscar la rutina por su ID utilizando `findOrFail`, lo que garantiza que
+     * se lance una excepción `ModelNotFoundException` si la rutina no se encuentra.
+     * Si la rutina se encuentra, se devuelve
+     * la vista de edición con los datos de la rutina para que el usuario pueda editarlos.
+     * 
      * @param  int|string  $id  El ID de la rutina a editar.
      * @return \Illuminate\View\View  La vista de edición de rutinas con los datos de la rutina especificada.
+     * @throws ModelNotFoundException Si no se encuentra la rutina con el ID proporcionado.
      */
     public function edit($id)
     {
@@ -186,9 +245,18 @@ class RoutineController extends Controller
     /**
      * Actualiza una rutina específica en la base de datos.
      * 
-     * @param  \Illuminate\Http\Request  $request  La solicitud HTTP que contiene los datos del formulario.
+     * Primero, valida los datos recibidos del formulario. 
+     * Luego, intenta buscar la rutina por su ID con `findOrFail`,
+     * asegurando así que se lance una excepción `ModelNotFoundException` si no se encuentra
+     * la rutina. Si la rutina existe, se actualizan sus atributos con los datos recibidos
+     * y se guarda en la base de datos. Si se subió una imagen nueva, se procesa y actualiza
+     * el nombre de la imagen en la rutina. Finalmente, redirige al usuario a la lista de
+     * rutinas con un mensaje de éxito.
+     * 
+     * @param  \Illuminate\Http\Request  $request  La solicitud HTTP con los datos del formulario.
      * @param  int|string  $id  El ID de la rutina a actualizar.
      * @return \Illuminate\Http\RedirectResponse  Redirección a la lista de rutinas con un mensaje de éxito.
+     * @throws ModelNotFoundException Si no se encuentra la rutina con el ID proporcionado.
      */
     public function update(Request $request, $id)
     {
