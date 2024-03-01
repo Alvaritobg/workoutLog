@@ -45,8 +45,8 @@ Route::middleware('auth', 'verified')->group(function () {
 // Rutas usuario
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/entrenador/{id}/rutinas', [UserController::class, 'obtainCreatedRoutines'])->name('users.trainerRoutines')->middleware('role:trainer');
-    Route::post('/suscribir-usuario/{user_id}/rutina/{routine_id}', [UserController::class, 'subscribeUserToRoutine'])->middleware('role:user');
-    Route::post('/des-suscribir-usuario/{user_id}/rutina/{routine_id}', [UserController::class, 'unSubscribeUserFromRoutine'])->middleware('role:user');
+    Route::post('suscribir-usuario/', [UserController::class, 'subscribeUserToRoutine'])->middleware('role:user');
+    Route::post('des-suscribir-usuario/', [UserController::class, 'unSubscribeUserFromRoutine'])->middleware('role:user');
 
     // Middleware de role admin  (solo pueden entrar administradores)
     Route::get('administrar-usuarios/', [UserController::class, 'index'])

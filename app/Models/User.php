@@ -28,7 +28,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function routines()
     {
-        //return $this->hasMany(Routine::class, 'user_id'); // Especifica la relación y la clave foránea 'user_id'.
+
         return $this->belongsTo(Routine::class, 'routine_id');
     }
 

@@ -71,8 +71,7 @@
                 @auth
                     @if (auth()->user()->hasRole('user|admin'))
                         @if (auth()->user()->routine_id === $routine->id)
-                            <form method="post"
-                                action="{{ url('des-suscribir-usuario/' . Auth::user()->id . '/rutina/' . $routine->id) }}">
+                            <form method="post" action="{{ url('des-suscribir-usuario/') }}">
                                 @csrf
                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                                 <!-- Asumiendo que estos valores se generan dinámicamente -->
@@ -85,8 +84,7 @@
                                 </button>
                             </form>
                         @elseif(auth()->user()->routine_id === null)
-                            <form method="post"
-                                action="{{ url('suscribir-usuario/' . Auth::user()->id . '/rutina/' . $routine->id) }}">
+                            <form method="post" action="{{ url('suscribir-usuario/') }}">
                                 @csrf
                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                                 <!-- Asumiendo que estos valores se generan dinámicamente -->

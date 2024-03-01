@@ -8,8 +8,6 @@
             Panel de administración de usuarios
         </h2>
     </x-slot>
-
-
     <div class="flex w-full">
         {{-- Modulo para mostrar mensajes de error y confirmación --}}
         <x-notification :status="session()"></x-notification>
