@@ -26,7 +26,7 @@ class Exercise extends Model
         'max_reps_desired',
         'min_reps_desired',
         'name',
-        'img',
+        'info',
         'description',
     ];
 
@@ -38,14 +38,13 @@ class Exercise extends Model
      */
     public function workouts()
     {
-        return $this->belongsToMany(Workout::class, 'exercises_workouts', 'exercise_id', 'workout_id')->withPivot('order');
+        return $this->belongsToMany(Workout::class, 'exercises_workouts', 'exercise_id', 'workout_id')->withPivot('order', 'num_series');
     }
 
     public function series()
-{
-    return $this->hasMany(Serie::class, 'exercise_id');
-}
+    {
+        return $this->hasMany(Serie::class, 'exercise_id');
+    }
 
     // Otros métodos y propiedades del modelo.
 }
-

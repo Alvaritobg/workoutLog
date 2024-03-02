@@ -18,9 +18,12 @@ return new class extends Migration
             // Añade la clave foránea 'routines_id' referenciando 'id' en la tabla 'routines'
             // con la acción de eliminación en cascada
             $table->foreign('routine_id', 'fk_workouts')
-                  ->references('id')
-                  ->on('routines')
-                  ->onDelete('cascade');
+                ->references('id')
+                ->on('routines')
+                ->onDelete('cascade');
+
+            // Añade una restricción de clave única compuesta por 'routine_id' y 'order'
+            $table->unique(['routine_id', 'order'], 'workouts_routine_id_order_unique');
         });
     }
 

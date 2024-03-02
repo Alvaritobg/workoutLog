@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('name', 400);
 
             // URL de la imagen, opcional
-            $table->string('img', 700)->nullable();
+            $table->string('info', 1000)->nullable();
 
             // Descripción del ejercicio, opcional
             $table->string('description', 2000)->nullable();

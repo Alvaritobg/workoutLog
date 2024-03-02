@@ -20,7 +20,8 @@
                 <thead class="ltr:text-left rtl:text-right">
                     <tr class="bg-gray-100">
                         <th class="whitespace-nowrap px-4 py-4 font-medium text-gray-900 text-left">Nombre</th>
-                        <th class="whitespace-nowrap px-4 py-4 font-medium text-gray-900 text-left">Email</th>
+                        <th class="hidden md:table-cell whitespace-nowrap px-4 py-4 font-medium text-gray-900 text-left">
+                            Email</th>
                         <th class="whitespace-nowrap px-4 py-4 font-medium text-gray-900 text-left">Rol</th>
                         <th class="whitespace-nowrap px-4 py-4 font-medium text-gray-900 text-left">Verificado</th>
                         <th class="px-4 py-2"></th>
@@ -32,7 +33,8 @@
                         <tr>
                             <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                                 {{ $user->name . ' ' . $user->surname }}</td>
-                            <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ $user->email }}</td>
+                            <td class="hidden md:table-cell whitespace-nowrap px-4 py-2 text-gray-700">
+                                {{ $user->email }}</td>
                             <td class="whitespace-nowrap px-4 py-2 text-gray-700">
                                 {{ implode(', ', $user->roles->pluck('name')->toArray()) }}</td>
                             <td class="whitespace-nowrap px-4 py-2 text-gray-700">

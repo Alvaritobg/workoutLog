@@ -26,14 +26,16 @@ return new class extends Migration
 
             // Descripción de la rutina
             $table->string('description', 2000)->nullable();
-            
+
             // Días de entrenamiento por semana
             $table->integer('days')->nullable();
 
             // Duración en semanas
             $table->integer('duration')->nullable();
 
-            $table->string('img')->nullable();   
+            $table->string('img')->nullable();
+
+            $table->boolean('enabled')->default(true);
         });
     }
 
@@ -45,7 +47,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('routines');
-
     }
 };
-

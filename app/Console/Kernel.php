@@ -11,6 +11,7 @@ use App\Models\Subscription;
 class Kernel extends ConsoleKernel
 {
     /**
+     * Simula la renovación automatica de las subscripciones de usuario
      * Define the application's command schedule.
      * Es necesario añadir al crontab: * * * * * cd /var/www/html/workoutLog  && php artisan schedule:run >> /dev/null 2>&1
      * crontab -e para añadir y crontab -l para comprobar los cambios
@@ -20,9 +21,9 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             // Obtener todas las suscripciones que acaban hoy y tienen el valor 'renew' a 1
             $subscriptions = \App\Models\Subscription::where('end_date', Carbon::today())
-                                                     ->where('renew', 1)
-                                                     ->get();
-    
+                ->where('renew', 1)
+                ->get();
+
             foreach ($subscriptions as $subscription) {
                 // Crear una nueva suscripción con la misma duración
                 $newSubscription = $subscription->replicate(['start_date', 'end_date']);
@@ -39,7 +40,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

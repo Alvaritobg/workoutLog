@@ -10,16 +10,15 @@
         {{-- Subtítulo o descripción adicional --}}
         <p>Seleccione la rutina que quiera realizar</p>
     </x-slot>
-    <div class="flex w-full">
-        {{-- Modulo para mostrar mensajes de error y confirmación --}}
-        <x-notification :status="session()"></x-notification>
-    </div>
+
     <div class="py-3 ">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg ">
                 {{-- Contenedor principal --}}
-                {{-- Modulo para mostrar mensajes de error y confirmación --}}
-                <x-notification :status="session()"></x-notification>
+                <div class="flex w-full">
+                    {{-- Modulo para mostrar mensajes de error y confirmación --}}
+                    <x-notification :status="session()"></x-notification>
+                </div>
                 {{-- Verifica si hay rutinas disponibles --}}
                 @if ($routines)
 

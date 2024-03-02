@@ -243,6 +243,9 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * REVISAR CUANDO SE MODIFIQUE LA BD Y SE DEJE BIEN EL TEMA DE LAS RUTINAS!!!!
+     */
     public function listUserWorkouts($userId)
     {
         //$trainings = User::with(['workouts.exercises' => function ($query) {

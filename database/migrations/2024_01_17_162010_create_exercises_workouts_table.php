@@ -25,6 +25,9 @@ return new class extends Migration
             // Orden del ejercicio en el entrenamiento
             $table->integer('order');
 
+            // Series que se deben realizar del ejercicio en el entrenamiento
+            $table->integer('num_series')->default(3);
+
             // Clave primaria compuesta por workout_id y exercise_id
             $table->primary(['workout_id', 'exercise_id']);
 

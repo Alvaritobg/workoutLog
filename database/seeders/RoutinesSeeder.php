@@ -20,7 +20,7 @@ class RoutinesSeeder extends Seeder
                 'user_id' => 2,
                 'name' => 'Rutina de fuerza',
                 'description' => 'Rutina para desarrollar fuerza muscular.',
-                'days' => 5,
+                'days' => 4,
                 'duration' => 8,
                 'img' => 'fuerza.jpg',
             ],
@@ -39,6 +39,14 @@ class RoutinesSeeder extends Seeder
                 'days' => 6,
                 'duration' => 7,
                 'img' => 'hipertrofia.jpg',
+            ],
+            [
+                'user_id' => 2,
+                'name' => 'Rutina torso pierna',
+                'description' => 'Rutina para desarrollar masa muscular dividida en dos partes.',
+                'days' => 4,
+                'duration' => 7,
+                'img' => 'torso_pierna.jpg',
             ],
         ]);
     }

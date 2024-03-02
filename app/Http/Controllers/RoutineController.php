@@ -6,6 +6,7 @@ use App\Models\Routine;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Controlador RoutineController
@@ -128,7 +129,9 @@ class RoutineController extends Controller
     {
         try {
             // Intenta encontrar la rutina por su ID.
-            $routine = Routine::find($id);
+            // vieja consulta $routine = Routine::find($id);
+            // Intenta encontrar la rutina por su ID con sus entrenamientos y los ejercicios de cada entrenamiento.
+            $routine = Routine::with(['workouts.exercises'])->find($id);
 
             // Verificar si la rutina existe
             if (!$routine) {
@@ -208,11 +211,11 @@ class RoutineController extends Controller
             $routine = Routine::findOrFail($id); // Busca la rutina o lanza una excerpción si no la encuentra.
             $routine->delete(); // Elimina la rutina.
             // Redirige a la vista anterior con un mensaje de éxito.
-            return back()->with('success', 'Rutina eliminada correctamente.');
+            return redirect()->route('routine.index')->with('success', 'Rutina eliminada correctamente.');
         } catch (ModelNotFoundException   $e) {
-            return back()->with('error', 'No se pudo eliminar esta rutina.');
+            return redirect()->route('routine.index')->with('error', 'No se pudo eliminar esta rutina.');
         } catch (\Exception $e) {
-            return back()->with('error', 'No se pudo eliminar esta rutina.');
+            return redirect()->route('routine.index')->with('error', 'No se pudo eliminar esta rutina.');
         }
     }
 
