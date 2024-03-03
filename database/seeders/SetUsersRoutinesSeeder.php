@@ -14,11 +14,11 @@ class SetUsersRoutinesSeeder extends Seeder
     public function run(): void
     {
         DB::table('users')
-        ->where('id', 3)
-        ->update(['routine_id' => 3]);
+            ->where('id', 3)
+            ->update(['routine_id' => 3]);
 
         DB::table('users')
-          ->where('id', 4)
-          ->update(['routine_id' => 3]);
+            ->where('id', 4)
+            ->update(['routine_id' => 3]);
     }
 }

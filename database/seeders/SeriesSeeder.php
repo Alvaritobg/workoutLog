@@ -17,7 +17,7 @@ class SeriesSeeder extends Seeder
             // usuario 3
             // Entrenamiento 1- Ejercicio 1 press banca
             [
-                'number'=>1,
+                'number' => 1,
                 'workout_id' => 1,
                 'user_id' => 3,
                 'exercise_id' => 1,
@@ -26,16 +26,16 @@ class SeriesSeeder extends Seeder
                 'repetitions' => 8
             ],
             [
-                'number'=>2,
+                'number' => 2,
                 'workout_id' => 1,
                 'user_id' => 3,
                 'exercise_id' => 1,
                 'date' => '2023-01-01 08:05:00',
                 'used_weight' => 80,
                 'repetitions' => 7
-            ], 
+            ],
             [
-                'number'=>3,
+                'number' => 3,
                 'workout_id' => 1,
                 'user_id' => 3,
                 'exercise_id' => 1,
@@ -45,7 +45,7 @@ class SeriesSeeder extends Seeder
             ],
             // Entrenamiento 1- Ejercicio 2 peso muerto 
             [
-                'number'=>1,
+                'number' => 1,
                 'workout_id' => 1,
                 'user_id' => 3,
                 'exercise_id' => 4,
@@ -54,16 +54,16 @@ class SeriesSeeder extends Seeder
                 'repetitions' => 8
             ],
             [
-                'number'=>2,
+                'number' => 2,
                 'workout_id' => 1,
                 'user_id' => 3,
                 'exercise_id' => 4,
                 'date' => '2023-01-01 08:20:00',
                 'used_weight' => 120,
                 'repetitions' => 7
-            ], 
+            ],
             [
-                'number'=>3,
+                'number' => 3,
                 'workout_id' => 1,
                 'user_id' => 3,
                 'exercise_id' => 4,
@@ -73,7 +73,7 @@ class SeriesSeeder extends Seeder
             ],
             // Entrenamiento 1- Ejercicio 3 abdominales 
             [
-                'number'=>1,
+                'number' => 1,
                 'workout_id' => 1,
                 'user_id' => 3,
                 'exercise_id' => 7,
@@ -82,23 +82,23 @@ class SeriesSeeder extends Seeder
                 'repetitions' => 8
             ],
             [
-                'number'=>2,
+                'number' => 2,
                 'workout_id' => 1,
                 'user_id' => 3,
                 'exercise_id' => 7,
                 'date' => '2023-01-01 08:20:00',
                 'used_weight' => 120,
                 'repetitions' => 7
-            ], 
+            ],
             [
-                'number'=>3,
+                'number' => 3,
                 'workout_id' => 1,
                 'user_id' => 3,
                 'exercise_id' => 7,
                 'date' => '2023-01-01 08:25:00',
                 'used_weight' => 120,
                 'repetitions' => 6
-            ],
+            ],/*
             // Entrenamiento 2- Ejercicio 1 sentadilla
             [
                 'number'=>1,
@@ -267,7 +267,7 @@ class SeriesSeeder extends Seeder
                 'date' => '2023-01-03 09:55:00',
                 'used_weight' => 130,
                 'repetitions' => 6
-            ],
+            ], */
         ]);
     }
 }

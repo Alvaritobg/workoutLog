@@ -248,18 +248,11 @@ class UserController extends Controller
      */
     public function listUserWorkouts($userId)
     {
-        //$trainings = User::with(['workouts.exercises' => function ($query) {
-        //    // Aquí puedes añadir condiciones adicionales, como ordenar los ejercicios si es necesario
-        //    $query->orderBy('order', 'asc');
-        //}])->find($userId);
 
         $trainings = User::with(['workouts.exercises.series' => function ($query) use ($userId) {
             $query->where('user_id', $userId);
         }])->find($userId);
-        //$trainings = User::with('workouts.exercises.series')->find($userId);
-        //$trainings = User::with(['workouts.exercises' => function ($query) {
-        //    $query->orderBy('pivot_order'); // Asumiendo que quieres ordenar los ejercicios por algún criterio.
-        //}])->find($userId);
+
         if (!$trainings) {
             // Redirige a una ruta o vista con un mensaje de error si el usuario no se encuentra
             return redirect()->route('users.listUserTrainings')->withErrors('Usuario no encontrado');

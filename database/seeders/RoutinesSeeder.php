@@ -36,7 +36,7 @@ class RoutinesSeeder extends Seeder
                 'user_id' => 2,
                 'name' => 'Rutina de hipertrofia',
                 'description' => 'Rutina para desarrollar masa muscular.',
-                'days' => 6,
+                'days' => 5,
                 'duration' => 7,
                 'img' => 'hipertrofia.jpg',
             ],

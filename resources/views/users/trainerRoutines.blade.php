@@ -17,7 +17,7 @@
     {{-- Contenedor principal --}}
     <div class="flex">
         <div class="overflow-x-auto mt-2 -mb-5 mx-5">
-            <a href="{{ route('rutinas.create') }}">
+            <a href="{{ route('routines.nueva') }}">
                 <div
                     class="inline-flex rounded bg-blue-600 px-2 py-2 text-xs font-medium text-white hover:bg-blue-500 delete-routine-btn align-items-center">
                     <svg class="w-3 h-3 my-auto me-2 fill-white cursor-pointer" xmlns="http://www.w3.org/2000/svg"

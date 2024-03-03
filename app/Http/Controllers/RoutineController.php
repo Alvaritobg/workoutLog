@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Routine;
+use App\Models\Exercise;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -243,6 +244,13 @@ class RoutineController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'No se pudo editar esta rutina.');
         }
+    }
+
+    public function showCreateRoutineForm()
+    {
+        $exercises = Exercise::all(); // Obtener todos los ejercicios
+
+        return view('routines.create', compact('exercises'));
     }
 
     /**

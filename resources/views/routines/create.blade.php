@@ -1,3 +1,8 @@
+<script>
+    // Convertir los ejercicios de PHP a JSON y asignarlos a una variable de JavaScript
+    const exercises = @json($exercises);
+</script>
+<script src="{{ asset('js/manageWorkouts.js') }}"></script>
 {{-- vista para crear rutinas --}}
 <x-app-layout>
     {{-- Slot para el encabezado de la página --}}
@@ -38,12 +43,15 @@
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />
                         </div>
                         <!-- DÍAS -->
+
                         <div>
                             <x-input-label for="days" :value="__('Días a la semana:')" />
-                            <x-text-input id="days" name="days" type="number" class="mt-1 block w-full"
-                                autofocus autocomplete="days" />
+                            <x-text-input id="days" name="days" min=1 max=7 type="number"
+                                class="mt-1 block w-full" autofocus autocomplete="days" oninput="updateWorkouts()" />
                             <x-input-error class="mt-2" :messages="$errors->get('days')" />
                         </div>
+
+                        <div id="workoutsContainer"></div>
                         <!-- DURACIÓN -->
                         <div>
                             <x-input-label for="duration" :value="__('Duración en semanas:')" />
@@ -62,6 +70,7 @@
                         <button type="submit"
                             class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">Crear
                             Rutina</button>
+
                     </form>
                 </div>
             </div>

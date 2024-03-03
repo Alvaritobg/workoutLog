@@ -58,21 +58,7 @@
                                         </ul>
                                     @endforeach
                                 </td>
-                                {{--  <td class="whitespace-nowrap px-4 py-2 text-gray-700">
-                                    @foreach ($ex->series as $serie)
-                                        {{ $serie->number }}ª<br />
-                                    @endforeach
-                                </td>
-                                <td class="whitespace-nowrap px-4 py-2 text-gray-700">
-                                    @foreach ($ex->series as $serie)
-                                        {{ $serie->used_weight }}<br>
-                                    @endforeach
-                                </td>
-                                <td class="whitespace-nowrap px-4 py-2 text-gray-700">
-                                    @foreach ($ex->series as $serie)
-                                        {{ $serie->used_weight }}kg<br>
-                                    @endforeach
-                                </td> --}}
+
 
                             </tr>
                         @endforeach
