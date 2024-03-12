@@ -93,6 +93,7 @@ class RoutineController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request);
         // Valida los datos del formulario.
         $request->validate([
             'name' => 'required|string|min:3|max:50|regex:/^[A-Za-z0-9\sáéíóúüñÁÉÍÓÚÜÑ.]+$/',
@@ -101,8 +102,21 @@ class RoutineController extends Controller
             'duration' => 'integer|nullable|min:1',
             'img' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             // Añade reglas de validación para los campos de ejercicios generados dinámicamente
-            'workouts.*' => 'integer|exists:exercises,id', // Verifica que cada ejercicio exista en la base de datos
+            //'workouts.*' => 'integer|exists:exercises,id', // Verifica que cada ejercicio exista en la base de datos
         ]);
+
+        // Verificación manual de duplicados en workouts
+        $noDuplicateExercises = true;
+        foreach ($request->workouts as $day => $exercises) {
+            if (count($exercises) !== count(array_unique($exercises))) {
+                $noDuplicateExercises = false;
+                break;
+            }
+        }
+
+        if (!$noDuplicateExercises) {
+            return redirect()->back()->with('error','Hay ejercicios duplicados en los entrenamientos introducidos')->withInput();
+        }
 
         try {
             // Crea y configura la nueva rutina.
@@ -122,25 +136,24 @@ class RoutineController extends Controller
             $routine->save();
 
             foreach ($request->workouts as $indice => $workoutExercises) {
-                $i = $indice + 1;
                 $workout =  Workout::create([
-                    'name' => "Entrenamiento $i", // Asegúrate de que este valor se recibe correctamente
+                    'name' => "Entrenamiento $indice | $routine->name", // Asegúrate de que este valor se recibe correctamente
                     'routine_id' => $routine->id,
-                    'order' => $i,
+                    'order' => $indice,
                     // Otros campos necesarios...
                 ]);
-                $workout->routine()->associate($routine);
+                //$workout->routine()->associate($routine);
                 // Establece cualquier otra propiedad necesaria para el workout aquí
-                $workout->save();
-
+                //$workout->save();
+                $exerciseOrder = 1; // Inicia el orden del ejercicio para este workout.
                 foreach ($workoutExercises as $exerciseId) {
-                    $workout->exercises()->attach($exerciseId); // Asocia los ejercicios al workout
+                    $workout->exercises()->attach($exerciseId, ['order' => $exerciseOrder]);
+                    $exerciseOrder++; // Incrementa el orden para el próximo ejercicio.
                 }
             }
-
             return redirect()->route('users.trainerRoutines', ['id' => Auth::id()])->with('success', 'Rutina creada');
         } catch (\Exception $e) {
-            return redirect()->route('users.trainerRoutines')->with('error', 'Error al crear la rutina: '.$e);
+            return redirect()->route('users.trainerRoutines', ['id' => Auth::id()])->with('error', 'Error al crear la rutina: '.$e);
         }
     }
 

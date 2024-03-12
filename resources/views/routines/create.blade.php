@@ -1,6 +1,8 @@
 <script>
     // Convertir los ejercicios de PHP a JSON y asignarlos a una variable de JavaScript
     const exercises = @json($exercises);
+    // Pasamos los valores old del formulario a js
+    const oldWorkouts = @json(old('workouts', []));
 </script>
 <script src="{{ asset('js/manageWorkouts.js') }}"></script>
 {{-- vista para crear rutinas --}}
@@ -22,7 +24,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 my-6">
             <div class="p-4 mb-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl">
-                    <form method="POST" action="{{ route('rutinas.store') }}" enctype="multipart/form-data"
+                    <form id="formRutina" method="POST" action="{{ route('rutinas.store') }}" enctype="multipart/form-data"
                         class="mt-6 space-y-6">
                         @csrf
 
@@ -30,7 +32,7 @@
                         <!-- NOMBRE -->
                         <div>
                             <x-input-label for="name" :value="__('Nombre')" />
-                            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full"
+                            <x-text-input id="name" name="name" value="{{ old('name') }}" type="text" class="mt-1 block w-full"
                                 required autofocus autocomplete="name" />
                             <x-input-error class="mt-2" :messages="$errors->get('name')" />
                         </div>
@@ -39,14 +41,14 @@
                         <div>
                             <x-input-label for="description" :value="__('Descripción:')" />
                             <x-text-area id="description" name="description" type="text" class="mt-1 block w-full"
-                                required autofocus />
+                                required autofocus> {{ old('description') }}</x-text-area>
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />
                         </div>
                         <!-- DÍAS -->
 
                         <div>
                             <x-input-label for="days" :value="__('Días a la semana:')" />
-                            <x-text-input id="days" name="days" min=1 max=7 type="number"
+                            <x-text-input id="days" name="days" value="{{ old('days') }}" min=1 max=7 type="number"
                                 class="mt-1 block w-full" autofocus autocomplete="days" oninput="updateWorkouts()" />
                             <x-input-error class="mt-2" :messages="$errors->get('days')" />
                         </div>
@@ -55,7 +57,7 @@
                         <!-- DURACIÓN -->
                         <div>
                             <x-input-label for="duration" :value="__('Duración en semanas:')" />
-                            <x-text-input id="duration" name="duration" type="number" class="mt-1 block w-full"
+                            <x-text-input id="duration" name="duration" value="{{ old('duration') }}" type="number" class="mt-1 block w-full"
                                 autofocus autocomplete="duration" />
                             <x-input-error class="mt-2" :messages="$errors->get('duration')" />
                         </div>
@@ -66,7 +68,9 @@
                                 autocomplete="img" />
                             <x-input-error class="mt-2" :messages="$errors->get('img')" />
                         </div>
-
+                        <div id="errorGeneral" style="display: none;">
+                            <!-- Mensajes de error del lado del cliente aparecerán aquí -->
+                        </div>
                         <button type="submit"
                             class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">Crear
                             Rutina</button>
