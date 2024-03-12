@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+
     /**
      * Ejecuta las migraciones.
      *
@@ -36,6 +37,7 @@ return new class extends Migration
             $table->string('description', 2000)->nullable();
 
             // La clave primaria 'id' es definida automáticamente por el método 'id()'
+            $table->timestamps();
         });
     }
 

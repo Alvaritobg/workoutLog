@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Routine;
 use App\Models\Exercise;
+use App\Models\Workout;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 /**
  * Controlador RoutineController
- * 
+ *
  * Este controlador gestiona las operaciones CRUD para las rutinas en la aplicación.
  * Permite a los usuarios crear, visualizar, actualizar y eliminar rutinas, así como
  * ver un listado de todas las rutinas disponibles. Cada método dentro de este controlador
@@ -27,7 +28,7 @@ class RoutineController extends Controller
      * Este método responde a una solicitud GET y se encarga de recuperar todas las rutinas
      * almacenadas en la base de datos, incluyendo información relacional importante como
      * los datos del entrenador (usuario) que creó cada rutina.
-     * 
+     *
      * Si la operación se realiza con éxito, se devuelve una vista con un listado de las rutinas.
      * En caso de que ocurra un error inesperado durante la operación, se captura la excepción
      * y se redirige al usuario a una ruta segura, mostrando un mensaje de error para informar
@@ -62,7 +63,19 @@ class RoutineController extends Controller
      */
     public function create()
     {
-        return view('routines.create');
+        try {
+            // Obtener todos los ejercicios disponibles
+            $exercises = Exercise::all();
+
+            // Verificar si $exercises es null o vacío
+            if (!$exercises || $exercises->isEmpty()) {
+                throw new \Exception("No hay ejercicios disponibles");
+            }
+
+            return view('routines.create', compact('exercises'));
+        } catch (\Exception $e) {
+            return redirect()->route('routines.create')->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -80,7 +93,6 @@ class RoutineController extends Controller
      */
     public function store(Request $request)
     {
-
         // Valida los datos del formulario.
         $request->validate([
             'name' => 'required|string|min:3|max:50|regex:/^[A-Za-z0-9\sáéíóúüñÁÉÍÓÚÜÑ.]+$/',
@@ -88,7 +100,10 @@ class RoutineController extends Controller
             'days' => 'integer|nullable|min:1|max:7',
             'duration' => 'integer|nullable|min:1',
             'img' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // Añade reglas de validación para los campos de ejercicios generados dinámicamente
+            'workouts.*' => 'integer|exists:exercises,id', // Verifica que cada ejercicio exista en la base de datos
         ]);
+
         try {
             // Crea y configura la nueva rutina.
             $routine = new Routine();
@@ -99,21 +114,39 @@ class RoutineController extends Controller
             $routine->duration = $request->duration;
 
             if ($request->hasFile('img')) {
-                $imageName = time() . '.' . $request->img->extension(); // se usa time() para generar un nombre de archivo único y evitar sobreescrituras
-                $request->img->move(public_path('images'), $imageName); // Mueve la imagen al directorio público.
-                $routine->img = $imageName; // Asigna el nombre de la imagen a la rutina.
+                $imageName = time() . '.' . $request->img->extension();
+                $request->img->move(public_path('images'), $imageName);
+                $routine->img = $imageName;
             }
 
-            $routine->save(); // Guarda la rutina en la base de datos.
-            return redirect()->route('users.trainerRoutines', ['id' => Auth::id()])->with('success', 'Rutina creada'); // Redirige al usuario.
+            $routine->save();
+
+            foreach ($request->workouts as $indice => $workoutExercises) {
+                $i = $indice + 1;
+                $workout =  Workout::create([
+                    'name' => "Entrenamiento $i", // Asegúrate de que este valor se recibe correctamente
+                    'routine_id' => $routine->id,
+                    'order' => $i,
+                    // Otros campos necesarios...
+                ]);
+                $workout->routine()->associate($routine);
+                // Establece cualquier otra propiedad necesaria para el workout aquí
+                $workout->save();
+
+                foreach ($workoutExercises as $exerciseId) {
+                    $workout->exercises()->attach($exerciseId); // Asocia los ejercicios al workout
+                }
+            }
+
+            return redirect()->route('users.trainerRoutines', ['id' => Auth::id()])->with('success', 'Rutina creada');
         } catch (\Exception $e) {
-            return redirect()->route('rutinas.create')->with('error', 'Error al crear la rutina');
+            return redirect()->route('users.trainerRoutines')->with('error', 'Error al crear la rutina: '.$e);
         }
     }
 
     /**
      * Muestra los detalles de una rutina específica.
-     * 
+     *
      * Este método intenta recuperar una rutina específica por su ID. Si la rutina
      * se encuentra, muestra una vista con los detalles de dicha rutina. En caso
      * contrario, si la rutina no existe, redirige al usuario a la lista general
@@ -122,7 +155,7 @@ class RoutineController extends Controller
      * excepciones inesperadas que puedan ocurrir durante la búsqueda de la rutina,
      * asegurando que el usuario sea redirigido de forma segura con un mensaje
      * de error adecuado.
-     * 
+     *
      * @param  string  $id  El ID de la rutina que se desea mostrar.
      * @return \Illuminate\Http\Response  Redirige a una vista con los detalles de la rutina o con un mensaje de error.
      */
@@ -153,11 +186,11 @@ class RoutineController extends Controller
 
 
     /**
-     * 
+     *
      * Este metodo no es necesario, BORRAR!!
-     * 
+     *
      * Muestra los detalles de una rutina específica.
-     * 
+     *
      * Intenta recuperar los detalles de una rutina específica por su ID, incluyendo información
      * del usuario (entrenador) asociado. Si la rutina no se encuentra, redirige al usuario
      * a la lista general de rutinas con un mensaje indicando que la rutina especificada
@@ -165,7 +198,7 @@ class RoutineController extends Controller
      * Este método también maneja cualquier excepción general que pueda ocurrir durante
      * el proceso de búsqueda y muestra, redirigiendo al usuario con un mensaje de error
      * genérico en caso de un error inesperado.
-     * 
+     *
      * @param  string  $id  El ID de la rutina que se desea mostrar.
      * @return \Illuminate\Http\Response  Redirige a una vista con los detalles de la rutina o con un mensaje de error.
      */
@@ -194,15 +227,15 @@ class RoutineController extends Controller
 
     /**
      * Elimina una rutina específica de la base de datos.
-     * 
+     *
      * Este método intenta encontrar la rutina especificada por el ID proporcionado utilizando el método `findOrFail`.
      * Si la rutina se encuentra, se elimina. Si la eliminación es exitosa, redirige al usuario
      * a la vista anterior con un mensaje indicando que la rutina ha sido eliminada correctamente.
-     * 
+     *
      * Si la rutina no se encuentra (es decir, `findOrFail` lanza una `ModelNotFoundException`), o si ocurre algún otro error
      * durante el proceso de eliminación (capturado por el bloque `catch` general para `\Exception`), se captura la excepción
      * y se redirige al usuario a la vista anterior con un mensaje de error.
-     * 
+     *
      * @param  string  $id  El ID de la rutina que se desea eliminar.
      * @return \Illuminate\Http\Response  Redirige a la vista anterior con un mensaje de éxito o error.
      */
@@ -222,12 +255,12 @@ class RoutineController extends Controller
 
     /**
      * Muestra el formulario de edición para una rutina específica.
-     * 
+     *
      * Intenta buscar la rutina por su ID utilizando `findOrFail`, lo que garantiza que
      * se lance una excepción `ModelNotFoundException` si la rutina no se encuentra.
      * Si la rutina se encuentra, se devuelve
      * la vista de edición con los datos de la rutina para que el usuario pueda editarlos.
-     * 
+     *
      * @param  int|string  $id  El ID de la rutina a editar.
      * @return \Illuminate\View\View  La vista de edición de rutinas con los datos de la rutina especificada.
      * @throws ModelNotFoundException Si no se encuentra la rutina con el ID proporcionado.
@@ -255,15 +288,15 @@ class RoutineController extends Controller
 
     /**
      * Actualiza una rutina específica en la base de datos.
-     * 
-     * Primero, valida los datos recibidos del formulario. 
+     *
+     * Primero, valida los datos recibidos del formulario.
      * Luego, intenta buscar la rutina por su ID con `findOrFail`,
      * asegurando así que se lance una excepción `ModelNotFoundException` si no se encuentra
      * la rutina. Si la rutina existe, se actualizan sus atributos con los datos recibidos
      * y se guarda en la base de datos. Si se subió una imagen nueva, se procesa y actualiza
      * el nombre de la imagen en la rutina. Finalmente, redirige al usuario a la lista de
      * rutinas con un mensaje de éxito.
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request  La solicitud HTTP con los datos del formulario.
      * @param  int|string  $id  El ID de la rutina a actualizar.
      * @return \Illuminate\Http\RedirectResponse  Redirección a la lista de rutinas con un mensaje de éxito.

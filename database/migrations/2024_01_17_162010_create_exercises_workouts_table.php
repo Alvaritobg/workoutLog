@@ -5,6 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
+
 {
     /**
      * Ejecuta las migraciones.
@@ -30,6 +31,8 @@ return new class extends Migration
 
             // Clave primaria compuesta por workout_id y exercise_id
             $table->primary(['workout_id', 'exercise_id']);
+
+            $table->timestamps();
 
             // Claves foraneas
             $table->foreign('workout_id')->references('id')->on('workouts')->onDelete('cascade');

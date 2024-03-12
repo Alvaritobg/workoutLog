@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+
     /**
      * Ejecuta las migraciones.
      *
@@ -27,6 +28,7 @@ return new class extends Migration
             // Clave primaria compuesta por workout_id, user_id y execution_date
             $table->primary(['workout_id', 'user_id', 'execution_date']);
 
+            $table->timestamps();
             // Restricciones de clave foránea
             $table->foreign('workout_id')->references('id')->on('workouts')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

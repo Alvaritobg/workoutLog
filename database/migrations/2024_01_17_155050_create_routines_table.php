@@ -36,6 +36,7 @@ return new class extends Migration
             $table->string('img')->nullable();
 
             $table->boolean('enabled')->default(true);
+            $table->timestamps();
         });
     }
 

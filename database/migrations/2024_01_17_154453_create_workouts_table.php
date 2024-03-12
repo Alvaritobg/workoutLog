@@ -26,6 +26,8 @@ return new class extends Migration
             // Orden del entrenamiento en la rutina
             $table->integer('order');
 
+            $table->timestamps();
+
         });
     }
 

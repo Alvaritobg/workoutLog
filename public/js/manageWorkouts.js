@@ -51,21 +51,24 @@ function updateWorkouts() {
 function addExerciseSelector(container, day) {
     const selectorDiv = document.createElement("div");
     let exercisesOptions = "";
-
-    exercises.forEach((exercise) => {
-        exercisesOptions += `<option value="${exercise.id}">${exercise.name}</option>`;
+    exercises.forEach((exercise, i) => {
+        exercisesOptions += `<option value="${exercise.id}" name="${exercise.name}">${exercise.name}</option>`;
     });
 
+
     selectorDiv.innerHTML = `
-        <div class="mt-4">
-            <select name="workout${day}" 
-            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full required">
-                ${exercisesOptions}
-            </select>
-        </div>
+    <div class="mt-4 flex items-center">
+        <select name="workouts[${day}][]"
+        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full mr-2">
+            ${exercisesOptions}
+        </select>
+    </div>
     `;
 
     // Inserta el selector antes del botón de añadir
     const addButton = container.querySelector("button");
     container.insertBefore(selectorDiv, addButton);
+
 }
+
+

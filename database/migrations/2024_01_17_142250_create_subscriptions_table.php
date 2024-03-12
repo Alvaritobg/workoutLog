@@ -6,9 +6,10 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+
     /**
      * Ejecuta las migraciones.
-     * 
+     *
      * Este método se encarga de crear la tabla 'subscriptions' con las columnas especificadas.
      * Incluye campos para la fecha de start_date, end_date, user_id, y booleanos para 'paid' y 'renew'.
      * Se establece una clave primaria compuesta por ['user_id', 'start_date', 'end_date'].
@@ -30,7 +31,7 @@ return new class extends Migration
 
             // Indica si la subscripción debe ser renovada
             $table->boolean('renew')->default(false);
-
+            $table->timestamps();
             // Define una clave primaria compuesta
             $table->primary(['user_id', 'start_date', 'end_date']);
         });
@@ -38,7 +39,7 @@ return new class extends Migration
 
     /**
      * Revierte las migraciones.
-     * 
+     *
      * Este método se encarga de eliminar la tabla 'subscriptions' si es necesario.
      * Se ejecuta cuando se realiza un rollback de las migraciones.
      */

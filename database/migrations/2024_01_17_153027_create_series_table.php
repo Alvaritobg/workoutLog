@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    public $timestamps = false;
     /**
      * Ejecuta las migraciones.
      *
@@ -36,6 +37,8 @@ return new class extends Migration
 
             // Repeticiones obtenidas en el ejercicio
             $table->integer('repetitions');
+
+            $table->timestamps();
 
             // Clave primaria compuesta
             //$table->primary(['number','workout_id', 'user_id', 'exercise_id', 'date']);// (Da error, debo sacar number de la clave primaria y declarar una clave unica compuesta)
