@@ -46,7 +46,7 @@ class RoutinesSeeder extends Seeder
                 'description' => 'Rutina para desarrollar masa muscular dividida en dos partes.',
                 'days' => 4,
                 'duration' => 7,
-                'img' => 'torso_pierna.jpg',
+                'img' => 'mancuernas.jpg',
             ],
         ]);
     }

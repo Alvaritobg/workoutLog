@@ -1,24 +1,31 @@
 // Define la función para actualizar los workouts basándose en el número de días especificado.
 // Si amountOfDays no se proporciona, se intentará obtener el valor del elemento con ID 'days'.
 function updateWorkouts(amountOfDays = null) {
+    // Determina el número de días basado en el argumento proporcionado o en el valor del input 'days'.
     let days = amountOfDays || document.getElementById("days").value;
+    // Obtiene el contenedor donde se añadirán los workouts.
     const container = document.getElementById("workoutsContainer");
+    // Limpia cualquier contenido previo en el contenedor.
     container.innerHTML = "";
 
+    // Asegura que el número de días esté dentro de un rango válido (1 a 7).
     if (days <= 0) days = 1;
     else if (days > 7) days = 7;
 
+    // Crea y añade los elementos necesarios para cada día en el rango especificado.
     for (let i = 1; i <= days; i++) {
+        // Crea un nuevo div para cada día de workout.
         const workoutDiv = document.createElement("div");
         workoutDiv.setAttribute("id", `day-${i}-exercises`);
         workoutDiv.classList.add("workout-day");
 
+        // Añade un encabezado para indicar el número del día.
         const dayHeader = document.createElement("h3");
         dayHeader.textContent = `Día ${i}`;
         dayHeader.classList.add("font-bold", "text-lg", "mt-4");
         workoutDiv.appendChild(dayHeader);
 
-        // Mueve la creación y añadidura del botón "Añadir otro ejercicio" aquí, justo después del encabezado
+        // Crea y configura un botón para añadir más ejercicios a este día.
         const addButton = document.createElement("button");
         addButton.textContent = "Añadir otro ejercicio";
         addButton.type = "button";
@@ -26,6 +33,7 @@ function updateWorkouts(amountOfDays = null) {
         addButton.onclick = () => addExerciseSelector(workoutDiv, i);
         workoutDiv.appendChild(addButton);
 
+        // Añade el div de workout al contenedor principal.
         container.appendChild(workoutDiv);
 
         // Añade el primer selector de ejercicios después de haber colocado el botón.
@@ -39,11 +47,13 @@ function addExerciseSelector(container, day) {
     selectorDiv.classList.add("exercise-selector");
     let exercisesOptions = "";
 
+    // Itera sobre una lista de ejercicios predefinidos para generar las opciones del selector.
     exercises.forEach((exercise) => {
         const isSelected = oldWorkouts[day] && oldWorkouts[day].includes(exercise.id.toString());
         exercisesOptions += `<option value="${exercise.id}" ${isSelected ? 'selected' : ''}>${exercise.name}</option>`;
     });
 
+    // Configura el HTML interno del div con el selector y las opciones generadas.
     selectorDiv.innerHTML = `
         <div class="mt-4 flex items-center">
             <select name="workouts[${day}][]" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full mr-2">
@@ -56,15 +66,13 @@ function addExerciseSelector(container, day) {
     const addButton = container.querySelector(".add-exercise-button");
     container.insertBefore(selectorDiv, addButton);
 
+    // Ajusta la visibilidad de los botones de eliminar.
     adjustRemoveButtonsVisibility(container);
 }
-
-
 
 function adjustRemoveButtonsVisibility(container) {
     const selectors = container.querySelectorAll('.exercise-selector');
     selectors.forEach(selector => {
-        // Elimina cualquier botón existente para resetear el estado.
         let removeButton = selector.querySelector('.remove-exercise-button');
         if (removeButton) {
             removeButton.remove();
@@ -77,8 +85,9 @@ function adjustRemoveButtonsVisibility(container) {
             removeButton.type = "button";
             removeButton.classList.add("remove-exercise-button","px-2","py-2","text-red-600");
             removeButton.onclick = () => {
-                selector.remove(); // Elimina el selector.
-                adjustRemoveButtonsVisibility(container); // Ajusta la visibilidad de nuevo tras eliminar.
+                // Elimina el selector y ajusta la visibilidad de nuevo tras eliminar.
+                selector.remove();
+                adjustRemoveButtonsVisibility(container);
             };
             selector.appendChild(removeButton);
         }
@@ -87,8 +96,8 @@ function adjustRemoveButtonsVisibility(container) {
 
 // Evento que se dispara cuando el contenido de la página ha cargado.
 window.addEventListener("DOMContentLoaded", () => {
-    // Determina el número de días basándose en los datos antiguos si están disponibles, o en el valor actual del input.
     const daysInput = document.getElementById("days");
+    // Determina el número de días basándose en los datos antiguos si están disponibles, o en el valor actual del input.
     const numberOfDays = oldWorkouts.length > 0 ? oldWorkouts.length : daysInput.value;
 
     // Actualiza el valor del input para reflejar el número correcto de días basado en los datos antiguos.

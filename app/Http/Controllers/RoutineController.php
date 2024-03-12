@@ -102,7 +102,7 @@ class RoutineController extends Controller
             'duration' => 'integer|nullable|min:1',
             'img' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             // Añade reglas de validación para los campos de ejercicios generados dinámicamente
-            //'workouts.*' => 'integer|exists:exercises,id', // Verifica que cada ejercicio exista en la base de datos
+            'workouts.*.*' => 'integer|exists:exercises,id', // Verifica que cada ejercicio exista en la base de datos
         ]);
 
         // Verificación manual de duplicados en workouts

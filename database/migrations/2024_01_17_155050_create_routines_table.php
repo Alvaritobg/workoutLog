@@ -33,7 +33,7 @@ return new class extends Migration
             // Duración en semanas
             $table->integer('duration')->nullable();
 
-            $table->string('img')->nullable();
+            $table->string('img')->default('hipertrofia.jpg');
 
             $table->boolean('enabled')->default(true);
             $table->timestamps();
