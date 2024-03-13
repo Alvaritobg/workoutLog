@@ -4,7 +4,7 @@
     // Pasamos los valores old del formulario a js
     const oldWorkouts = @json(old('workouts', []));
 </script>
-<script src="{{ asset('js/manageWorkouts.js') }}"></script>
+<script src="{{ asset('js/manageWorkoutsNewRoutine.js') }}"></script>
 {{-- vista para crear rutinas --}}
 <x-app-layout>
     {{-- Slot para el encabezado de la página --}}
@@ -19,6 +19,19 @@
     <div class="flex w-full">
         {{-- Modulo para mostrar mensajes de error y confirmación --}}
         <x-notification :status="session()"></x-notification>
+    </div>
+    <div class="flex w-full">
+        <div id="errFormContainer" class="flex w-full flex-row flex-wrap items-center py-4 px-4 md:px-5 m-2 md:mx-5 gap-4 bg-red-100">
+            <?xml version="1.0" encoding="UTF-8"?>
+            <svg class="w-10 h-20 fill-red-400" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"
+                width="512" height="512">
+                <path
+                    d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z" />
+                <path d="M12,5a1,1,0,0,0-1,1v8a1,1,0,0,0,2,0V6A1,1,0,0,0,12,5Z" />
+                <rect x="11" y="17" width="2" height="2" rx="1" />
+            </svg>
+            <p class="text-lg text-red-700" id="errorForm"></p>
+        </div>
     </div>
     <div class="py-3">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 my-6">

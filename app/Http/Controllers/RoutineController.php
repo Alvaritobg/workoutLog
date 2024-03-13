@@ -40,8 +40,10 @@ class RoutineController extends Controller
     public function index()
     {
         try {
-            // Intenta obtener todas las rutinas con los datos del entrenador que la creo
-            $routines = Routine::with('user')->get();
+            // Intenta obtener las rutinas con paginación, incluyendo los datos del entrenador que la creó.
+            // El método paginate() recibe como parámetro el número de items por página.
+            // Por ejemplo, para paginar de 10 en 10, usa paginate(10).
+            $routines = Routine::with('user')->paginate(10);
             // Devuelve la vista con las rutinas.
             return view('routines.index', compact('routines')); // Devuelve la vista con las rutinas.
         } catch (\Exception $e) {
@@ -101,7 +103,6 @@ class RoutineController extends Controller
             'days' => 'integer|nullable|min:1|max:7',
             'duration' => 'integer|nullable|min:1',
             'img' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            // Añade reglas de validación para los campos de ejercicios generados dinámicamente
             'workouts.*.*' => 'integer|exists:exercises,id', // Verifica que cada ejercicio exista en la base de datos
         ]);
 
@@ -137,14 +138,12 @@ class RoutineController extends Controller
 
             foreach ($request->workouts as $indice => $workoutExercises) {
                 $workout =  Workout::create([
-                    'name' => "Entrenamiento $indice | $routine->name", // Asegúrate de que este valor se recibe correctamente
+                    'name' => "Entrenamiento $indice | $routine->name",
                     'routine_id' => $routine->id,
                     'order' => $indice,
-                    // Otros campos necesarios...
+
                 ]);
-                //$workout->routine()->associate($routine);
-                // Establece cualquier otra propiedad necesaria para el workout aquí
-                //$workout->save();
+
                 $exerciseOrder = 1; // Inicia el orden del ejercicio para este workout.
                 foreach ($workoutExercises as $exerciseId) {
                     $workout->exercises()->attach($exerciseId, ['order' => $exerciseOrder]);
@@ -197,47 +196,6 @@ class RoutineController extends Controller
         }
     }
 
-
-    /**
-     *
-     * Este metodo no es necesario, BORRAR!!
-     *
-     * Muestra los detalles de una rutina específica.
-     *
-     * Intenta recuperar los detalles de una rutina específica por su ID, incluyendo información
-     * del usuario (entrenador) asociado. Si la rutina no se encuentra, redirige al usuario
-     * a la lista general de rutinas con un mensaje indicando que la rutina especificada
-     * no fue encontrada. En caso de éxito, muestra una vista con los detalles de la rutina.
-     * Este método también maneja cualquier excepción general que pueda ocurrir durante
-     * el proceso de búsqueda y muestra, redirigiendo al usuario con un mensaje de error
-     * genérico en caso de un error inesperado.
-     *
-     * @param  string  $id  El ID de la rutina que se desea mostrar.
-     * @return \Illuminate\Http\Response  Redirige a una vista con los detalles de la rutina o con un mensaje de error.
-     */
-    /*   public function showDetails($id)
-    {
-        try {
-            // Intenta buscar la rutina por su ID, incluyendo los datos del usuario (entrenador) que la crea.
-            $routine = Routine::with('user')->find($id);
-
-            // Verificar si la rutina existe.
-            if (!$routine) {
-                // Si no existe, se redirige a la lista de rutinas y se indica que no se encuentra.
-                return redirect()->route('routines.index')->with('error', 'Rutina no encontrada.');
-            } else {
-                // Si la rutina existe, se devuelve una vista con los datos de la rutina.
-                return view('routines.detail', compact('routine'));
-            }
-        } catch (\Exception $e) {
-            // Maneja cualquier otra excepción que pueda ocurrir.
-            // Redirige al usuario a una ruta segura (por ejemplo, la lista de rutinas)
-            // con un mensaje de error general.
-            return redirect()->route('routines.index')->with('error', 'Ocurrió un error al intentar mostrar los detalles de la rutina.');
-        }
-    } */
-
-
     /**
      * Elimina una rutina específica de la base de datos.
      *
@@ -282,15 +240,20 @@ class RoutineController extends Controller
     {
         try {
             // Busca la rutina por su ID y lanza una excepción ModelNotFoundException si no la encuentra.
-            $routine = Routine::findOrFail($id);
-            // Devuelve la vista de edición de rutinas, pasando la rutina encontrada a la vista.
-            return view('routines.edit', compact('routine'));
-        } catch (ModelNotFoundException   $e) {
-            return back()->with('error', 'No se pudo editar esta rutina.');
+            // Además, carga ansiosamente los entrenamientos y los ejercicios de esos entrenamientos.
+            $routine = Routine::with(['workouts', 'workouts.exercises'])->findOrFail($id);
+
+            $exercises = Exercise::all(); // Obtener todos los ejercicios
+
+            // Devuelve la vista de edición de rutinas, pasando la rutina y los ejercicios encontrados a la vista.
+            return view('routines.edit', compact('routine', 'exercises'));
+        } catch (ModelNotFoundException $e) {
+            return back()->with('error', 'No se pudo encontrar esta rutina.');
         } catch (\Exception $e) {
-            return back()->with('error', 'No se pudo editar esta rutina.');
+            return back()->with('error', 'Ocurrió un error al intentar editar esta rutina.');
         }
     }
+
 
     public function showCreateRoutineForm()
     {
@@ -317,41 +280,71 @@ class RoutineController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Valida los datos del formulario, asegurándose de que cumplen con los criterios especificados.
+         //dd($request);
+        // Valida los datos del formulario.
         $request->validate([
             'name' => 'required|string|min:3|max:50|regex:/^[A-Za-z0-9\sáéíóúüñÁÉÍÓÚÜÑ.]+$/',
             'description' => 'required|string|max:255|regex:/^[A-Za-z0-9\sáéíóúüñÁÉÍÓÚÜÑ.]+$/',
             'days' => 'integer|nullable|min:1|max:7',
             'duration' => 'integer|nullable|min:1',
             'img' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'workouts.*.*' => 'integer|exists:exercises,id', // Verifica que cada ejercicio exista en la base de datos
         ]);
-        try {
-            // Busca la rutina por su ID y lanza una excepción ModelNotFoundException si no la encuentra.
-            $routine = Routine::findOrFail($id);
 
-            // Actualiza los atributos de la rutina con los valores recibidos del formulario.
+        // Verificación manual de duplicados en workouts
+        $noDuplicateExercises = true;
+        foreach ($request->workouts as $day => $exercises) {
+            if (count($exercises) !== count(array_unique($exercises))) {
+                $noDuplicateExercises = false;
+                break;
+            }
+        }
+
+        if (!$noDuplicateExercises) {
+            return redirect()->back()->with('error','Hay ejercicios duplicados en los entrenamientos introducidos')->withInput();
+        }
+
+        try {
+            // Busca  la nueva rutina.
+            // Busca la rutina existente por su ID.
+            $routine = Routine::findOrFail($id);
             $routine->name = $request->name;
             $routine->description = $request->description;
-            $routine->user_id = Auth::id(); // Asigna el ID del usuario autenticado como el usuario de la rutina.
+            // No es necesario reasignar user_id durante la actualización.
             $routine->days = $request->days;
             $routine->duration = $request->duration;
 
-            // Si se subió una imagen, la procesa y actualiza el nombre de la imagen en la rutina.
             if ($request->hasFile('img')) {
-                $imageName = time() . '.' . $request->img->extension(); // Genera un nombre de archivo único.
-                $request->img->move(public_path('images'), $imageName); // Mueve la imagen al directorio público.
-                $routine->img = $imageName; // Actualiza el nombre de la imagen en la rutina.
+                $imageName = time() . '.' . $request->img->extension();
+                $request->img->move(public_path('images'), $imageName);
+                $routine->img = $imageName;
             }
 
-            // Guarda los cambios en la rutina en la base de datos.
             $routine->save();
 
-            // Redirige al usuario a la lista de rutinas con un mensaje de éxito.
-            return redirect()->route('routine.index')->with('success', 'Rutina actualizada correctamente');
-        } catch (ModelNotFoundException   $e) {
-            return back()->with('error', 'No se pudo editar esta rutina.');
+            // Para cada workout en el request
+            foreach ($request->workouts as $day => $workoutExercises) {
+                // Aquí, actualiza o crea el workout según necesites
+                // Ejemplo simplificado, ajusta según tus necesidades
+                $workout = Workout::firstOrCreate([
+                    'routine_id' => $routine->id,
+                    'name' => "Entrenamiento $day | $routine->name",
+                    'order' => $day,
+                ]);
+
+                // Antes de adjuntar nuevos ejercicios, puedes querer limpiar los existentes
+                $workout->exercises()->detach();
+
+                $order = 1; // Inicializa un contador de orden para los ejercicios
+                foreach ($workoutExercises as $exerciseId) {
+                    // Adjunta el ejercicio al workout con el valor de 'order'
+                    $workout->exercises()->attach($exerciseId, ['order' => $order]);
+                    $order++; // Incrementa el contador de orden para el próximo ejercicio
+                }
+            }
+            return redirect()->route('users.trainerRoutines', ['id' => Auth::id()])->with('success', 'Rutina creada');
         } catch (\Exception $e) {
-            return back()->with('error', 'No se pudo editar esta rutina.');
+            return redirect()->route('users.trainerRoutines', ['id' => Auth::id()])->with('error', 'Error al crear la rutina: '.$e);
         }
     }
 }

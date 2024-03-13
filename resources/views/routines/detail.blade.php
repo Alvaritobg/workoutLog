@@ -8,7 +8,7 @@
     @if ($routine)
         {{-- $routine --}}
         <div class="flex flex-col py-2 px-2 md:px-5 my-4 gap-4 justify-center">
-            <div class="flex flex-col text-end text-white p-6 max-h-60 overflow-hidden shadow-md rounded-sm 
+            <div class="flex flex-col text-end text-white p-6 max-h-60 overflow-hidden shadow-md rounded-sm
                     h-screen bg-cover bg-center"
                 style="background-image: url('/images/{{ $routine->img }}')">
 
@@ -16,61 +16,11 @@
 
             <div class="divide-y divide-gray-100 border border-gray-100 bg-white p-5 shadow-md rounded-sm">
 
-                {{--    <div class="flow-root">
-                    <dl class="-my-3 divide-y divide-gray-100 text-sm">
-
-                        <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                            <dt class="font-medium text-gray-900">Nombre:</dt>
-                            <dd class="text-gray-700 sm:col-span-2">
-                                @isset($routine->name)
-                                    <p>{{ $routine->name }}</p>
-                                @endisset
-                            </dd>
-                        </div>
-
-                        <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                            <dt class="font-medium text-gray-900">Descripción:</dt>
-                            <dd class="text-gray-700 sm:col-span-2">
-                                @isset($routine->description)
-                                    <p>{{ $routine->description }}</p>
-                                @endisset
-                            </dd>
-                        </div>
-
-                        <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                            <dt class="font-medium text-gray-900">Duración:</dt>
-                            <dd class="text-gray-700 sm:col-span-2">
-                                @isset($routine->duration)
-                                    <p>{{ $routine->duration }} semanas.</p>
-                                @endisset
-                            </dd>
-                        </div>
-
-                        <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                            <dt class="font-medium text-gray-900">Días:</dt>
-                            <dd class="text-gray-700 sm:col-span-2">
-                                @isset($routine->days)
-                                    <p>{{ $routine->days }} días a la semana.</p>
-                                @endisset
-                            </dd>
-                        </div>
-
-                        <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                            <dt class="font-medium text-gray-900">Creada por:</dt>
-                            <dd class="text-gray-700 sm:col-span-2">
-                                @isset($routine->user->name)
-                                    <p>{{ $routine->user->name }}</p>
-                                @endisset
-                            </dd>
-                        </div>
-                    </dl>
-                </div> --}}
-
                 <h2 class="text-2xl mb-3 font-black">{{ $routine->name }}</h2>
 
                 @foreach ($routine->workouts as $workout)
                     <div class="border rounded my-2 p-2">
-                        <h3 class="my-2 text-xl font-light">Entrenamiento {{ $loop->iteration }}:</h3>
+                        <h3 class="my-2 text-xl font-light">Día {{ $loop->iteration }}:</h3>
                         <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
                             <thead class="ltr:text-left rtl:text-right">
                                 <tr class="bg-gray-100">

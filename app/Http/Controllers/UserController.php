@@ -23,7 +23,7 @@ class UserController extends Controller
      * Intenta recuperar todos los usuarios junto con sus roles de la base de datos,
      * paginando el resultado para mejorar la usabilidad en la interfaz de usuario.
      * En caso de que ocurra un error durante la recuperación de los datos (por ejemplo,
-     * un problema de conexión a la base de datos), se captura la excepción, y se 
+     * un problema de conexión a la base de datos), se captura la excepción, y se
      * redirige al usuario a una ruta segura con un mensaje de error.
      *
      * @return \Illuminate\Http\Response Retorna la vista 'users.manageUsers' con los usuarios
@@ -34,7 +34,7 @@ class UserController extends Controller
     {
         try {
             // Recupera todos los usuarios y sus roles, paginando el resultado.
-            $users = User::with('roles')->paginate(4);
+            $users = User::with('roles')->paginate(10);
 
             // Retorna la vista con los usuarios y sus roles para su gestión.
             return view('users.manageUsers', compact('users'));

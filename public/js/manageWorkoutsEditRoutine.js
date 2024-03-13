@@ -22,7 +22,7 @@ function updateWorkouts(amountOfDays = null) {
         // Añade un encabezado para indicar el número del día.
         const dayHeader = document.createElement("h3");
         dayHeader.textContent = `Día ${i}`;
-        dayHeader.classList.add("font-bold", "text-lg", "mt-4");
+        dayHeader.classList.add("font-bold", "text-lg", "mt-4", 'dia');
         workoutDiv.appendChild(dayHeader);
 
         // Crea y configura un botón para añadir más ejercicios a este día.
@@ -106,3 +106,49 @@ window.addEventListener("DOMContentLoaded", () => {
     // Llama a updateWorkouts para crear la interfaz basada en el número correcto de días.
     updateWorkouts(numberOfDays);
 });
+
+// Evita que el formulario se envíe si hay ejercicios repetidos en el mísmo día de entrenamiento.
+// Muestra un aviso con los días que tienen ejercicios repetidos
+document.addEventListener('DOMContentLoaded', () => {
+    const formRutina = document.getElementById('formRutina');
+    const errFormContainer = document.getElementById('errFormContainer');
+    const errorFormText = document.getElementById('errorForm');
+
+    // Oculta el contenedor de errores al cargar la página
+    errFormContainer.style.display = 'none';
+
+    formRutina.addEventListener('submit', (event) => {
+        event.preventDefault(); // Previene el envío inicial del formulario
+
+        const allSelects = formRutina.querySelectorAll('select[name^="workouts["]');
+        let isValid = true;
+        let repeatedExercises = {};
+        let errorMessages = [];
+
+        allSelects.forEach((select) => {
+            const day = select.name.match(/\[(\d+)\]/)[1]; // Extrae el número del día
+            const exerciseId = select.value;
+
+            if (!repeatedExercises[day]) {
+                repeatedExercises[day] = [];
+            }
+
+            if (repeatedExercises[day].includes(exerciseId)) {
+                isValid = false; // Marca el formulario como inválido si hay duplicados
+                errorMessages.push(`-Hay ejercicios repetidos en el día ${day}.`);
+            } else {
+                repeatedExercises[day].push(exerciseId);
+            }
+        });
+
+        if (isValid) {
+            formRutina.submit();
+        } else {
+            // Muestra el contenedor de errores y actualiza el mensaje
+            errFormContainer.style.display = 'flex';
+            // Usa innerHTML para permitir el uso de etiquetas HTML como <br>
+            errorFormText.innerHTML = errorMessages.join('<br>');
+        }
+    });
+});
+
