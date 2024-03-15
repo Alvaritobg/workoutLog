@@ -22,14 +22,24 @@ function updateWorkouts(amountOfDays = null) {
         // Añade un encabezado para indicar el número del día.
         const dayHeader = document.createElement("h3");
         dayHeader.textContent = `Día ${i}`;
-        dayHeader.classList.add("font-bold", "text-lg", "mt-4", 'dia');
+        dayHeader.classList.add("font-bold", "text-lg", "mt-4", "dia");
         workoutDiv.appendChild(dayHeader);
 
         // Crea y configura un botón para añadir más ejercicios a este día.
         const addButton = document.createElement("button");
         addButton.textContent = "Añadir otro ejercicio";
         addButton.type = "button";
-        addButton.classList.add("add-exercise-button", "mt-2", "px-4", "py-2", "bg-gray-100", "text-primary", "rounded", "border", "border-gray-600");
+        addButton.classList.add(
+            "add-exercise-button",
+            "mt-2",
+            "px-4",
+            "py-2",
+            "bg-gray-100",
+            "text-primary",
+            "rounded",
+            "border",
+            "border-gray-600"
+        );
         addButton.onclick = () => addExerciseSelector(workoutDiv, i);
         workoutDiv.appendChild(addButton);
 
@@ -49,8 +59,12 @@ function addExerciseSelector(container, day) {
 
     // Itera sobre una lista de ejercicios predefinidos para generar las opciones del selector.
     exercises.forEach((exercise) => {
-        const isSelected = oldWorkouts[day] && oldWorkouts[day].includes(exercise.id.toString());
-        exercisesOptions += `<option value="${exercise.id}" ${isSelected ? 'selected' : ''}>${exercise.name}</option>`;
+        const isSelected =
+            oldWorkouts[day] &&
+            oldWorkouts[day].includes(exercise.id.toString());
+        exercisesOptions += `<option value="${exercise.id}" ${
+            isSelected ? "selected" : ""
+        }>${exercise.name}</option>`;
     });
 
     // Configura el HTML interno del div con el selector y las opciones generadas.
@@ -71,9 +85,9 @@ function addExerciseSelector(container, day) {
 }
 
 function adjustRemoveButtonsVisibility(container) {
-    const selectors = container.querySelectorAll('.exercise-selector');
-    selectors.forEach(selector => {
-        let removeButton = selector.querySelector('.remove-exercise-button');
+    const selectors = container.querySelectorAll(".exercise-selector");
+    selectors.forEach((selector) => {
+        let removeButton = selector.querySelector(".remove-exercise-button");
         if (removeButton) {
             removeButton.remove();
         }
@@ -83,7 +97,12 @@ function adjustRemoveButtonsVisibility(container) {
             removeButton = document.createElement("button");
             removeButton.textContent = "Eliminar ejercicio";
             removeButton.type = "button";
-            removeButton.classList.add("remove-exercise-button","px-2","py-2","text-red-600");
+            removeButton.classList.add(
+                "remove-exercise-button",
+                "px-2",
+                "py-2",
+                "text-red-600"
+            );
             removeButton.onclick = () => {
                 // Elimina el selector y ajusta la visibilidad de nuevo tras eliminar.
                 selector.remove();
@@ -93,34 +112,22 @@ function adjustRemoveButtonsVisibility(container) {
         }
     });
 }
-
+// Valida que no se ponga dos veces el mismo ejercicio en el mismo entrenamiento/día
 // Evento que se dispara cuando el contenido de la página ha cargado.
-window.addEventListener("DOMContentLoaded", () => {
-    const daysInput = document.getElementById("days");
-    // Determina el número de días basándose en los datos antiguos si están disponibles, o en el valor actual del input.
-    const numberOfDays = oldWorkouts.length > 0 ? oldWorkouts.length : daysInput.value;
-
-    // Actualiza el valor del input para reflejar el número correcto de días basado en los datos antiguos.
-    daysInput.value = numberOfDays;
-
-    // Llama a updateWorkouts para crear la interfaz basada en el número correcto de días.
-    updateWorkouts(numberOfDays);
-});
-
-// Evita que el formulario se envíe si hay ejercicios repetidos en el mísmo día de entrenamiento.
-// Muestra un aviso con los días que tienen ejercicios repetidos
-document.addEventListener('DOMContentLoaded', () => {
-    const formRutina = document.getElementById('formRutina');
-    const errFormContainer = document.getElementById('errFormContainer');
-    const errorFormText = document.getElementById('errorForm');
+document.addEventListener("DOMContentLoaded", () => {
+    const formRutina = document.getElementById("formRutina");
+    const errFormContainer = document.getElementById("errFormContainer");
+    const errorFormText = document.getElementById("errorForm");
 
     // Oculta el contenedor de errores al cargar la página
-    errFormContainer.style.display = 'none';
+    errFormContainer.style.display = "none";
 
-    formRutina.addEventListener('submit', (event) => {
+    formRutina.addEventListener("submit", (event) => {
         event.preventDefault(); // Previene el envío inicial del formulario
 
-        const allSelects = formRutina.querySelectorAll('select[name^="workouts["]');
+        const allSelects = formRutina.querySelectorAll(
+            'select[name^="workouts["]'
+        );
         let isValid = true;
         let repeatedExercises = {};
         let errorMessages = [];
@@ -135,20 +142,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (repeatedExercises[day].includes(exerciseId)) {
                 isValid = false; // Marca el formulario como inválido si hay duplicados
-                errorMessages.push(`-Hay ejercicios repetidos en el día ${day}.`);
+                errorMessages.push(
+                    `-Hay ejercicios repetidos en el día ${day}.`
+                );
             } else {
                 repeatedExercises[day].push(exerciseId);
             }
         });
 
-        if (isValid) {
-            formRutina.submit();
-        } else {
+        if (!isValid) {
             // Muestra el contenedor de errores y actualiza el mensaje
-            errFormContainer.style.display = 'flex';
-            // Usa innerHTML para permitir el uso de etiquetas HTML como <br>
-            errorFormText.innerHTML = errorMessages.join('<br>');
+            errFormContainer.style.display = "flex";
+            errorFormText.innerHTML = errorMessages.join("<br>");
+
+            // Mueve el foco al contenedor de errores
+            errFormContainer.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+            });
+
+            // Oculta el contenedor de errores después de 5 segundos
+            setTimeout(() => {
+                errFormContainer.style.display = "none";
+            }, 5000);
+        } else {
+            formRutina.submit();
         }
     });
 });
-

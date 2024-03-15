@@ -1,4 +1,5 @@
 {{-- Vista Blade para mostrar las rutinas disponibles --}}
+<script src="{{ asset('js/unpaidSubscription.js') }}"></script>
 <x-app-layout>
 
     {{-- Slot para el encabezado de la página --}}
@@ -16,27 +17,37 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg ">
                 {{-- Contenedor principal --}}
                 <div class="flex w-full">
+                    <div id="dynamicNotification"
+                        class="hidden flex w-full flex-row flex-wrap items-center py-4 px-4 md:px-5 my-4 mx-2 md:mx-5 gap-4">
+                        <svg class="w-10 h-20" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"
+                            width="512" height="512"></svg>
+                        <p id="dynamicNotificationText" class="text-lg"></p>
+                    </div>
+                </div>
+                <div class="flex w-full">
                     {{-- Modulo para mostrar mensajes de error y confirmación --}}
                     <x-notification :status="session()"></x-notification>
                 </div>
                 {{-- muestra si eres admin / trainer --}}
                 @auth
-                    @if (auth()->user()->hasRole('admin') ||
-                            (auth()->user()->hasRole('trainer')))
+                    @if (auth()->user()->hasRole('trainer') || auth()->user()->hasRole('admin'))
                         {{-- Botón para entrenadores para crear rutinas nuevas --}}
                         <div class="flex pb-2">
                             <div class="overflow-x-auto mt-2 -mb-5 mx-5">
-                                <a href="{{ route('routines.nueva') }}">
-                                    <div
-                                        class="inline-flex rounded bg-blue-600 px-2 py-2 text-xs font-medium text-white hover:bg-blue-500 delete-routine-btn align-items-center">
-                                        <svg class="w-3 h-3 my-auto me-2 fill-white cursor-pointer" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 512 512">
-                                            <path
-                                                d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
-                                        </svg>
-                                        Crear rutina
-                                    </div>
-                                </a>
+                                @auth
+                                    <a href="#"
+                                        onclick="crearRutina('{{ auth()->user()->hasActivePaidSubscription() }}', '{{ route('routines.nueva') }}')">
+                                        <div
+                                            class="inline-flex rounded bg-blue-600 px-2 py-2 text-xs font-medium text-white hover:bg-blue-500 delete-routine-btn align-items-center">
+                                            <svg class="w-3 h-3 my-auto me-2 fill-white cursor-pointer"
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                <path
+                                                    d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
+                                            </svg>
+                                            Crear rutina
+                                        </div>
+                                    </a>
+                                @endauth
                             </div>
                         </div>
                     @endif

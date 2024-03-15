@@ -1,5 +1,14 @@
 {{-- Vista Blade para mostrar las rutinas disponibles --}}
+<script src="{{ asset('js/unpaidSubscription.js') }}"></script>
 <x-app-layout>
+    <div class="flex w-full">
+        <div id="dynamicNotification"
+            class="hidden flex w-full flex-row flex-wrap items-center py-4 px-4 md:px-5 my-4 mx-2 md:mx-5 gap-4">
+            <svg class="w-10 h-20" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="512"
+                height="512"></svg>
+            <p id="dynamicNotificationText" class="text-lg"></p>
+        </div>
+    </div>
     <div class="flex w-full">
         {{-- Modulo para mostrar mensajes de error y confirmación --}}
         <x-notification :status="session()"></x-notification>
@@ -115,22 +124,32 @@
                 @auth
                     @if (auth()->user()->hasRole('admin') ||
                             (auth()->user()->hasRole('trainer') && auth()->user()->id === $routine->user_id))
-                        <a class="text-center inline-block rounded border border-blue-600 px-12 py-3 text-sm font-medium text-blue-600 hover:bg-blue-600 hover:text-white focus:outline-none focus:ring active:bg-blue-500"
-                            href="{{ route('rutinas.edit', ['id' => $routine->id]) }}">
+                        <a class="cursor-pointer max-h-11 text-center inline-block rounded border border-blue-600 px-12 py-3 text-sm font-medium text-blue-600 hover:bg-blue-600 hover:text-white focus:outline-none focus:ring active:bg-blue-500"
+                            onclick="editarRutina('{{ auth()->user()->hasActivePaidSubscription() || auth()->user()->hasRole('admin') }}', '{{ route('rutinas.edit', ['id' => $routine->id]) }}')">
                             Editar @isset($routine->name)
                                 {{ strtolower($routine->name) }}
                             @endisset
                         </a>
-                        <form action="{{ route('routines.destroy', $routine->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button onclick="return confirm('¿Estás seguro de querer eliminar esta rutina?');"
-                                class="text-center inline-block rounded border border-red-600 px-12 py-3 text-sm font-medium text-red-600 hover:bg-red-600 hover:text-white focus:outline-none focus:ring active:bg-blue-500">
+                        {{-- si tienes suscripcion activa puedes eliminar o no --}}
+                        @if (auth()->user()->hasActivePaidSubscription())
+                            <form action="{{ route('routines.destroy', ['id' => $routine->id]) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button onclick="return confirm('¿Estás seguro de querer eliminar esta rutina?');"
+                                    class="max-h-11 text-center inline-block rounded border border-red-600 px-12 py-3 text-sm font-medium text-red-600 hover:bg-red-600 hover:text-white focus:outline-none focus:ring active:bg-blue-500">
+                                    Eliminar @isset($routine->name)
+                                        {{ strtolower($routine->name) }}
+                                    @endisset
+                                </button>
+                            </form>
+                        @else
+                            <a href="#" onclick="eliminarRutina()"
+                                class="max-h-11 text-center inline-block rounded border border-red-600 px-12 py-3 text-sm font-medium text-red-600 hover:bg-red-600 hover:text-white focus:outline-none focus:ring active:bg-blue-500">
                                 Eliminar @isset($routine->name)
                                     {{ strtolower($routine->name) }}
                                 @endisset
-                            </button>
-                        </form>
+                            </a>
+                        @endif
                     @endif
                 @endauth
                 {{--  --}}

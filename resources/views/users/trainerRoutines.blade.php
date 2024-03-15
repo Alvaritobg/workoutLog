@@ -17,8 +17,10 @@
     </div>
     {{-- Contenedor principal --}}
     <div class="flex w-full">
-        <div id="dynamicNotification" class="hidden flex w-full flex-row flex-wrap items-center py-4 px-4 md:px-5 my-4 mx-2 md:mx-5 gap-4">
-            <svg class="w-10 h-20" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="512" height="512"></svg>
+        <div id="dynamicNotification"
+            class="hidden flex w-full flex-row flex-wrap items-center py-4 px-4 md:px-5 my-4 mx-2 md:mx-5 gap-4">
+            <svg class="w-10 h-20" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="512"
+                height="512"></svg>
             <p id="dynamicNotificationText" class="text-lg"></p>
         </div>
     </div>
@@ -26,7 +28,8 @@
     <div class="flex">
         <div class="overflow-x-auto mt-2 -mb-5 mx-5">
             @auth
-                <a href="#" onclick="crearRutina({{ auth()->user()->hasRole('trainer') && auth()->user()->hasActivePaidSubscription() ? 'true' : 'false' }})">
+                <a href="#"
+                    onclick="crearRutina('{{ auth()->user()->hasActivePaidSubscription() }}', '{{ route('routines.nueva') }}')">
                     <div
                         class="inline-flex rounded bg-blue-600 px-2 py-2 text-xs font-medium text-white hover:bg-blue-500 delete-routine-btn align-items-center">
                         <svg class="w-3 h-3 my-auto me-2 fill-white cursor-pointer" xmlns="http://www.w3.org/2000/svg"
@@ -52,7 +55,8 @@
                     <thead class="ltr:text-left rtl:text-right">
                         <tr class="bg-gray-100">
                             <th class="whitespace-nowrap px-4 py-4 font-medium text-gray-900 text-left">
-                                <a>Nombre</th>
+                                <a>Nombre
+                            </th>
 
                             <th
                                 class="whitespace-nowrap px-4 py-4 font-medium text-gray-900 text-left hidden lg:table-cell">
@@ -68,7 +72,9 @@
                         @foreach ($userRoutines as $routine)
                             <tr>
                                 <td class="whitespace-nowrap px-4 py-4 font-medium text-gray-900 ">
-                                   <a href="{{ route('routine.show', ['id' => $routine->id]) }}">{{ $routine->name }}</a></td>
+                                    <a
+                                        href="{{ route('routine.show', ['id' => $routine->id]) }}">{{ $routine->name }}</a>
+                                </td>
                                 <td class="whitespace-nowrap px-4 py-4 font-medium text-gray-900 hidden lg:table-cell">
                                     {{ $routine->description }}</td>
                                 <td class="whitespace-nowrap px-4 py-2 text-gray-700">
@@ -77,10 +83,11 @@
                                     {{ $routine->days }} días</td>
                                 <td class="whitespace-nowrap px-4 py-2 text-gray-700 justify-center flex gap-2">
                                     @auth
-                                        <a href="#" onclick="editarRutina({{ auth()->user()->hasRole('trainer') && auth()->user()->hasActivePaidSubscription() ? 'true' : 'false' }},{{$routine->id}})">
+                                        <a href="#"
+                                            onclick="editarRutina('{{ auth()->user()->hasActivePaidSubscription() || auth()->user()->hasRole('admin') }}','{{ route('rutinas.edit', $routine->id) }}')">
                                             <div type="submit"
                                                 class="inline-block rounded bg-green-600 px-2 py-2 text-xs font-medium text-white hover:bg-green-500 delete-routine-btn"
-                                                data-routine-id="{{ $routine->id }}">
+                                                {{-- data-routine-id="{{ $routine->id }}" --}}>
                                                 <svg class="w-3 h-3 fill-white cursor-pointer"
                                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                                     <path
@@ -88,33 +95,32 @@
                                                 </svg>
                                             </div>
                                         </a>
-                                        @if(auth()->user()->hasActivePaidSubscription())
-                                        <form class="" action="{{ route('routines.destroy', $routine->id) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"
-                                                onclick="return confirm('¿Estás seguro de querer eliminar esta ruina?');"
-                                                class="row rounded bg-red-600 px-2 py-2 text-xs font-medium text-white hover:bg-red-500">
-                                                <svg class="w-3 h-3 fill-white cursor-pointer"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                                    <path
-                                                        d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0H284.2c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64S14.3 32 32 32h96l7.2-14.3zM32 128H416V448c0 35.3-28.7 64-64 64H96c-35.3 0-64-28.7-64-64V128zm96 64c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16z" />
-                                                </svg>
-                                            </button>
-                                        </form>
+                                        @if (auth()->user()->hasActivePaidSubscription() || auth()->user()->hasRole('admin'))
+                                            <form class="" action="{{ route('routines.destroy', $routine->id) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    onclick="return confirm('¿Estás seguro de querer eliminar esta ruina?');"
+                                                    class="row rounded bg-red-600 px-2 py-2 text-xs font-medium text-white hover:bg-red-500">
+                                                    <svg class="w-3 h-3 fill-white cursor-pointer"
+                                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                        <path
+                                                            d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0H284.2c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64S14.3 32 32 32h96l7.2-14.3zM32 128H416V448c0 35.3-28.7 64-64 64H96c-35.3 0-64-28.7-64-64V128zm96 64c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16z" />
+                                                    </svg>
+                                                </button>
+                                            </form>
                                         @else
-                                        <a href="#" onclick="eliminarRutina({{ auth()->user()->hasRole('trainer') && auth()->user()->hasActivePaidSubscription() ? 'true' : 'false' }},{{$routine->id}})">
-                                            <div type="submit"
-                                                class="inline-block rounded bg-red-600 px-2 py-2 text-xs font-medium text-white hover:bg-red-500 delete-routine-btn"
-                                                data-routine-id="{{ $routine->id }}">
-                                                <svg class="w-3 h-3 fill-white cursor-pointer"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                                    <path
-                                                    d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0H284.2c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64S14.3 32 32 32h96l7.2-14.3zM32 128H416V448c0 35.3-28.7 64-64 64H96c-35.3 0-64-28.7-64-64V128zm96 64c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16z" />
-                                                </svg>
-                                            </div>
-                                        </a>
+                                            <a href="#" onclick="eliminarRutina()">
+                                                <div type="submit"
+                                                    class="inline-block rounded bg-red-600 px-2 py-2 text-xs font-medium text-white hover:bg-red-500 delete-routine-btn">
+                                                    <svg class="w-3 h-3 fill-white cursor-pointer"
+                                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                        <path
+                                                            d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0H284.2c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64S14.3 32 32 32h96l7.2-14.3zM32 128H416V448c0 35.3-28.7 64-64 64H96c-35.3 0-64-28.7-64-64V128zm96 64c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16z" />
+                                                    </svg>
+                                                </div>
+                                            </a>
                                         @endif
                                     @endauth
                                 </td>

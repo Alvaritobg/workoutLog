@@ -1,4 +1,5 @@
 {{-- vista para editar rutinas --}}
+<script src="{{ asset('js/unpaidSubscription.js') }}"></script>
 <script>
     // Convertir los ejercicios de PHP a JSON y asignarlos a una variable de JavaScript
     const exercises = @json($exercises);
@@ -20,9 +21,17 @@
         {{-- Modulo para mostrar mensajes de error y confirmación --}}
         <x-notification :status="session()"></x-notification>
     </div>
-
     <div class="flex w-full">
-        <div id="errFormContainer" class="flex w-full flex-row flex-wrap items-center py-4 px-4 md:px-5 m-2 md:mx-5 gap-4 bg-red-100">
+        <div id="dynamicNotification"
+            class="hidden flex w-full flex-row flex-wrap items-center py-4 px-4 md:px-5 my-4 mx-2 md:mx-5 gap-4">
+            <svg class="w-10 h-20" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="512"
+                height="512"></svg>
+            <p id="dynamicNotificationText" class="text-lg"></p>
+        </div>
+    </div>
+    <div class="flex w-full">
+        <div id="errFormContainer"
+            class="flex w-full flex-row flex-wrap items-center py-4 px-4 md:px-5 m-2 md:mx-5 gap-4 bg-red-100">
             <?xml version="1.0" encoding="UTF-8"?>
             <svg class="w-10 h-20 fill-red-400" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"
                 width="512" height="512">
@@ -38,8 +47,8 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 my-6 ">
             <div class="p-4 mb-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl">
-                    <form method="POST" id="formRutina" action="{{ route('rutinas.update', $routine->id) }}" enctype="multipart/form-data"
-                        class="mt-6 space-y-6">
+                    <form method="POST" id="formRutina" action="{{ route('rutinas.update', $routine->id) }}"
+                        enctype="multipart/form-data" class="mt-6 space-y-6">
                         @csrf
                         @method('PUT')
 
@@ -70,7 +79,7 @@
                         <!-- Entrenamientos -->
                         {{-- <div id="workoutsContainer">
                             {{-- Itera sobre cada entrenamiento de la rutina --}}
-                            {{--@foreach ($routine->workouts as $workoutIndex => $workout)
+                        {{-- @foreach ($routine->workouts as $workoutIndex => $workout)
                             <div class="workout-day" id="day-{{ $workoutIndex }}-exercises">
                                 <h3>Día: {{ $workoutIndex +1 }}</h3>
                                 Itera sobre cada ejercicio de este entrenamiento
@@ -92,7 +101,7 @@
                             </div>
                             @endforeach
                         </div> --}}
-                     {{--    <button type="button" onclick="addWorkout()">Añadir entrenamiento</button> --}}
+                        {{--    <button type="button" onclick="addWorkout()">Añadir entrenamiento</button> --}}
                         <!-- DURACIÓN -->
                         <div>
                             <x-input-label for="duration" :value="__('Duración en semanas:')" />

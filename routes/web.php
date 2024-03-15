@@ -31,12 +31,9 @@ Route::get('/', function () {
 Route::middleware('auth', 'verified')->group(function () {
     Route::get('/rutinas', [RoutineController::class, 'index'])->name('routine.index');
     Route::get('/rutina/{id}', [RoutineController::class, 'show'])->name('routine.show');
-
     Route::delete('/rutinas/eliminar/{id}', [RoutineController::class, 'destroy'])->name('routines.destroy')->middleware('role:trainer|admin');
-
-    Route::get('/rutinas/nueva', [RoutineController::class, 'showCreateRoutineForm'])->name('routines.nueva');
     // Ruta para el metodo que muestra la vista para crear una rutina nueva, solo pueden acceder usuarios autenticados con rol trainer
-    Route::get('/rutinas/crear-rutina', [RoutineController::class, 'create'])->middleware('role:trainer')->name('rutinas.create');
+    Route::get('/rutinas/nueva', [RoutineController::class, 'create'])->middleware('role:trainer|admin')->name('routines.nueva');
     // Ruta para guardar una nueva rutina
     Route::post('/rutinas', [RoutineController::class, 'store'])->middleware('role:trainer|admin')->name('rutinas.store');
     // ruta para update de rutinas

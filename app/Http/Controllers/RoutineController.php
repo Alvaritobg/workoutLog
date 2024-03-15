@@ -8,7 +8,6 @@ use App\Models\Workout;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Log;
 
 /**
  * Controlador RoutineController
@@ -65,6 +64,9 @@ class RoutineController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->hasActivePaidSubscription()) {
+            return redirect()->back()->with('error', 'Necesitas tener una suscripción activa para crear nuevas rutinas')->withInput();
+        }
         try {
             // Obtener todos los ejercicios disponibles
             $exercises = Exercise::all();
@@ -116,7 +118,7 @@ class RoutineController extends Controller
         }
 
         if (!$noDuplicateExercises) {
-            return redirect()->back()->with('error','Hay ejercicios duplicados en los entrenamientos introducidos')->withInput();
+            return redirect()->back()->with('error', 'Hay ejercicios duplicados en los entrenamientos introducidos')->withInput();
         }
 
         try {
@@ -152,7 +154,7 @@ class RoutineController extends Controller
             }
             return redirect()->route('users.trainerRoutines', ['id' => Auth::id()])->with('success', 'Rutina creada');
         } catch (\Exception $e) {
-            return redirect()->route('users.trainerRoutines', ['id' => Auth::id()])->with('error', 'Error al crear la rutina: '.$e);
+            return redirect()->route('users.trainerRoutines', ['id' => Auth::id()])->with('error', 'Error al crear la rutina: ' . $e);
         }
     }
 
@@ -212,6 +214,9 @@ class RoutineController extends Controller
      */
     public function destroy(string $id)
     {
+        if (!auth()->user()->hasActivePaidSubscription()) {
+            return redirect()->back()->with('error', 'Necesitas tener una suscripción activa para eliminar rutinas')->withInput();
+        }
         try {
             $routine = Routine::findOrFail($id); // Busca la rutina o lanza una excerpción si no la encuentra.
             $routine->delete(); // Elimina la rutina.
@@ -238,6 +243,9 @@ class RoutineController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->hasActivePaidSubscription()) {
+            return redirect()->back()->with('error', 'Necesitas tener una suscripción activa para editar rutinas')->withInput();
+        }
         try {
             // Busca la rutina por su ID y lanza una excepción ModelNotFoundException si no la encuentra.
             // Además, carga ansiosamente los entrenamientos y los ejercicios de esos entrenamientos.
@@ -254,13 +262,6 @@ class RoutineController extends Controller
         }
     }
 
-
-    public function showCreateRoutineForm()
-    {
-        $exercises = Exercise::all(); // Obtener todos los ejercicios
-
-        return view('routines.create', compact('exercises'));
-    }
 
     /**
      * Actualiza una rutina específica en la base de datos.
@@ -280,7 +281,7 @@ class RoutineController extends Controller
      */
     public function update(Request $request, $id)
     {
-         //dd($request);
+        //dd($request);
         // Valida los datos del formulario.
         $request->validate([
             'name' => 'required|string|min:3|max:50|regex:/^[A-Za-z0-9\sáéíóúüñÁÉÍÓÚÜÑ.]+$/',
@@ -301,7 +302,7 @@ class RoutineController extends Controller
         }
 
         if (!$noDuplicateExercises) {
-            return redirect()->back()->with('error','Hay ejercicios duplicados en los entrenamientos introducidos')->withInput();
+            return redirect()->back()->with('error', 'Hay ejercicios duplicados en los entrenamientos introducidos')->withInput();
         }
 
         try {
@@ -344,7 +345,7 @@ class RoutineController extends Controller
             }
             return redirect()->route('users.trainerRoutines', ['id' => Auth::id()])->with('success', 'Rutina creada');
         } catch (\Exception $e) {
-            return redirect()->route('users.trainerRoutines', ['id' => Auth::id()])->with('error', 'Error al crear la rutina: '.$e);
+            return redirect()->route('users.trainerRoutines', ['id' => Auth::id()])->with('error', 'Error al crear la rutina: ' . $e);
         }
     }
 }
