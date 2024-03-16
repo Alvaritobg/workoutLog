@@ -90,6 +90,16 @@
                 @auth
                     @if (auth()->user()->hasRole('user'))
                         @if (auth()->user()->routine_id === $routine->id)
+                            <form method="post" action="{{ url('registrar-entrenamiento/') }}">
+                                @csrf
+                                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                <!-- Asumiendo que estos valores se generan dinámicamente -->
+                                <input type="hidden" name="routine_id" value="{{ $routine->id }}">
+                                <button type="submit" {{-- onclick="return confirm('¿Estás seguro de querer dejar esta rutina?');" --}}
+                                    class="text-center inline-block rounded border border-green-600 px-12 py-3 text-sm font-medium text-green-600 hover:bg-green-600 hover:text-white focus:outline-none focus:ring active:bg-green-500">
+                                    Registrar entrenamiento
+                                </button>
+                            </form>
                             <form method="post" action="{{ url('des-suscribir-usuario/') }}">
                                 @csrf
                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
@@ -97,7 +107,7 @@
                                 <input type="hidden" name="routine_id" value="{{ $routine->id }}">
                                 <button type="submit"
                                     onclick="return confirm('¿Estás seguro de querer dejar esta rutina?');"
-                                    class="text-center inline-block rounded border border-green-600 px-12 py-3 text-sm font-medium text-green-600 hover:bg-green-600 hover:text-white focus:outline-none focus:ring active:bg-green-500">
+                                    class="text-center inline-block rounded border border-amber-600 px-12 py-3 text-sm font-medium bg-white text-amber-600 hover:bg-amber-600 hover:text-white focus:outline-none focus:ring active:bg-amber-500">
                                     Dejar @isset($routine->name)
                                         {{ strtolower($routine->name) }}
                                     @endisset

@@ -221,11 +221,11 @@ class RoutineController extends Controller
             $routine = Routine::findOrFail($id); // Busca la rutina o lanza una excerpción si no la encuentra.
             $routine->delete(); // Elimina la rutina.
             // Redirige a la vista anterior con un mensaje de éxito.
-            return redirect()->route('routine.index')->with('success', 'Rutina eliminada correctamente.');
+            return redirect()->route('users.trainerRoutines', ['id' => Auth::user()->id])->with('success', 'Rutina eliminada correctamente.');
         } catch (ModelNotFoundException   $e) {
-            return redirect()->route('routine.index')->with('error', 'No se pudo eliminar esta rutina.');
+            return redirect()->route('users.trainerRoutines', ['id' => Auth::user()->id])->with('error', 'No se pudo eliminar esta rutina.');
         } catch (\Exception $e) {
-            return redirect()->route('routine.index')->with('error', 'No se pudo eliminar esta rutina.');
+            return redirect()->route('users.trainerRoutines', ['id' => Auth::user()->id])->with('error', 'No se pudo eliminar esta rutina.');
         }
     }
 

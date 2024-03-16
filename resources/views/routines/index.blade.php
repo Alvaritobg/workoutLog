@@ -57,6 +57,30 @@
 
                     {{-- Bucle para iterar sobre cada rutina --}}
                     <div class="flex flex-col lg:flex-row flex-wrap py-2 px-2 md:px-5 my-4 gap-4 justify-around">
+                        @if (Auth::user()->routine_id !== null)
+                            <div
+                                class="flex flex-col md:flex-row bg-amber-50  w-full mx-auto shadow-md rounded-sm px-4 py-2">
+                                <div class="basis-0 md:basis-9/12 grow flex justify-center my-auto">Ya esta
+                                    suscrito a
+                                    una rutina. Para elegir otra debe desuscribirse de su rutina
+                                    primero.</div>
+                                <div
+                                    class="basis-0 md:basis-3/12 mt-2 md:mt-auto flex items-center justify-center m-auto flex-row max-h-16">
+                                    <form method="post" action="{{ url('des-suscribir-usuario/') }}"
+                                        class="flex my-auto items-center justify-center">
+                                        @csrf
+                                        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                        <input type="hidden" name="routine_id" value="{{ Auth::user()->routine_id }}">
+                                        <button type="submit"
+                                            onclick="return confirm('¿Estás seguro de querer dejar esta rutina?');"
+                                            class="max-h-12 text-center rounded border border-amber-600 px-12 py-3 text-sm font-medium bg-white text-amber-600 hover:bg-amber-600 hover:text-white focus:outline-none focus:ring active:bg-amber-500">
+                                            Dejar rutina
+                                        </button>
+                                    </form>
+                                </div>
+
+                            </div>
+                        @endif
                         @foreach ($routines as $routine)
                             <div class="basis-0 md:basis-5/12 grow">
 
@@ -71,7 +95,13 @@
                                             h-screen bg-cover bg-center hover:grayscale"
                                             style="background-image: url('images/{{ $routine->img }}')">
                                             {{-- Información de la rutina --}}
+                                            @if (auth()->user()->hasRole('user') && auth()->user()->routine_id === $routine->id)
+                                                <span
+                                                    class="max-w-40 text-center rounded-full bg-green-200 px-2 py-1 text-xs text-black">Está
+                                                    suscrito a esta rutina</span>
+                                            @endif
                                             <div class="flex flex-col justify-end flex-grow">
+
                                                 {{-- Nombre de la rutina --}}
                                                 <h3
                                                     class="font-bold text-4xl drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] border-black truncate">
