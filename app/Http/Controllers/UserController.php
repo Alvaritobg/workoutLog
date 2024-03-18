@@ -171,7 +171,7 @@ class UserController extends Controller
             $user->save();
 
             // Retornar a la página anterior con un mensaje de éxito
-            return back()->with('success', 'Ya no está suscrito a esta rutina.');
+            return back()->with('success', 'Ya no está suscrito a ninguna rutina.');
         } catch (Exception $e) {
             // Redirigir al usuario a la página anterior con un mensaje de error
             return back()->with('error', 'Ocurrió un error al intentar desuscribir al usuario de la rutina. Por favor, intente de nuevo.');

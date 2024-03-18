@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkoutController; */
 use App\Http\Controllers\RoutineController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\WorkoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,15 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::put('/rutinas/editar/{id}', [RoutineController::class, 'update'])->middleware('role:trainer|admin')->name('rutinas.update');
 });
 
+// Rutas entrenamiento
+Route::middleware(['auth', 'verified'])->group(
+    function () {
+        // Muestra el formulario para registrar un nuevo entrenamiento.
+        Route::post('/registrar-entrenamiento', [WorkoutController::class, 'create'])->name('workouts.create');
+        // Procesa la información enviada desde el formulario para registrar el nuevo entrenamiento.
+        Route::post('/guardar-entrenamiento', [WorkoutController::class, 'store'])->name('workouts.store');
+    }
+);
 // Rutas usuario
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/entrenador/{id}/rutinas', [UserController::class, 'obtainCreatedRoutines'])->name('users.trainerRoutines')->middleware('role:trainer');

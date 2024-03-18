@@ -45,9 +45,9 @@ class Routine extends Model
 
     public function workouts()
     {
-        return $this->hasMany(Workout::class);
+        //return $this->hasMany(Workout::class);
+        return $this->hasMany(Workout::class)->orderBy('order');
     }
 
     // Otros métodos y propiedades del modelo.
 }
-

@@ -90,7 +90,7 @@
                 @auth
                     @if (auth()->user()->hasRole('user'))
                         @if (auth()->user()->routine_id === $routine->id)
-                            <form method="post" action="{{ url('registrar-entrenamiento/') }}">
+                            <form method="POST" action="{{ url('registrar-entrenamiento/') }}">
                                 @csrf
                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                                 <!-- Asumiendo que estos valores se generan dinámicamente -->
