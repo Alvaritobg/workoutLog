@@ -2,12 +2,8 @@
     <h1>Registrar Entrenamiento</h1>
     <form method="POST" action="{{ route('workouts.store') }}">
         @csrf
-        <div class="mb-3">
-            <label for="workoutDate" class="form-label">Fecha de Entrenamiento</label>
-            <input type="date" class="form-control" id="workoutDate" name="workout_date" required>
-        </div>
-
-        @foreach ($workout->exercises as $exercise)
+        <pre>{{ $nextWorkout }}</pre>
+        {{-- @foreach ($workout->exercises as $exercise)
             <h3>{{ $exercise->name }}</h3>
             @for ($i = 1; $i <= $exercise->series; $i++)
                 <div class="mb-3">
@@ -21,7 +17,7 @@
                         class="form-control" required>
                 </div>
             @endfor
-        @endforeach
+        @endforeach --}}
 
         <button type="submit" class="btn btn-primary">Registrar Entrenamiento</button>
     </form>
