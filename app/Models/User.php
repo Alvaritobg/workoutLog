@@ -10,6 +10,8 @@ use Illuminate\Notifications\Notifiable; // Habilita las notificaciones para el 
 use Laravel\Sanctum\HasApiTokens; // Habilita el uso de API Tokens con Sanctum para autenticación API.
 use Carbon\Carbon; // Biblioteca para fechas
 use App\Models\Subscription;
+use Illuminate\Support\Facades\DB;
+
 
 /**
  * Clase User que representa el modelo de usuario en la aplicación.
@@ -60,9 +62,11 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function workouts()
     {
-        return $this->belongsToMany(Workout::class, 'users_workouts', 'user_id', 'workout_id')->withPivot('execution_date')->withTimestamps(); // Define la relación y especifica las claves foráneas.
-
-        //return $this->belongsToMany(Workout::class, 'users_workouts')->withPivot('execution_date');
+        // 2 -return $this->belongsToMany(Workout::class, 'users_workouts', 'user_id', 'workout_id')->withPivot('execution_date')->withTimestamps(); // Define la relación y especifica las claves foráneas.
+        return $this->belongsToMany(Workout::class, 'users_workouts', 'user_id', 'workout_id')
+            ->withPivot('execution_date')
+            ->orderBy('execution_date', 'desc');
+        // 1 - return $this->belongsToMany(Workout::class, 'users_workouts')->withPivot('execution_date');
     }
 
     /**
@@ -108,6 +112,33 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
 
+    /**
+     * Obtener el último entrenamiento realizado que pertenece a la misma rutina del usuario.
+     *
+     * @return Workout|null
+     */
+    public function getLastWorkoutFromCurrentRoutine()
+    {
+        // Obteniendo la rutina actual del usuario.
+        $currentRoutineId = $this->routine_id;
+        $userId = $this->id;
+        if (!$currentRoutineId) {
+            return null; // El usuario no tiene ninguna rutina asignada.
+        }
+        $workoutIds = $this->workouts()
+            ->where('routine_id', $this->routine_id)
+            ->latest('pivot_execution_date')
+            ->first();
+
+        // Filtrar los entrenamientos del usuario para obtener el último que pertenezca a su rutina actual.
+        // Utilizando la relación 'workouts' ya definida.
+        dd($workoutIds);
+        //$query = $this->workouts()->where('routine_id', $this->routine_id)->latest('pivot_execution_date')->toSql();
+        //$bindings = $this->workouts()->where('routine_id', $this->routine_id)->latest('pivot_execution_date')->getBindings();
+        //dd($query, $bindings);
+        exit;
+        //return $lastWorkout;
+    }
 
     /**
      * Atributos asignables en masa.

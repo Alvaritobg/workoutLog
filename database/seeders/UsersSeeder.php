@@ -65,7 +65,7 @@ class UsersSeeder extends Seeder
             'email' => 'user2@example.com',
             'weight' => 60,
             'password' => bcrypt('12345678'),
-            //'email_verified_at' => now(), // comentamos este para que se pruebe la verificación por mail
+            'email_verified_at' => now(), // comentamos este para que se pruebe la verificación por mail
         ]);
         $secondDemoUser->assignRole('user'); // Le damos rol user
 
