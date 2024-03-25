@@ -8,6 +8,7 @@ use App\Models\Workout;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Controlador RoutineController
@@ -139,17 +140,17 @@ class RoutineController extends Controller
             $routine->save();
 
             foreach ($request->workouts as $indice => $workoutExercises) {
+                $exerciseOrder = 0; // Inicia el orden del ejercicio para este workout.
                 $workout =  Workout::create([
                     'name' => "Entrenamiento $indice | $routine->name",
                     'routine_id' => $routine->id,
                     'order' => $indice,
-
                 ]);
-
-                $exerciseOrder = 1; // Inicia el orden del ejercicio para este workout.
+                $newWorkoutId = $workout->id;
                 foreach ($workoutExercises as $exerciseId) {
+                    $exerciseOrder++;  // Incrementa el orden para el próximo ejercicio.
+                    // guarda en la tabla intermedia exercises_workouts
                     $workout->exercises()->attach($exerciseId, ['order' => $exerciseOrder]);
-                    $exerciseOrder++; // Incrementa el orden para el próximo ejercicio.
                 }
             }
             return redirect()->route('users.trainerRoutines', ['id' => Auth::id()])->with('success', 'Rutina creada');

@@ -29,7 +29,10 @@ class Workout extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'users_workouts', 'workout_id', 'user_id')
+            ->using(UserWorkout::class) // Especifica el modelo de la tabla intermedia
             ->withPivot('execution_date');
+        //return $this->belongsToMany(User::class, 'users_workouts', 'workout_id', 'user_id')
+        //    ->withPivot('execution_date');
         //->withTimestamps();
     }
 

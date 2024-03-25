@@ -11,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens; // Habilita el uso de API Tokens con Sanctum p
 use Carbon\Carbon; // Biblioteca para fechas
 use App\Models\Subscription;
 use Illuminate\Support\Facades\DB;
+use App\Models\UserWorkout;
 
 
 /**
@@ -64,6 +65,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         // 2 -return $this->belongsToMany(Workout::class, 'users_workouts', 'user_id', 'workout_id')->withPivot('execution_date')->withTimestamps(); // Define la relación y especifica las claves foráneas.
         return $this->belongsToMany(Workout::class, 'users_workouts', 'user_id', 'workout_id')
+            ->using(UserWorkout::class) // Especifica el modelo de la tabla intermedia
             ->withPivot('execution_date')
             ->orderBy('execution_date', 'desc');
         // 1 - return $this->belongsToMany(Workout::class, 'users_workouts')->withPivot('execution_date');
@@ -113,32 +115,42 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
     /**
-     * Obtener el último entrenamiento realizado que pertenece a la misma rutina del usuario.
+     * Obtiene la instancia del último entrenamiento realizado por el usuario que pertenece a la rutina actual a la que está suscrito.
      *
-     * @return Workout|null
+     * Este método primero identifica la rutina actual del usuario basándose en el `routine_id` asociado al usuario.
+     * Luego, busca el último entrenamiento realizado por este usuario (basado en `execution_date`) y verifica si este 
+     * entrenamiento pertenece a la misma rutina actual. Si es así, devuelve la instancia completa de este entrenamiento.
+     * De lo contrario, si no se encuentra tal entrenamiento o el último entrenamiento no pertenece a la rutina actual, devuelve null.
+     *
+     * @return UserWorkout|null La instancia del último UserWorkout que pertenece a la rutina actual del usuario, o null si no se encuentra ninguno.
      */
     public function getLastWorkoutFromCurrentRoutine()
     {
-        // Obteniendo la rutina actual del usuario.
+        // Obteniendo la rutina actual del usuario y el id del usuario.
         $currentRoutineId = $this->routine_id;
         $userId = $this->id;
-        if (!$currentRoutineId) {
-            return null; // El usuario no tiene ninguna rutina asignada.
-        }
-        $workoutIds = $this->workouts()
-            ->where('routine_id', $this->routine_id)
-            ->latest('pivot_execution_date')
+
+        // Inicializa el resultado como null para manejar el caso de que no se encuentren entrenamientos correspondientes.
+        $res = null;
+
+        // Intenta obtener el último entrenamiento del usuario, incluyendo la relación con 'workout'.
+        // Se ordena por 'execution_date' para asegurar que se recupere el más reciente.
+        $lastUserWorkout = UserWorkout::with('workout')
+            ->where('user_id', $userId)
+            ->latest('execution_date')
             ->first();
 
-        // Filtrar los entrenamientos del usuario para obtener el último que pertenezca a su rutina actual.
-        // Utilizando la relación 'workouts' ya definida.
-        dd($workoutIds);
-        //$query = $this->workouts()->where('routine_id', $this->routine_id)->latest('pivot_execution_date')->toSql();
-        //$bindings = $this->workouts()->where('routine_id', $this->routine_id)->latest('pivot_execution_date')->getBindings();
-        //dd($query, $bindings);
-        exit;
-        //return $lastWorkout;
+        // Comprueba si se ha recuperado un entrenamiento y si pertenece a la rutina actual del usuario.
+        // Utiliza el operador de fusión de null (?) para manejar casos en que el entrenamiento o la rutina asociada no estén definidos.
+        if ($lastUserWorkout && $lastUserWorkout->workout && $lastUserWorkout->workout->routine_id == $currentRoutineId) {
+            // Si se cumplen las condiciones, asigna la instancia del último UserWorkout a $res.
+            $res = $lastUserWorkout;
+        }
+
+        // Devuelve la instancia del último UserWorkout que coincide con la rutina actual, o null si no hay coincidencias.
+        return $res;
     }
+
 
     /**
      * Atributos asignables en masa.

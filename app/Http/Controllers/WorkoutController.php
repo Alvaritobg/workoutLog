@@ -28,47 +28,37 @@ class WorkoutController extends Controller
     public function create()
     {
         $user = Auth::user();
-
-        $lastWorkout = $user->getLastWorkoutFromCurrentRoutine();
-
-        if (!$lastWorkout) {
-            return redirect()->route('routine.index')->with('error', 'No estás suscrito a ninguna rutina.');
+        // buscamos el último entrenamiento (si lo hay) para calcular el siguiente 
+        $lastUserWorkout = $user->getLastWorkoutFromCurrentRoutine();
+        $nextWorkout = null;
+        // -  si es null, quiere decir que no realizo ningun entrenamiento aun
+        if ($lastUserWorkout == null) {
+            $routineId = $user->routine_id ?? null;
+            // si el usuario no esta suscrito a ninguna rutina lo sacamos 
+            if (!$routineId) {
+                return redirect()->route('routine.index')->with('error', 'No estás suscrito a ninguna rutina.');
+            }
+            // si lo esta buscamos el primer ejercicio de la rutina
+            $nextWorkout = Workout::where('routine_id', $routineId)
+                ->where('order', 1)
+                ->first();
+        } else {
+            // -  si llega aqui ya realizo algun entrenamiento
+            $lastWorkout = Workout::find($lastUserWorkout->workout_id); // obtenemos el objeto Workout de el ultimo entrenamiento.
+            // obtenemos el order del ultimo entrenamiento
+            $order = $lastWorkout->order;
+            // obtenemos el numero de days de la rutina
+            $routine = Routine::find($lastWorkout->routine_id);
+            $days = $routine->days; // obtenemos los días (en una semana) que dura esta rutina 
+            // if ($order < $days) {
+            // realizamos el entrenamiento de esa rutina con el order +1
+            $nextWorkout = Workout::where('routine_id', $routine->id)
+                ->where('order', $order < $days ? $order + 1 : 1)
+                ->first();
         }
-        // Aquí puedes acceder a la información del último entrenamiento.
+        dd($nextWorkout);
+        exit;
 
-
-
-        /////////
-
-        // Asumiendo que tienes un modelo Routine y que el usuario está asociado con una rutina.
-        $routine = Routine::find($user->routine_id);
-
-        if (!$routine) {
-            // Si no se encuentra una rutina, redirigir con un mensaje de error.
-            return redirect()->route('routine.index')->with('error', 'No estás suscrito a ninguna rutina.');
-        }
-
-        // Intentar obtener el último entrenamiento realizado por el usuario para la rutina especificada.
-        // $lastWorkoutDate = UserWorkout::where('user_id', $user->id)
-        //     ->join('workouts', 'user_workouts.workout_id', '=', 'workouts.id')
-        //     ->where('workouts.routine_id', $routine->id)
-        //     ->latest('user_workouts.execution_date')
-        //     ->first();
-
-        // if ($lastWorkoutDate) {
-        //     // Lógica para manejar el último entrenamiento encontrado.
-        //     // Asegúrate de que este bloque de código use correctamente el resultado de la consulta.
-        //     // Por ejemplo, $lastWorkoutDate->workout_id para obtener el ID del último workout.
-        // } else {
-        //     // Si no hay entrenamientos previos, toma el primer entrenamiento de la rutina
-        //     $nextWorkout = $routine->workouts()->orderBy('order', 'asc')->first();
-        // }
-
-        // if (!$nextWorkout) {
-        //     return redirect()->route('routine.index')->with('error', 'La rutina seleccionada no tiene entrenamientos.');
-        // }
-
-        $exercises = $lastWorkout->exercises;
 
         return view('workouts.create', compact('exercises', 'nextWorkout'));
     }
