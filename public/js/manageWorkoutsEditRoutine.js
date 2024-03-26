@@ -14,6 +14,8 @@ function updateWorkouts(amountOfDays = null) {
 
     // Crea y añade los elementos necesarios para cada día en el rango especificado.
     for (let i = 1; i <= days; i++) {
+        // obtenemos el workout del día
+        let workout = routine.workouts[i-1];
         // Crea un nuevo div para cada día de workout.
         const workoutDiv = document.createElement("div");
         workoutDiv.setAttribute("id", `day-${i}-exercises`);
@@ -46,24 +48,28 @@ function updateWorkouts(amountOfDays = null) {
         // Añade el div de workout al contenedor principal.
         container.appendChild(workoutDiv);
 
-        // Añade el primer selector de ejercicios después de haber colocado el botón.
-        addExerciseSelector(workoutDiv, i);
+        // Añade los selectores de ejercicios
+
+        if(workout?.exercises) {
+        workout.exercises.forEach(e => {
+            addExerciseSelector(workoutDiv, i, e.id);
+        });
+        } else {
+            addExerciseSelector(workoutDiv,i, null)
+        }
     }
 }
 
 // Función para añadir un selector de ejercicios a un contenedor específico.
-function addExerciseSelector(container, day) {
+function addExerciseSelector(container, day, selectedId) {
     const selectorDiv = document.createElement("div");
     selectorDiv.classList.add("exercise-selector");
     let exercisesOptions = "";
 
     // Itera sobre una lista de ejercicios predefinidos para generar las opciones del selector.
     exercises.forEach((exercise) => {
-        const isSelected =
-            oldWorkouts[day] &&
-            oldWorkouts[day].includes(exercise.id.toString());
         exercisesOptions += `<option value="${exercise.id}" ${
-            isSelected ? "selected" : ""
+            selectedId === exercise.id ? "selected" : ""
         }>${exercise.name}</option>`;
     });
 
