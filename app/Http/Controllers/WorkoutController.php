@@ -56,11 +56,21 @@ class WorkoutController extends Controller
                 ->where('order', $order < $days ? $order + 1 : 1)
                 ->first();
         }
-        dd($nextWorkout);
-        exit;
 
+        $nextWorkoutId = $nextWorkout->id;
+        $routineId = $nextWorkout->routine_id;
+        $workoutExercises = Workout::with(['exercises' => function ($query) {
+            $query->select('exercises.id', 'exercises.name', 'exercises.max_reps_desired', 'exercises.min_reps_desired', 'exercises_workouts.num_series');
+        }])
+            ->find($nextWorkoutId);
 
-        return view('workouts.create', compact('exercises', 'nextWorkout'));
+        if ($workoutExercises && $workoutExercises->exercises->isNotEmpty()) {
+            return view('workouts.create', compact('workoutExercises'));
+        } else {
+            return redirect()->route('routine.index')->with('error', 'No se pudieron recuperar los ejercicios de este entrenamiento.');
+        }
+        //return view('workouts.create', compact('exercises', 'nextWorkout', 'workoutExercises'));
+        return view('workouts.create', compact('workoutExercises'));
     }
 
     /**
@@ -74,7 +84,8 @@ class WorkoutController extends Controller
         $user = Auth::user();
         $date = now()->format('Y-m-d');
         $exercisesInput = $request->input('exercises');
-
+        dd($request->input('exercises'));
+        exit;
         if ($exercisesInput && is_array($exercisesInput)) {
             foreach ($exercisesInput as $exerciseId => $seriesData) {
                 foreach ($seriesData['series'] as $seriesNumber => $data) {
