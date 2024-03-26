@@ -1,3 +1,4 @@
+// Al crear si no tiene la suscripción activa muestra un mensaje de error o si la tiene activa redirige al formulario
 function crearRutina(tieneSuscripcion, urlNewRoutine) {
     if (tieneSuscripcion) {
         // Redirigir al usuario a la página de creación de rutinas
@@ -9,7 +10,7 @@ function crearRutina(tieneSuscripcion, urlNewRoutine) {
         );
     }
 }
-
+// Al editar si no tiene la suscripción activa muestra un mensaje de error o si la tiene activa redirige al formulario
 function editarRutina(tieneSuscripcion, urlEditRoutine) {
     if (tieneSuscripcion) {
         // Redirigir al usuario a la página de creación de rutinas
@@ -22,18 +23,7 @@ function editarRutina(tieneSuscripcion, urlEditRoutine) {
     }
 }
 
-// function eliminarRutina(tieneSuscripcion, url) {
-//     if (tieneSuscripcion) {
-//         // Redirigir al usuario a la página de creación de rutinas
-//         window.location.href = url;
-//     } else {
-//         // Mostrar mensaje de error
-//         mostrarNotificacion(
-//             "Necesitas tener una suscripción pagada activa para eliminar rutinas."
-//         );
-//     }
-// }
-
+// Muestra un mensaje si intenta eliminar una rutina y no tiene una subscripción activa
 function eliminarRutina() {
     // Mostrar mensaje de error
     mostrarNotificacion(
