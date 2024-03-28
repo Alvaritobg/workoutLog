@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Exercise;
 use App\Models\Workout;
 use App\Models\UserWorkout;
-use App\Models\Series;
+use App\Models\Serie;
 use App\Models\Routine;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -30,6 +30,8 @@ class WorkoutController extends Controller
         $user = Auth::user();
         // buscamos el último entrenamiento (si lo hay) para calcular el siguiente 
         $lastUserWorkout = $user->getLastWorkoutFromCurrentRoutine();
+        // dd($lastUserWorkout);
+        // exit;
         $nextWorkout = null;
         // -  si es null, quiere decir que no realizo ningun entrenamiento aun
         if ($lastUserWorkout == null) {
@@ -60,54 +62,75 @@ class WorkoutController extends Controller
         $nextWorkoutId = $nextWorkout->id;
         $routineId = $nextWorkout->routine_id;
         $workoutExercises = Workout::with(['exercises' => function ($query) {
-            $query->select('exercises.id', 'exercises.name', 'exercises.max_reps_desired', 'exercises.min_reps_desired', 'exercises_workouts.num_series');
+            $query->select('*');
         }])
             ->find($nextWorkoutId);
 
         if ($workoutExercises && $workoutExercises->exercises->isNotEmpty()) {
-            return view('workouts.create', compact('workoutExercises'));
+            return view('workouts.create', compact('workoutExercises', 'nextWorkoutId', 'routineId'));
         } else {
             return redirect()->route('routine.index')->with('error', 'No se pudieron recuperar los ejercicios de este entrenamiento.');
         }
-        //return view('workouts.create', compact('exercises', 'nextWorkout', 'workoutExercises'));
-        return view('workouts.create', compact('workoutExercises'));
     }
 
     /**
      * Almacena un nuevo registro de entrenamiento en la base de datos.
+     *
+     * Este método valida la solicitud entrante para asegurarse de que contiene todos los datos necesarios
+     * y en el formato esperado. Si la validación es exitosa, procede a registrar los detalles de los ejercicios
+     * realizados por el usuario, incluyendo las series de cada ejercicio. Finalmente, registra un nuevo 
+     * entrenamiento realizado por el usuario.
+     *
+     * @param  \Illuminate\Http\Request  $request Datos de la solicitud, incluidos ID de entrenamiento, ID de rutina y detalles de los ejercicios.
+     * @return \Illuminate\Http\RedirectResponse Redirección hacia la vista de la rutina con un mensaje de éxito o error.
      */
     public function store(Request $request)
     {
-        // Validar el request aquí según sea necesario
-        // ...
-
-        $user = Auth::user();
-        $date = now()->format('Y-m-d');
-        $exercisesInput = $request->input('exercises');
-        dd($request->input('exercises'));
-        exit;
-        if ($exercisesInput && is_array($exercisesInput)) {
-            foreach ($exercisesInput as $exerciseId => $seriesData) {
-                foreach ($seriesData['series'] as $seriesNumber => $data) {
-                    Series::create([
-                        'user_id' => $user->id,
-                        // Suponiendo que 'workout_id' se pasa a través del formulario
-                        'workout_id' => $request->input('workout_id'),
-                        'exercise_id' => $exerciseId,
-                        'number' => $seriesNumber,
-                        'date' => $date,
-                        'used_weight' => $data['used_weight'],
-                        'repetitions' => $data['repetitions'],
-                        // Otros campos necesarios...
-                    ]);
+        // Validación del request para asegurar datos correctos y completos.
+        $validatedData = $request->validate([
+            'workoutId' => 'required|integer|exists:workouts,id', // Asegura que el ID del entrenamiento exista y sea entero.
+            'routineId' => 'required|integer|exists:routines,id', // Asegura que el ID de la rutina exista y sea entero.
+            'exercises' => 'required|array', // Asegura que se envíen ejercicios en formato de array.
+            'exercises.*.series' => 'required|array', // Asegura que cada ejercicio tenga series definidas.
+            'exercises.*.series.*.used_weight' => 'required|numeric|min:1', // Valida el peso usado en cada serie.
+            'exercises.*.series.*.repetitions' => 'required|integer|min:1', // Valida las repeticiones en cada serie.
+        ]);
+        try {
+            $user = Auth::user(); // Obtiene el usuario autenticado.
+            // Procesa cada ejercicio y sus series.
+            if ($validatedData['exercises'] && is_array($validatedData['exercises'])) {
+                foreach ($validatedData['exercises'] as $exerciseId => $seriesData) {
+                    foreach ($seriesData['series'] as $seriesNumber => $data) {
+                        // Crea un nuevo registro para cada serie de ejercicio realizada.
+                        Serie::create([
+                            'user_id' => $user->id,
+                            'workout_id' => $validatedData['workoutId'],
+                            'exercise_id' => $exerciseId,
+                            'number' => $seriesNumber,
+                            'used_weight' => $data['used_weight'],
+                            'repetitions' => $data['repetitions'],
+                            'date' => now()->format("Y-m-d H:i:s"), // Registra la fecha y hora actual.
+                        ]);
+                    }
                 }
-            }
-        } else {
-            // Manejar la ausencia de datos, por ejemplo, devolver un error o un mensaje al usuario.
-            return back()->with('error', 'No se enviaron datos de ejercicios.');
-        }
 
-        return redirect()->route('routine.index')->with('success', 'Entrenamiento registrado correctamente.');
+                // Registra el entrenamiento completado por el usuario.
+                UserWorkout::create([
+                    'workout_id' => $validatedData['workoutId'],
+                    'user_id' =>  $user->id,
+                    'execution_date' => now()->format("Y-m-d H:i:s"), // Registra la fecha y hora de ejecución del entrenamiento.
+                ]);
+            } else {
+                // Si no se recibieron datos de ejercicios, devuelve un error.
+                return back()->with('error', 'No se enviaron datos de ejercicios.');
+            }
+
+            // Redirecciona a la vista de la rutina con un mensaje de éxito.
+            return redirect()->route('routine.show', ['id' => $validatedData['routineId']])->with('success', 'Entrenamiento registrado correctamente.');
+        } catch (\Exception $e) {
+            // En caso de error durante el proceso, redirecciona atrás con el mensaje de error.
+            return back()->withInput()->with('error', 'Ocurrió un error al registrar el entrenamiento. Por favor, inténtalo de nuevo.');
+        }
     }
 
 
