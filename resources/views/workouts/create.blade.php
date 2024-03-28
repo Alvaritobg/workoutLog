@@ -12,15 +12,10 @@
         {{-- Modulo para mostrar mensajes de error y confirmación --}}
         <x-notification :status="session()"></x-notification>
     </div>
-    {{-- Verifica si hay rutinas disponibles --}}
+    {{-- Verifica si hay datos --}}
     @if ($workoutExercises)
-        {{-- $routine --}}
-        <div class="flex flex-col py-2 px-2 md:px-5 my-4 gap-4 justify-center">
-            {{-- <div class="flex flex-col text-end text-white p-6 max-h-60 overflow-hidden shadow-md rounded-sm
-                    h-screen bg-cover bg-center"
-                style="background-image: url('/images/{{ $routine->img }}')">
 
-            </div> --}}
+        <div class="flex flex-col py-2 px-2 md:px-5 my-4 gap-4 justify-center">
 
             <div class="divide-y divide-gray-100 border border-gray-100 bg-white p-5 shadow-md rounded-sm">
 
@@ -107,39 +102,7 @@
             </div>
         </div>
     @else
-        {{-- Mensaje si no hay rutinas disponibles --}}
+        {{-- Mensaje si no hay datos --}}
         <p>No hay ejercicios, contacta con tu entrenador.</p>
     @endif
-
 </x-app-layout>
-
-
-{{-- old ---------------------------------------------- --}}
-{{-- <div class="container">
-    <h1>Registrar Entrenamiento</h1>
-    <form method="POST" action="{{ route('workouts.store') }}">
-        @csrf
-
-        <input type="hidden" name="workoutId" id="workoutId" value="{{ $nextWorkoutId }}">
-        <input type="hidden" name="routineId" id="routineId" value="{{ $routineId }}">
-        @foreach ($workoutExercises->exercises as $exercise)
-            <h3>{{ $exercise->name . ' - Entre ' . $exercise->min_reps_desired . '/' . $exercise->max_reps_desired . ' repeticiones.' }}
-            </h3>
-            @for ($i = 1; $i <= $exercise->num_series; $i++)
-                <div class="mb-3">
-
-                    <label>{{ "Serie $i - Peso Usado" }}</label>
-                    <input type="number"
-                        name="exercises[{{ $exercise->id }}][series][{{ $i }}][used_weight]"
-                        class="form-control" required>
-                    <label>{{ "Serie $i - Repeticiones" }}</label>
-                    <input type="number"
-                        name="exercises[{{ $exercise->id }}][series][{{ $i }}][repetitions]"
-                        class="form-control" required>
-                </div>
-            @endfor
-        @endforeach
-
-        <button type="submit" class="btn btn-primary">Registrar Entrenamiento</button>
-    </form>
-</div> --}}
